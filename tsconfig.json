@@ -1,0 +1,22 @@
+{
+    "version": "1.5.0",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "sourceMap": false,
+        "outDir": "node_modules",
+        "noLib": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./scripts/typings/chai/chai.d.ts",
+        "./scripts/typings/mocha/mocha.d.ts",
+        "./src/types/standard/ISO32000x-7.9.ts",
+    ]
+}
