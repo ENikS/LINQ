@@ -39,21 +39,11 @@
     <Content Include="README.md" />
     <TypeScriptCompile Include="Scripts\typings\chai\chai.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mocha\mocha.d.ts" />
-    <TypeScriptCompile Include="src\Lookup.ts" />
-    <TypeScriptCompile Include="src\Range.ts" />
-    <TypeScriptCompile Include="tests\TestAsEnumerable.ts">
-      <TestFramework>Mocha</TestFramework>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="src\Linq.ts" />
-    <TypeScriptCompile Include="tests\TestsAsIterable.ts">
+    <TypeScriptCompile Include="tests\Linq_tests.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="tests\TestsLookup.ts">
-      <SubType>Code</SubType>
-      <TestFramework>Mocha</TestFramework>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="tests\where.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\typings\chai\" />
@@ -68,6 +58,7 @@
     <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
     <TypeScriptOutDir>node_modules\</TypeScriptOutDir>
     <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />

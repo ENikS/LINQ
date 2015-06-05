@@ -13,13 +13,43 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {RangeGenerator} from "./Range"
 import "es6-shim";
+
+
+
+//-----------------------------------------------------------------------------
+//  Functions to convert any iterable into LINQ enumerable
+//-----------------------------------------------------------------------------
+
+
+
+/**
+* Creates a new Linq enumerable.
+* @param TSource An Iterable object such as Array, Map or string. */
+export function LINQ<T>(TSource: Iterable<T>|IEnumerable<T> = null): Linqable<T> {
+    return new Linq<T>(TSource);
+}
+
+
+/** Returns range of numbers from strart to start + count */
+export function Range<T>(start: T, count: number): Linqable<T> {
+    return new Linq<T>(null, () => new GeneratorIterator(start, count, true));
+}
+
+
+/** Returns range of numbers from strart to start + count */
+export function Repeat<T>(start: T, count: number): Linqable<T> {
+    return new Linq<T>(null, () => new GeneratorIterator(start, count));
+}
+
 
 
 //-----------------------------------------------------------------------------
 //  LINQ
 //-----------------------------------------------------------------------------
+
+
+
 
 export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
@@ -56,7 +86,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /**
     * Determines whether a sequence contains a specified element by using a 
     * specified Comparer. */
-    Contains(source: T, equil?: (a: T, b: T) => boolean): boolean;
+    Contains(source: T, equal?: (a: T, b: T) => boolean): boolean;
 
     /**
     * Returns the number of elements in a sequence.
@@ -86,8 +116,10 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     //Empty - Returns an empty IEnumerable<T> that has the specified type argument.
     // Use asIterable([])
     
-//Except<TSource>(IEnumerable<TSource>, IEnumerable<TSource>)	Produces the set difference of two sequences by using the default equality comparer to compare values.
-//Except<TSource>(IEnumerable<TSource>, IEnumerable<TSource>, IEqualityComparer<TSource>)	Produces the set difference of two sequences by using the specified IEqualityComparer<T> to compare values.
+    /** 
+    * Produces the set difference of two sequences by using the default 
+    * equality comparer to compare values. */
+    Except(other: Iterable<T>): Linqable<T>;
     
     /**
     * Returns the first element in a sequence that satisfies a specified
@@ -99,17 +131,16 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     * default value if no such element is found. */
     FirstOrDefault(predicate?: (T) => boolean): T;
     
-//GroupBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>)	Groups the elements of a sequence according to a specified key selector function.
-//GroupBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>, IEqualityComparer<TKey>)	Groups the elements of a sequence according to a specified key selector function and compares the keys by using a specified comparer.
-//GroupBy<TSource, TKey, TElement>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>)	Groups the elements of a sequence according to a specified key selector function and projects the elements for each group by using a specified function.
-//GroupBy<TSource, TKey, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TKey, IEnumerable<TSource>, TResult>)	Groups the elements of a sequence according to a specified key selector function and creates a result value from each group and its key.
-//GroupBy<TSource, TKey, TElement>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, IEqualityComparer<TKey>)	Groups the elements of a sequence according to a key selector function. The keys are compared by using a comparer and each group's elements are projected by using a specified function.
-//GroupBy<TSource, TKey, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TKey, IEnumerable<TSource>, TResult>, IEqualityComparer<TKey>)	Groups the elements of a sequence according to a specified key selector function and creates a result value from each group and its key. The keys are compared by using a specified comparer.
-//GroupBy<TSource, TKey, TElement, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>)	Groups the elements of a sequence according to a specified key selector function and creates a result value from each group and its key. The elements of each group are projected by using a specified function.
-//GroupBy<TSource, TKey, TElement, TResult>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, Func<TKey, IEnumerable<TElement>, TResult>, IEqualityComparer<TKey>)	Groups the elements of a sequence according to a specified key selector function and creates a result value from each group and its key. Key values are compared by using a specified comparer, and the elements of each group are projected by using a specified function.
+    /** 
+    * Groups the elements of a sequence according to a specified key selector 
+    * function and creates a result value from each group and its key. Elements
+    * of each group are projected by using a specified function. */
+    GroupBy<K, E, R>(selKey: (T) => K, selElement?: (T) => E, selResult?: (a: K, b: Iterable<E>) => R): Linqable<R>;
     
-//GroupJoin<TOuter, TInner, TKey, TResult>(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, IEnumerable<TInner>, TResult>)	Correlates the elements of two sequences based on equality of keys and groups the results. The default equality comparer is used to compare keys.
-//GroupJoin<TOuter, TInner, TKey, TResult>(IEnumerable<TOuter>, IEnumerable<TInner>, Func<TOuter, TKey>, Func<TInner, TKey>, Func<TOuter, IEnumerable<TInner>, TResult>, IEqualityComparer<TKey>)	Correlates the elements of two sequences based on key equality and groups the results. A specified IEqualityComparer<T> is used to compare keys.
+    /** 
+    * Correlates the elements of two sequences based on equality of keys and 
+    * groups the results. The default equality comparer is used to compare keys. */
+    GroupJoin<I, K, R>(inner: Iterable<I>, outerKeySelector: (T) => K, innerKeySelector: (I) => K, resultSelector: (a: T, b: Iterable<I>) => R): Linqable<R>;
     
     /** 
     * Produces the intersection of two sequences. */
@@ -140,24 +171,34 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     * the minimum Decimal value. */
     Min(transform?: (T) => number): number;
     
-//OfType<TResult>	Filters the elements of an IEnumerable based on a specified type.
-    
-//OrderBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>)	Sorts the elements of a sequence in ascending order according to a key.
-//OrderBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>)	Sorts the elements of a sequence in ascending order by using a specified comparer.
-//OrderByDescending<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>)	Sorts the elements of a sequence in descending order according to a key.
-//OrderByDescending<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>)	Sorts the elements of a sequence in descending order by using a specified comparer.
+    /** 
+    * Sorts the elements of a sequence in ascending order by using a specified 
+    * comparer. */
+    OrderBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
 
-//ThenBy<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>)	Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
-//ThenBy<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>)	Performs a subsequent ordering of the elements in a sequence in ascending order by using a specified comparer.
-//ThenByDescending<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>)	Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
-//ThenByDescending<TSource, TKey>(IOrderedEnumerable<TSource>, Func<TSource, TKey>, IComparer<TKey>)	Performs a subsequent ordering of the elements in a sequence in descending order by using a specified comparer.
-    
+    /** 
+    * Sorts the elements of a sequence in descending order by using a specified 
+    * comparer. */
+    OrderByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
 
-//Range(start: Number, count: Number): ILinq<T>;
+    /** 
+    * Performs a subsequent ordering of the elements in a sequence in ascending
+    * order by using a specified comparer. */
+    ThenBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
+
+    /** 
+    * Performs a subsequent ordering of the elements in a sequence in descending
+    * order by using a specified comparer. */
+    ThenByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;	
     
-//Repeat<TResult>	Generates a sequence that contains one repeated value.
+    /** Returns count of numbers beginning from start  */
+    Range(start: T, count: number): Linqable<T>;
     
-//Reverse<TSource>	Inverts the order of the elements in a sequence.
+    /** Generates a sequence that contains one repeated value. */
+    Repeat(element: T, count: number): Linqable<T>;
+    
+    /** Inverts the order of the elements in a sequence. */
+    Reverse(): Linqable<T>;	
     
     /**	
     *Projects each element of a sequence into a new form by incorporating
@@ -174,7 +215,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /**
     * Determines whether two sequences are equal by comparing their elements
     * by using a specified IEqualityComparer<T>. */
-    SequenceEqual(other: Iterable<T>, equil?: (a: T, b: T) => boolean): boolean; 
+    SequenceEqual(other: Iterable<T>, equal?: (a: T, b: T) => boolean): boolean; 
     
     /**
     * Returns the only element of a sequence that satisfies a specified 
@@ -226,10 +267,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     * Creates a Map< TKey, TValue > from an IEnumerable< T > according
     * to a specified key selector function, a comparer, and an element selector
     * function. */
-    ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
-
-    //ToLookup<TSource, TKey, TElement>(IEnumerable<TSource>, Func<TSource, TKey>, Func<TSource, TElement>, IEqualityComparer<TKey>)	Creates a Lookup<TKey, TElement> from an IEnumerable<T> according to a specified key selector function, a comparer and an element selector function.
-    // Does not have an analog in JavaScript
+    //ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
 
     /** 
     * Produces the set union of two sequences. Union returns only unique values. */
@@ -240,7 +278,6 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     * @param predicate Each element's index is used in the logic of the 
     * predicate function.  */
     Where(predicate: (T, number) => Boolean): Linqable<T>;
-    //
         
     /** 
     * Applies a specified function to the corresponding elements of two 
@@ -249,56 +286,36 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 }
 
 
-//-----------------------------------------------------------------------------
-//  Functions to convert any iterable into LINQ enumerable
-//-----------------------------------------------------------------------------
-
-/**
-* Creates a new Linq iterable.
-* @param TSource An Iterable object such as Array, Map or string. */
-export function asIterable<T>(TSource: Iterable<T>|IEnumerable<T>|Array<T>|Map<any, any>|Set<T>): Linqable<T> {
-    return new Linq<T>(<Iterable<T>>TSource);
-}
-
-
-/**
-* Creates a new Linq enumerable.
-* @param TSource An Iterable object such as Array, Map or string. */
-export function asEnumerable<T>(TSource: Iterable<T>|IEnumerable<T>): Linqable<T> {
-    return new Linq<T>(TSource);
-}
-
-
-/** Returns range of numbers from strart to start + count */
-export function Range<T>(start: T, count: number): Linqable<T> {
-    return new Linq<T>(new RangeGenerator(start, count));
-}
-
 
 //-----------------------------------------------------------------------------
 //  LINQ Implementation
 //-----------------------------------------------------------------------------
 
+
+
 class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
 
-    _target: Iterable<T>|IEnumerable<T>;
-    _factory: Function;
+    protected _target: Iterable<T>|IEnumerable<T>;
+    protected _factory: Function;
+    protected _factoryArg: any;
+    protected _initialize: Function;
 
     ///////////////////////////////////////////////////////////////////////////
 
-    constructor(target: Iterable<any>|IEnumerable<any>, factory?) {
+    constructor(target: Iterable<any>|IEnumerable<any>, factory?: Function, arg?: any) {
         this._target = target;
         this._factory = factory;
+        this._factoryArg = arg;
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
-        return (null == this._factory) ? this._target[Symbol.iterator]() : this._factory();
+        return (null != this._factory) ? this._factory(this._factoryArg)
+             : (null != this._target)  ? this._target[Symbol.iterator]()
+                : { next: () => { return {done: true, value: undefined}; }};
     }
-
-    ///////////////////////////////////////////////////////////////////////////
 
     /** Returns C# style enumerator */
     public GetEnumerator(): IEnumerator<T> {
@@ -306,14 +323,13 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
     
+
     //-------------------------------------------------------------------------
     //  Immediate execution methods                                                                                            
     //-------------------------------------------------------------------------
 
-    /*
-    * Applies an accumulator function over a sequence.The specified seed value 
-    * is used as the initial accumulator value, and the specified function is 
-    * used to select the result value. */
+
+
     Aggregate<A, B>(seed: A, func: (A, T) => A, resultSelector: (A) => B = selfFn): B {
         var result: A = seed;
         var res, iterator: Iterator<T> = this[Symbol.iterator]();
@@ -324,9 +340,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Determines whether all elements of a sequence satisfy a condition.
-    * @returns True is all elements satisfy criteris. */
     public All(predicate: (T) => boolean = trueFn) {
         var result, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
@@ -338,11 +351,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Determines whether a sequence contains any elements or if predicate is 
-    * present determines whether any element of a sequence satisfies a 
-    * condition.
-    * @param Predicate. */
     public Any(predicate?: (T) => boolean) {
         var result, iterator: Iterator<T> = this[Symbol.iterator]();
         // Check if at least one exist
@@ -358,9 +366,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
         return false;
     }
 
-    /** 
-    * Computes the average of a sequence of Number values that are obtained by 
-    * invoking a transform function on each element of the input sequence. */
+
     Average(func: (T) => number = selfFn): number {
         var result, sum = 0, count = 0;
         var iterator = this[Symbol.iterator]();
@@ -372,13 +378,10 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**
-    * Determines whether a sequence contains a specified element by using a 
-    * specified Comparer. */
-    Contains(source: T, equil: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
+    Contains(source: T, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
         var result, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
-            if (equil(source, result.value)) {
+            if (equal(source, result.value)) {
                 return true;
             }
         }
@@ -386,11 +389,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**
-    * Returns the number of elements in a sequence.
-    * @param Predicate. 
-    * @returns Returns a number that represents how many elements in the 
-    * specified sequence satisfy a condition.*/
     public Count(predicate: (T) => boolean = trueFn): number {
         var result, count = 0;
         var iterator = this[Symbol.iterator]();
@@ -403,9 +401,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Invokes a transform function on each element of a sequence and returns 
-    * the maximum value. */
     Max(transform: (T) => number = selfFn): number {
         var result, value, max, hasValue = false;
         var iterator = this[Symbol.iterator]();
@@ -424,9 +419,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
     
     
-    /** 
-    * Invokes a transform function on each element of a sequence and returns 
-    * the minimum Decimal value. */
     Min(transform: (T) => number = selfFn): number {
         var result, value, min, hasValue = false;
         var iterator = this[Symbol.iterator]();
@@ -445,7 +437,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** Returns the element at a specified index in a sequence. */
     ElementAt(index: number): T {
         var result, count = 0;
         var iterator = this[Symbol.iterator]();
@@ -458,9 +449,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
     
     
-    /** 
-    * Returns the element at a specified index in a sequence or a default 
-    * value if the index is out of range. */
     ElementAtOrDefault(index: number): T {
         var result, value, count = 0;
         var iterator = this[Symbol.iterator]();
@@ -474,9 +462,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**
-    * Returns the first element in a sequence that satisfies a specified
-    * condition. */
     First(predicate: (T) => boolean = trueFn): T {
         var result;
         var iterator = this[Symbol.iterator]();
@@ -489,9 +474,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**
-    * Returns the first element of the sequence that satisfies a condition or a
-    * default value if no such element is found. */
     FirstOrDefault(predicate: (T) => boolean = trueFn): T {
         var result, value;
         var iterator = this[Symbol.iterator]();
@@ -505,16 +487,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Produces the intersection of two sequences. */
-    Intersect(other: Iterable<T>): Linqable<T> {
-        return new Linq<T>(this, () => new IntersectIteratror(this._target[Symbol.iterator](), other));
-    }
-
-
-    /**	
-    * Returns the last element of a sequence that satisfies a specified 
-    * condition. */
     Last(predicate: (T) => boolean = trueFn): T {
         var result, value, found = false;
         var iterator = this[Symbol.iterator]();
@@ -530,9 +502,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
         return value;
     }
 
-    /** 
-    * Returns the last element of a sequence that satisfies a condition or a 
-    * default value if no such element is found. */
+
     LastOrDefault(predicate: (T) => boolean = trueFn): T {
         var result, value, lastKnown, found = false;
         var iterator = this[Symbol.iterator]();
@@ -547,16 +517,13 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
     
 
-    /**
-    * Determines whether two sequences are equal by comparing their elements
-    * by using a specified IEqualityComparer<T>. */
-    SequenceEqual(other: Iterable<T>, equil: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
+    SequenceEqual(other: Iterable<T>, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
         var res1, res2;
         var it1 = this[Symbol.iterator]();
         var it2 = other[Symbol.iterator]();
         do {
             res1 = it1.next(); res2 = it2.next();
-            if ((res1.done != res2.done) || !equil(res1.value, res2.value)) {
+            if ((res1.done != res2.done) || !equal(res1.value, res2.value)) {
                 return false;
             }
         } while (!(res1.done) && !(res2.done));
@@ -564,9 +531,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**
-    * Returns the only element of a sequence that satisfies a specified 
-    * condition, and throws an exception if more than one such element exists. */
     Single(predicate: (T) => boolean = trueFn): T {
         var value, hasValue = false;
         var result, iterator = this[Symbol.iterator]();
@@ -585,10 +549,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
         throw nothingFound;
     }
     
-    /** 
-    * Returns the only element of a sequence that satisfies a specified 
-    * condition or a default value if no such element exists; this method 
-    * throws an exception if more than one element satisfies the condition. */
+
     SingleOrDefault<TSource>(predicate: (T) => boolean = trueFn): T {
         var value, lastKnown, hasValue = false;
         var result, iterator = this[Symbol.iterator]();
@@ -608,9 +569,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
     
 
-    /** 
-    * Computes the sum of the sequence of Decimal values that are obtained by 
-    * invoking a transform function on each element of the input sequence. */
     Sum(transform: (T) => number = selfFn): number {
         var result, sum: number = 0;
         var iterator = this[Symbol.iterator]();
@@ -621,7 +579,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }	
 
 
-    /** Converts Iterable to Array<T> */
     public ToArray(): Array<T> {
         var result, array = [];
         var iterator = this[Symbol.iterator]();
@@ -632,10 +589,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Creates a Map< TKey, TValue > from an IEnumerable< T > according
-    * to a specified key selector function, a comparer, and an element selector
-    * function. */
     ToMap<TKey, TElement>(keySelector: (T) => TKey,
         elementSelector: (T) => TElement = selfFn): Map<TKey, TElement> {
         var dictionary = new Map<TKey, TElement>();
@@ -647,10 +600,6 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /** 
-    * Creates a Map< TKey, TValue > from an IEnumerable< T > according
-    * to a specified key selector function, a comparer, and an element selector
-    * function. */
     ToDictionary<TKey, TElement>(keySelector: (T) => TKey,
         elementSelector: (T) => TElement = selfFn): Map<TKey, TElement> {
         var dictionary = new Map<TKey, TElement>();
@@ -662,43 +611,97 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
+
     //-------------------------------------------------------------------------
     //  Deferred execution methods
     //-------------------------------------------------------------------------
 
 
-    /** 
-    * Returns the elements of the specified sequence or the specified value in 
-    * a singleton collection if the sequence is empty. */
+
     DefaultIfEmpty(defaultValue: T = undefined): Linqable<T> {
         return new Linq<T>(this, () => new DefaultIfEmptyIteratror(this._target[Symbol.iterator](), defaultValue));
     }
 
     
-    /** Casts the elements of an IEnumerable to the specified type. */
     Cast<V>(): Linqable<V> {
         return new Linq<V>(this, () => new SelectIteratror(this._target[Symbol.iterator](), (a) => <V>a));
     }
 
 
-    /** Concatenates two sequences. */
     Concat(second: Iterable<T>): Linqable<T> {
         var aggregate = [this._target, second];
         return new Linq<T>(this, () => new SelectManyIteratror(aggregate[Symbol.iterator](), selfFn, selfFn));
     }	
 
 
-    /**
-    * Returns distinct elements from a sequence by using the default equality
-    * comparer to compare values.*/
     Distinct(): Linqable<T> {
         return new Linq<T>(this, () => new DistinctIteratror(this._target[Symbol.iterator]()));
     }
 
+    Except(other: Iterable<T>): Linqable<T> {
+        var _set: Set<T> = new Set<T>();
+        var result, otherIterator = other[Symbol.iterator]();
+        while (!(result = otherIterator.next()).done) {
+            _set.add(result.value);
+        }
+        return new Linq<T>(this, () => new IntersectIteratror(this._target[Symbol.iterator](), _set, true));
+    }
 
-    /** 
-    * Correlates the elements of two sequences based on matching keys. A 
-    * specified IEqualityComparer<T> is used to compare keys. */
+
+    GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E,
+                                       selResult: (a: K, b: Iterable<E>) => R 
+                                       = defGrouping): Linqable<R> {
+        var result: IteratorResult<T>;
+        var iterator: Iterator<T> = this[Symbol.iterator]();
+        var _map = new Map<K, Array<E>>();
+        while (!(result = iterator.next()).done) {
+            var key = selKey(result.value);
+            var group: Array<E> = _map.get(key);
+            if ('undefined' === typeof group) {
+                group = [];
+                _map.set(key, group);
+            }
+            group.push(selElement(result.value));
+        }
+        var factory = () => new GroupByIteratror(_map.keys(), selResult, _map);
+        var tst = factory();
+
+        return new Linq<R>(this, () => new GroupByIteratror(_map.keys(), selResult, _map)); 
+    }
+
+
+    GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K,
+                                              iKeySelect: (I) => K, 
+                                              resultSelector: (a: T, b: Iterable<I>) => R
+                                              = defGrouping): Linqable<R> {
+        var _map = new Map<K, Array<I>>();
+        var _inner = inner[Symbol.iterator]();
+        var result: IteratorResult<I>;
+        while (!(result = _inner.next()).done) {
+            var key = iKeySelect(result.value);
+            if ('undefined' === typeof key) throw "Inner Key selector returned undefined Key";
+            var group: Array<I> = _map.get(key);
+            if ('undefined' === typeof group) {
+                group = [];
+                _map.set(key, group);
+            }
+            group.push(result.value);
+        }
+        return new Linq<R>(this, () => new GroupJoinIteratror(this._target[Symbol.iterator](),
+                                                              oKeySelect, resultSelector, _map)); 
+    }
+
+
+    Intersect(other: Iterable<T>): Linqable<T> {
+        var _set: Set <T> = new Set<T>();
+        var result, otherIterator = other[Symbol.iterator]();
+        while (!(result = otherIterator.next()).done) {
+            _set.add(result.value);
+        }
+        return new Linq<T>(this, () => new IntersectIteratror(this._target[Symbol.iterator](), _set));
+    }
+
+
     Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey,
         iSelector: (I) => TKey, transform: (T, I) => R): Linqable<R> {
         return new Linq<R>(this, () => new JoinIteratror<T, I, TKey, R>(
@@ -707,27 +710,77 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    /**	
-    *Projects each element of a sequence into a new form by incorporating
-    * the element's index. */
+    OrderBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+        return new OrderedLinq<T>(this,
+            (array) => new ArrayIterator(array, 0, (i) => i >= array.length),
+            (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+    }
+
+    OrderByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+        return new OrderedLinq<T>(this,
+            (array) => new ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
+            (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+    }
+
+
+    ThenBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+        if (this instanceof OrderedLinq) {
+            var superEqual = (<OrderedLinq<T>>this).equal;
+            (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
+                var result: number = superEqual(a, b);
+                return (0 != result) ? result : equal(keySelect(a), keySelect(b));
+            }
+            return this;
+        } else {
+            return new OrderedLinq<T>(this,
+                (array) => new ArrayIterator(array, 0, (i) => i >= array.length),
+                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        }
+    }
+
+
+    ThenByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+        if (this instanceof OrderedLinq) {
+            var superEqual = (<OrderedLinq<T>>this).equal;
+            (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
+                var result: number = superEqual(a, b);
+                return (0 != result) ? result : equal(keySelect(a), keySelect(b));
+            }
+            return this;
+        } else {
+            return new OrderedLinq<T>(this,
+                (array) => new ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
+                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        }
+    }
+
+
+    Range<T>(start: T, count: number): Linqable<T> {
+        return new Linq<T>(null, () => new GeneratorIterator(start, count, true));
+    }
+
+
+    Repeat(element: T, count: number): Linqable<T> {
+        return new Linq<T>(null, () => new GeneratorIterator(element, count));
+    }
+
+
+    Reverse(): Linqable<T> {
+        var array: Array<T> = Array.isArray(this._target) ? <Array<T>>this._target : this.ToArray();
+        return new Linq<T>(null, () => new ArrayIterator(array, array.length - 1,  (i) => 0 > i, -1));
+    }
+
+
     Select<V>(transform: (T, number?) => V): Linqable<V> {
         return new Linq<V>(this, () => new SelectIteratror(this._target[Symbol.iterator](), transform));
     }
 
 
-    /** 
-    * Projects each element of a sequence to an Iterable<T>, flattens the 
-    * resulting sequences into one sequence, and invokes a result selector 
-    * function on each element therein. The index of each source element is 
-    * used in the intermediate projected form of that element. */
     SelectMany<S, V>(selector: (T, number) => Iterable<S> = selfFn, result: (T, S) => V = selfFn): Linqable<V> {
         return new Linq<V>(this, () => new SelectManyIteratror(this._target[Symbol.iterator](), selector, result));
     }
 
 
-    /** 
-    * Bypasses a specified number of elements in a sequence and then returns 
-    * the remaining elements. */
     Skip(skip: number): Linqable<T> {
         var iterator = this._target[Symbol.iterator]();
         for (var i = 0; i < skip; i++) iterator.next();
@@ -735,60 +788,63 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
     
 
-    /** 
-    * Bypasses elements in a sequence as long as a specified condition is true 
-    * and then returns the remaining elements. The element's index is used in 
-    * the logic of the predicate function. */
     SkipWhile(predicate: (T, number) => boolean = (a, n) => false): Linqable<T> {
         return new Linq<T>(this, () => new SkipIterator(this._target[Symbol.iterator](), predicate));
     }
 
 
-    /** 
-    * Returns a specified number of contiguous elements from the start of a 
-    / sequence. */
     Take(take: number): Linqable<T> {
         return new Linq<T>(this, () => new TakeIterator(this._target[Symbol.iterator](), (a, n) => take > n));
     }
     
 
-    /**
-    * Returns elements from a sequence as long as a specified condition is true.
-    * The element's index is used in the logic of the predicate function. */
     TakeWhile(predicate: (T, number) => boolean): Linqable<T> {
         return new Linq<T>(this, () => new TakeIterator(this._target[Symbol.iterator](), predicate));
     }
     
-    /** 
-    * Produces the set union of two sequences. Union returns only unique values. */
+
     Union(second: Iterable<T>): Linqable<T> {
         var aggregate = [this._target, second];
         return new Linq<T>(this, () => new UnionIteratror(aggregate[Symbol.iterator]()));
     }
 
-    /**
-    * Filters a sequence of values based on a predicate.
-    * @param predicate Each element's index is used in the logic of the 
-    * predicate function.  */
+
     public Where(predicate: (T, number?) => Boolean = trueFn): Linqable<T> {
         return new Linq<T>(this, () => new WhereIteratror(this._target[Symbol.iterator](), predicate));
     }
 
 
-    /** 
-    * Applies a specified function to the corresponding elements of two 
-    * sequences, producing a sequence of the results. */
     Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Linqable<Z> {
         return new Linq<Z>(this, () => new ZipIteratror(this._target[Symbol.iterator](), second[Symbol.iterator](), func));
     }
 }
 
 
+class OrderedLinq<T> extends Linq <T> {
+
+    constructor(target: Iterable<any>|IEnumerable<any>, factory: Function, public equal: Function) {
+        super(target, factory);
+
+    }
+    public [Symbol.iterator](): Iterator<T> {
+        if ('undefined' === typeof this._factoryArg) {
+            this._factoryArg = (<Linq<T>>this._target).ToArray();
+            this._factoryArg.sort(this.equal);
+        }
+        return this._factory(this._factoryArg);
+    }
+
+}
+
+
+
 //-----------------------------------------------------------------------------
 //  Enumerator implementation
 //-----------------------------------------------------------------------------
 
-/** Gets Iterator and turns it into Enumerator */
+
+
+//  Gets Iterator and turns it into Enumerator 
 class Enumerator<T> implements IEnumerator<T> {
 
     _result: any;
@@ -817,75 +873,108 @@ class Enumerator<T> implements IEnumerator<T> {
 }
 
 
+
 //-----------------------------------------------------------------------------
 //  Iterators implementation
 //-----------------------------------------------------------------------------
 
 
-/** Base Iterator class */
+
+class ArrayIterator<T> implements Iterator<T> {
+
+    constructor(private _source: Array<T>, private _current: number, private _done: Function,
+                private _increment = 1) {
+    }
+
+    public next(value?: any): IteratorResult<T> {
+        var result = { value: this._source[this._current], done: this._done(this._current) };
+        this._current += this._increment;
+        return result;
+    }
+}
+
+
 class IteratorBase<T> {
-    _done: any = { value: undefined, done: true };
-    _iterator: Iterator<T>;
 
-    constructor(iterator: Iterator<T>) {
-        if (('null' || 'undefined') == typeof iterator) {
-            throw "Invalid Iterator";
-        }
-        this._iterator = iterator;
-    }
+    protected _done: any = { value: undefined, done: true };
+
+    constructor(protected _iterator: Iterator<T>) { }
 }
 
 
-/** Distinct Iterator class */
 class DistinctIteratror<T> extends IteratorBase<T> {
-    _set: Set<T> = new Set<T>();
 
-    /** Gets the next element in the collection. */
+    private _set: Set<T> = new Set<T>();
+
     public next(value?: any): IteratorResult<T> {
         var result;
-        while (!(result = this._iterator.next()).done && this._set.has(result.value));
+        while (!(result = this._iterator.next()).done && this._set.has(result.value)) { }
         this._set.add(result.value);
         return result;
     }
 }
 
-/** Itersect Iterator class */
+
 class IntersectIteratror<T> extends IteratorBase<T> {
-    _set: Set<T> = new Set<T>();
 
-    constructor(iterator: Iterator<T>, other: Iterable<T>) {
+    constructor(iterator: Iterator<T>, private _set: Set<T>, private _switch: boolean = false) {
         super(iterator);
-        var result, otherIterator = other[Symbol.iterator]();
-        while (!(result = otherIterator.next()).done) {
-            this._set.add(result.value);
-        }
     }
 
-    /** Gets the next element in the collection. */
     public next(value?: any): IteratorResult<T> {
         var result;
-        while (!(result = this._iterator.next()).done && !this._set.has(result.value));
-        this._set.add(result.value);
+        while (!(result = this._iterator.next()).done && (this._switch == this._set.has(result.value))) { }
+        if (!this._switch) this._set.add(result.value);
         return result;
     }
 }
 
-/** Base for all predicate based iterators */
+
+class GeneratorIterator<T> extends IteratorBase<T> implements Iterator<T> {
+
+    constructor(private _current: any, private _count: number, private _increment: boolean = false) {
+        super(null);
+    }
+
+    public next<T>(value?: any): IteratorResult<T> {
+        var result = (0 < this._count) ? { value: this._current, done: 0 >= this._count-- } : this._done;
+        if (this._increment) this._current++;
+        return result;
+    }
+}
+
+
+class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
+
+    constructor(sourceIterator: Iterator<T>, private _default: T) {
+        super(sourceIterator);
+    }
+
+    public next(value?: any): IteratorResult<T> {
+        return this.check(this._iterator.next());
+    }
+
+    private check(result: IteratorResult<T>) {
+        if (result.done) {
+            result.value = this._default;
+        } else {
+            this.check = (a) => a;
+        }
+        return result;
+    }
+}
+
+
 class MethodIteratror<T> extends IteratorBase<T> {
 
-    _index = 0;
-    _method: Function;
-
-    constructor(iterator: Iterator<T>, method: Function) {
+    constructor(iterator: Iterator<T>, protected _method: Function = null, protected _index = 0) {
         super(iterator);
-        if ("undefined" === typeof method) throw "Iterator can not be used without predicate";
-        this._method = method;
     }
 }
 
-/** Implements Where Iterator */
+
 class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
-    /** Gets the next element in the collection. */
+
     public next(value?: any): IteratorResult<T> {
         var result;
         do {
@@ -897,53 +986,50 @@ class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
 
 
 class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
-    _hasSkipped = false;
 
-    /** Gets the next element in the collection. */
+    private _hasSkipped = false;
+
     public next(value?: any): IteratorResult<T> {
         var result;
         if (this._hasSkipped) return this._iterator.next();
-        while (!(result = this._iterator.next()).done && this._method(result.value, this._index++)); 
+        while (!(result = this._iterator.next()).done && this._method(result.value, this._index++)) { }
         this._hasSkipped = true;
         return result;
     }
 }
 
+
 class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 
-    /** Gets the next element in the collection. */
     public next(value?: any): IteratorResult<T> {
         var result = this._iterator.next();
-        if (result.done || !this._method(result.value, this._index++))
+        if (result.done || !this._method(result.value, this._index++)) {
             return this._done;
-
+        }
         return result;
     }
 }
 
-class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
-    _second: Iterator<V>;
 
-    constructor(first: Iterator<T>, second: Iterator<V>, func: (T,V)=>Z) {
+class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
+
+    constructor(first: Iterator<T>, private _second: Iterator<V>, func: (T,V)=>Z) {
         super(first, func);
-        this._second = second;
     }
 
-    /** Gets the next element in the collection. */
     public next(value ?: any): IteratorResult <Z> {
         var first = this._iterator.next();
         var second = this._second.next();
         if (first.done || second.done) {
             return this._done;
         }
-
         return {done: false, value: this._method(first.value, second.value) };
     }
 }
 
-/** Implements Select Iterator */
+
 class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterator<V> {
-    /** Gets the next element in the collection. */
+
     public next(value?: any): IteratorResult<V> {
         var result: any = this._iterator.next();
         if (result.done) return result;
@@ -952,19 +1038,19 @@ class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterator<V> {
     }
 }
 
-/** Implements SelectMany Iterator */
+
 class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
-    _resultSelector;
-    _collection: Iterator<V>;
-    _collectionState: IteratorResult<T> = this._done;
-    _resultState: IteratorResult<any> = this._done;
+
+    protected _resultSelector;
+    protected _collection: Iterator<V>;
+    protected _collectionState: IteratorResult<T> = this._done;
+    protected _resultState: IteratorResult<any> = this._done;
 
     constructor(sourceIterator: Iterator<T>, selector: (T, number) => Iterable<V>, transform: (T, V) => Z = selfFn) {
         super(sourceIterator, selector);
         this._resultSelector = transform;
     }
 
-    /** Gets the next element in the collection. */
     public next(value?: any): IteratorResult<Z> {
         do {
             if (this._resultState.done) {
@@ -982,23 +1068,25 @@ class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
     }
 }
 
-class JoinIteratror<T, I, TKey, R> extends SelectManyIteratror<T, I, R> {
-    _map: Map<TKey, Set<I>>;
 
-    constructor(outer: Iterator<T>, inner: Iterator<I>, oSelect: (T) => TKey, iSelect: (I) => TKey, transform: (T, I) => R) {
+class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
+
+    private _map: Map<K, Array<I>>;
+
+    constructor(outer: Iterator<T>, inner: Iterator<I>, oKeySelect: (T) => K, iKeySelect: (I) => K, transform: (T, any) => R) {
         super(outer, null);
-        this._method = oSelect;
+        this._method = oKeySelect;
 
         var result: IteratorResult<I>;
-        this._map = new Map<TKey, Set<I>>();
+        this._map = new Map<K, Array<I>>();
         while (!(result = inner.next()).done) {
-            var key = iSelect(result.value);
-            var group: Set<I> = this._map.get(key);
+            var key = iKeySelect(result.value);
+            var group: Array<I> = this._map.get(key);
             if ('undefined' === typeof group) {
-                group = new Set<I>();
+                group = [];
                 this._map.set(key, group);
             }
-            group.add(result.value);
+            group.push(result.value);
         }
         this._resultSelector = transform;
     }
@@ -1020,54 +1108,66 @@ class JoinIteratror<T, I, TKey, R> extends SelectManyIteratror<T, I, R> {
                 this._resultState.value = this._resultSelector(this._collectionState.value, this._resultState.value);
             }
         } while (this._resultState.done);
-
         return this._resultState;
     }
 }
 
 
-
-/** Implements Union Iterator */
 class UnionIteratror<T> extends SelectManyIteratror<T, T, T> implements Iterator<T> {
-    _set = new Set<T>();
+
+    private _set = new Set<T>();
 
     constructor(sourceIterator: Iterator<T>) {
         super(sourceIterator, selfFn);
     }
 
-    /** Gets the next element in the collection. */
     public next(value?: any): IteratorResult<T> {
         var result;
-        while (!(result = super.next()).done && this._set.has(result.value));
+        while (!(result = super.next()).done && this._set.has(result.value)) { }
         this._set.add(result.value);
         return result;
     }
 }
 
 
-/** DefaultIfEmpty Iterator class */
-class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
-    _default: T;
+class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Iterator<R> {
 
-    constructor(sourceIterator: Iterator<T>, defaultValue: T) {
-        super(sourceIterator);
-        this._default = defaultValue;
+    constructor(iterator: Iterator<K>, resultSelect: (a: K, b: Iterable<E>) => R,
+                private _map: Map<K, Array<E>>) {
+        super(iterator, resultSelect);
     }
-
-    /** Gets the next element in the collection. */
-    public next(value?: any): IteratorResult<T> {
-        return this.check(this._iterator.next());
-    }
-
-    private check(result: IteratorResult<T>) {
-        if (result.done) {
-            result.value = this._default;
-        } else {
-            this.check = (a) => a;
-        }
-        return result;
+                                                                                 
+    public next(value?: any): IteratorResult<R> {
+        var result: IteratorResult<K> = this._iterator.next();
+        if (result.done) return this._done;
+        var iterable = this._map.get(result.value);
+        return { value: this._method(result.value, iterable), done: false};
     }
 }
+
+
+class GroupJoinIteratror<T, I, K, R> extends MethodIteratror<T> implements Iterator<R> {
+
+    constructor(iterator: Iterator<T>, oKeySelect: (T) => K,
+                private _transform: (a: T, b: Iterable<I>) => R, 
+                private _map: Map<K, Array<I>>) {
+        super(iterator, oKeySelect);
+    }
+
+    public next(value?: any): IteratorResult<R> {
+        var innerSet: Iterable<I>;
+        var result: IteratorResult<T>;
+        do {
+            result = this._iterator.next();
+            if (result.done) return this._done;
+            var key = this._method(result.value);
+            innerSet = this._map.get(key);
+        } while ('undefined' === typeof innerSet);
+
+        return { value: this._transform(result.value, innerSet), done: false };
+    }
+}
+
 
 
 //-----------------------------------------------------------------------------
@@ -1075,11 +1175,19 @@ class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 //-----------------------------------------------------------------------------
 
 
+
 /** Default predicate, always true */
 var trueFn = () => true;
 
 /** Default transformer, returns self */
 var selfFn = o => o;
+
+/** Default Grouping */
+var defGrouping = (a, b) => {
+    if ('undefined' != typeof b['key']) throw "Object already has property [key]";
+    b['key'] = a;
+    return b;
+};
 
 /** Returns default value for the type */
 function getDefaultVal(type) {
@@ -1110,18 +1218,24 @@ function getDefaultVal(type) {
 }
 
 
+
 //-----------------------------------------------------------------------------
 //  Constants
 //-----------------------------------------------------------------------------
+
+
 
 var nothingFound = "No element satisfies the condition in predicate";
 var noElements = "The source sequence is empty.";
 var tooMany = "More than one element satisfies the condition in predicate.";
 
 
+
 //-----------------------------------------------------------------------------
 //  Enumerable APIs
 //-----------------------------------------------------------------------------
+
+
 
 /** 
 * Exposes the enumerator, which supports a simple iteration over a collection
@@ -1131,6 +1245,7 @@ export interface IEnumerable<T> {
     /** Returns an enumerator that iterates through the collection. */
     GetEnumerator(): IEnumerator<T>;
 }
+
 
 /** 
 * Exposes an enumerator, which supports a simple iteration over a generic 
@@ -1146,5 +1261,33 @@ export interface IEnumerator<T> {
     * element in the collection. */
     Reset(): void;
 }
+
+
+
+//-----------------------------------------------------------------------------
+//  Iterable APIs
+//-----------------------------------------------------------------------------
+
+
+
+export interface IteratorResult<T> {
+    done: boolean;
+    value?: T;
+}
+
+export interface Iterator<T> {
+    next(value?: any): IteratorResult<T>;
+    return?(value?: any): IteratorResult<T>;
+    throw?(e?: any): IteratorResult<T>;
+}
+
+export interface Iterable<T> {
+    [Symbol.iterator](): Iterator<T>;
+}
+
+export interface IterableIterator<T> extends Iterator<T> {
+    [Symbol.iterator](): IterableIterator<T>;
+}
+
 
 

@@ -1,15 +1,18 @@
 {
-  "name": "Linq",
-  "version": "0.0.0",
+  "name": "LINK-TS",
+  "version": "1.0.0",
   "description": "Linq",
-  "main": "app.js",
+  "main": "Linq.js",
   "author": {
-    "name": "Developer",
-    "email": ""
+    "name": "Eugene Sadovoi",
+    "email": "esadovoi@eniks.com"
   },
   "devDependencies": {
     "chai": "^2.3.0",
     "es6-shim": "^0.31.3",
     "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha node_modules/tests/  --recursive"
   }
 }
