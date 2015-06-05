@@ -39,6 +39,9 @@
     <Content Include="README.md" />
     <TypeScriptCompile Include="Scripts\typings\chai\chai.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mocha\mocha.d.ts" />
+    <TypeScriptCompile Include="tests\linq_tests.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="typings\linq-ts.d.ts" />
     <TypeScriptCompile Include="src\linq-ts.ts">
       <TestFramework>Mocha</TestFramework>

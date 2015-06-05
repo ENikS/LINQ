@@ -14,7 +14,7 @@
 // under the License.
 
 import {assert} from "chai";
-import {asEnumerable, Range} from "../src/linq";
+import {asEnumerable, Range} from "../src/linq-ts";
 
 
 var jsn = [
@@ -49,7 +49,6 @@ describe('Testing LINQ -', function () {
         var two = [0, 1, 2, 3, 4];
         var fourByThree = [-2, 1, 5];
         var oneByThree = [-2, 1, 2];
-
         assert.equal(1, asEnumerable(one).Average());
         assert.equal(2, asEnumerable(two).Average());
         assert.equal(4.0 / 3, asEnumerable(fourByThree).Average());
