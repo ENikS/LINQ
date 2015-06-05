@@ -14,7 +14,7 @@
 // under the License.
 
 import {assert} from "chai";
-import {LINQ, Range} from "../src/Linq";
+import {LINQ, Range} from "../src/linq";
 
 
 var jsn = [
