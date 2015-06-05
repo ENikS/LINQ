@@ -1,6 +1,6 @@
 {
   "name": "linq-ts",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "LINQ implemented in Typescript",
   "main": "linq.js",
   "author": {
