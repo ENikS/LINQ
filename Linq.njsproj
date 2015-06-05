@@ -39,9 +39,8 @@
     <Content Include="README.md" />
     <TypeScriptCompile Include="Scripts\typings\chai\chai.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mocha\mocha.d.ts" />
-    <TypeScriptCompile Include="src\linq.ts" />
-    <TypeScriptCompile Include="tests\linq_tests.ts">
-      <SubType>Code</SubType>
+    <TypeScriptCompile Include="typings\linq-ts.d.ts" />
+    <TypeScriptCompile Include="src\linq-ts.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
   </ItemGroup>
@@ -52,11 +51,11 @@
     <Folder Include="src\" />
     <Folder Include="Scripts\" />
     <Folder Include="Scripts\typings\" />
+    <Folder Include="typings\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
-    <TypeScriptOutDir>node_modules\</TypeScriptOutDir>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
   </PropertyGroup>

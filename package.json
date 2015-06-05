@@ -2,15 +2,12 @@
   "name": "linq-ts",
   "version": "1.0.1",
   "description": "LINQ implemented in Typescript",
-  "main": "linq.js",
+  "main": "src/linq-ts.js",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
   },
-  "license": {
-    "type": "MIT",
-    "url": "http://www.opensource.org/licenses/mit-license.php"
-  },
+  "license" : "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ENikS/Linq.git"
@@ -21,7 +18,7 @@
     "mocha": "^2.2.5"
   },
   "scripts": {
-    "test": "mocha node_modules/tests/  --recursive"
+    "test": "mocha tests/  --recursive"
   },
   "dependencies": {
     "es6-shim": "^0.31.3"
