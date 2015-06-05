@@ -7,6 +7,10 @@
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
   },
+  "license" : { 
+    "type" : "MIT" , 
+    "url" : "http://www.opensource.org/licenses/mit-license.php" 
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ENikS/Linq.git"
