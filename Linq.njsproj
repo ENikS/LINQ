@@ -40,7 +40,7 @@
     <TypeScriptCompile Include="Scripts\typings\chai\chai.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mocha\mocha.d.ts" />
     <TypeScriptCompile Include="src\linq.ts" />
-    <TypeScriptCompile Include="tests\Linq_tests.ts">
+    <TypeScriptCompile Include="tests\linq_tests.ts">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
