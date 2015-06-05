@@ -53,7 +53,7 @@ export function Repeat<T>(start: T, count: number): Linqable<T> {
 
 export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
-    /*
+    /**
     * Applies an accumulator function over a sequence.The specified seed value 
     * is used as the initial accumulator value, and the specified function is 
     * used to select the result value. */
@@ -61,24 +61,19 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
     /** 
     * Determines whether all elements of a sequence satisfy a condition.
-    * @returns True is all elements satisfy criteris. */
+    * @returns True is all elements satisfy criteria. */
     All(predicate?: (T) => Boolean): boolean;
     
     /** 
     * Determines whether a sequence contains any elements or if predicate is 
     * present determines whether any element of a sequence satisfies a 
-    * condition.
-    * @param Predicate. */
+    * condition.*/
     Any(predicate?: (T) => Boolean): boolean;
     
     /** 
     * Computes the average of a sequence of Number values that are obtained by 
     * invoking a transform function on each element of the input sequence. */
     Average(func?: (T) => number): number;  	
-
-    /** Casts the elements of an IEnumerable to the specified type. */
-    // At the moment Javascript does not have runtime type info
-    //Cast<V>(): Linqable<V>;
 
     /** Concatenates two sequences. */
     Concat<V>(second: Iterable<T>): Linqable<V>;
@@ -90,8 +85,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
     /**
     * Returns the number of elements in a sequence.
-    * @param Predicate. 
-    * @returns Returns a number that represents how many elements in the 
+    * Returns a number that represents how many elements in the 
     * specified sequence satisfy a condition.*/
     Count(predicate?: (T) => Boolean): number;
     
@@ -274,9 +268,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     Union(second: Iterable<T>): Linqable<T>;	
 
     /**
-    * Filters a sequence of values based on a predicate.
-    * @param predicate Each element's index is used in the logic of the 
-    * predicate function.  */
+    * Filters a sequence of values based on a predicate. */
     Where(predicate: (T, number) => Boolean): Linqable<T>;
         
     /** 
