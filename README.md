@@ -3,19 +3,20 @@
 This library is a complete implementation of LINQ methods available on Enumerable class. 
 
 ### Implemented methods
-Aggregate
+```
+Aggregate 
 All
-Any
+Any 
 Average
-Concat
+Concat 
 Contains
-Count
+Count 
 DefaultIfEmpty
-Distinct
+Distinct 
 ElementAt
-ElementAtOrDefault
+ElementAtOrDefault 
 Except
-First
+First 
 FirstOrDefault
 GroupBy
 GroupJoin
@@ -47,14 +48,15 @@ ToMap
 Union
 Where
 Zip
+```
 
 ### Installation
-
+```
 npm install linq-ts
-
+```
 
 ### Using
-
+```javascript
 import {LINQ, Range} from "linq";
 
 
@@ -73,6 +75,6 @@ var iterable = LINQ(people)
                            };
                        });
 
-
+```
 ### Implementation details
 This library uses native Javascript iterface Iterable<T> as a base for all its iterators. It is also backwards compatible with IEnumerable<T> interface. All relevant methods are implemented with deffered execution so no unnecessary iterations are performed. 
