@@ -26,19 +26,19 @@ import "es6-shim";
 /**
 * Creates a new Linq enumerable.
 * @param TSource An Iterable object such as Array, Map or string. */
-export function LINQ<T>(TSource: Iterable<T>|IEnumerable<T> = null): Linqable<T> {
+export function asEnumerable<T>(TSource: Iterable<T>|IEnumerable<T> = null): ILinq<T> {
     return new Linq<T>(TSource);
 }
 
 
 /** Returns range of numbers from strart to start + count */
-export function Range<T>(start: T, count: number): Linqable<T> {
+export function Range<T>(start: T, count: number): ILinq<T> {
     return new Linq<T>(null, () => new GeneratorIterator(start, count, true));
 }
 
 
 /** Returns range of numbers from strart to start + count */
-export function Repeat<T>(start: T, count: number): Linqable<T> {
+export function Repeat<T>(start: T, count: number): ILinq<T> {
     return new Linq<T>(null, () => new GeneratorIterator(start, count));
 }
 
@@ -51,7 +51,7 @@ export function Repeat<T>(start: T, count: number): Linqable<T> {
 
 
 
-export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
+export interface ILinq<T> extends Iterable<T>, IEnumerable<T> {
 
     /**
     * Applies an accumulator function over a sequence.The specified seed value 
@@ -76,7 +76,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     Average(func?: (T) => number): number;  	
 
     /** Concatenates two sequences. */
-    Concat<V>(second: Iterable<T>): Linqable<V>;
+    Concat<V>(second: Iterable<T>): ILinq<V>;
     
     /**
     * Determines whether a sequence contains a specified element by using a 
@@ -92,12 +92,12 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Returns the elements of the specified sequence or the specified value in 
     * a singleton collection if the sequence is empty. */
-    DefaultIfEmpty(defaultValue?: T): Linqable<T>;	
+    DefaultIfEmpty(defaultValue?: T): ILinq<T>;	
     
     /**
     * Returns distinct elements from a sequence by using the default equality
     * comparer to compare values.*/
-    Distinct(): Linqable<T>;	
+    Distinct(): ILinq<T>;	
     
     /** Returns the element at a specified index in a sequence. */
     ElementAt(index: number): T;
@@ -113,7 +113,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Produces the set difference of two sequences by using the default 
     * equality comparer to compare values. */
-    Except(other: Iterable<T>): Linqable<T>;
+    Except(other: Iterable<T>): ILinq<T>;
     
     /**
     * Returns the first element in a sequence that satisfies a specified
@@ -129,21 +129,21 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     * Groups the elements of a sequence according to a specified key selector 
     * function and creates a result value from each group and its key. Elements
     * of each group are projected by using a specified function. */
-    GroupBy<K, E, R>(selKey: (T) => K, selElement?: (T) => E, selResult?: (a: K, b: Iterable<E>) => R): Linqable<R>;
+    GroupBy<K, E, R>(selKey: (T) => K, selElement?: (T) => E, selResult?: (a: K, b: Iterable<E>) => R): ILinq<R>;
     
     /** 
     * Correlates the elements of two sequences based on equality of keys and 
     * groups the results. The default equality comparer is used to compare keys. */
-    GroupJoin<I, K, R>(inner: Iterable<I>, outerKeySelector: (T) => K, innerKeySelector: (I) => K, resultSelector: (a: T, b: Iterable<I>) => R): Linqable<R>;
+    GroupJoin<I, K, R>(inner: Iterable<I>, outerKeySelector: (T) => K, innerKeySelector: (I) => K, resultSelector: (a: T, b: Iterable<I>) => R): ILinq<R>;
     
     /** 
     * Produces the intersection of two sequences. */
-    Intersect(other: Iterable<T>): Linqable<T>;
+    Intersect(other: Iterable<T>): ILinq<T>;
     
     /** 
     * Correlates the elements of two sequences based on matching keys. A 
     * specified IEqualityComparer<T> is used to compare keys. */
-    Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey, iSelector: (I) => TKey, transform: (T, I) => R): Linqable<R>;
+    Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey, iSelector: (I) => TKey, transform: (T, I) => R): ILinq<R>;
     
     /**	
     * Returns the last element of a sequence that satisfies a specified 
@@ -168,43 +168,43 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Sorts the elements of a sequence in ascending order by using a specified 
     * comparer. */
-    OrderBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
+    OrderBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): ILinq<T>;
 
     /** 
     * Sorts the elements of a sequence in descending order by using a specified 
     * comparer. */
-    OrderByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
+    OrderByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): ILinq<T>;
 
     /** 
     * Performs a subsequent ordering of the elements in a sequence in ascending
     * order by using a specified comparer. */
-    ThenBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;
+    ThenBy<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): ILinq<T>;
 
     /** 
     * Performs a subsequent ordering of the elements in a sequence in descending
     * order by using a specified comparer. */
-    ThenByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): Linqable<T>;	
+    ThenByDescending<K>(keySelect?: (T) => K, equal?: (a: K, b: K) => number): ILinq<T>;	
     
     /** Returns count of numbers beginning from start  */
-    Range(start: T, count: number): Linqable<T>;
+    Range(start: T, count: number): ILinq<T>;
     
     /** Generates a sequence that contains one repeated value. */
-    Repeat(element: T, count: number): Linqable<T>;
+    Repeat(element: T, count: number): ILinq<T>;
     
     /** Inverts the order of the elements in a sequence. */
-    Reverse(): Linqable<T>;	
+    Reverse(): ILinq<T>;	
     
     /**	
     *Projects each element of a sequence into a new form by incorporating
     * the element's index. */
-    Select<V>(transform: (T, number) => V): Linqable<V>;
+    Select<V>(transform: (T, number) => V): ILinq<V>;
 
     /** 
     * Projects each element of a sequence to an Iterable<T>, flattens the 
     * resulting sequences into one sequence, and invokes a result selector 
     * function on each element therein. The index of each source element is 
     * used in the intermediate projected form of that element. */
-    SelectMany<S, V>(selector: (T, number) => Iterable<S>, result?: (T, S) => any): Linqable<V>;
+    SelectMany<S, V>(selector: (T, number) => Iterable<S>, result?: (T, S) => any): ILinq<V>;
     
     /**
     * Determines whether two sequences are equal by comparing their elements
@@ -225,13 +225,13 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Bypasses a specified number of elements in a sequence and then returns 
     * the remaining elements. */
-    Skip(skip: number): Linqable<T>;
+    Skip(skip: number): ILinq<T>;
     
     /** 
     * Bypasses elements in a sequence as long as a specified condition is true 
     * and then returns the remaining elements. The element's index is used in 
     * the logic of the predicate function. */
-    SkipWhile(predicate: (T, number) => boolean): Linqable<T>;
+    SkipWhile(predicate: (T, number) => boolean): ILinq<T>;
     
     /** 
     * Computes the sum of the sequence of Decimal values that are obtained by 
@@ -241,12 +241,12 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Returns a specified number of contiguous elements from the start of a 
     / sequence. */
-    Take(take: number): Linqable<T>;
+    Take(take: number): ILinq<T>;
     
     /**
     * Returns elements from a sequence as long as a specified condition is true.
     * The element's index is used in the logic of the predicate function. */
-    TakeWhile(predicate: (T, number) => boolean): Linqable<T>;
+    TakeWhile(predicate: (T, number) => boolean): ILinq<T>;
     
     /** Converts Iterable to Array<T> */
     ToArray(): Array<T>;
@@ -265,16 +265,16 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
     /** 
     * Produces the set union of two sequences. Union returns only unique values. */
-    Union(second: Iterable<T>): Linqable<T>;	
+    Union(second: Iterable<T>): ILinq<T>;	
 
     /**
     * Filters a sequence of values based on a predicate. */
-    Where(predicate: (T, number) => Boolean): Linqable<T>;
+    Where(predicate: (T, number) => Boolean): ILinq<T>;
         
     /** 
     * Applies a specified function to the corresponding elements of two 
     * sequences, producing a sequence of the results. */
-    Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Linqable<Z>;
+    Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): ILinq<Z>;
 }
 
 
@@ -285,7 +285,7 @@ export interface Linqable<T> extends Iterable<T>, IEnumerable<T> {
 
 
 
-class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
+class Linq<T> implements ILinq<T>, Iterable<T>, IEnumerable<T> {
 
     protected _target: Iterable<T>|IEnumerable<T>;
     protected _factory: Function;
@@ -610,27 +610,27 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
 
 
 
-    DefaultIfEmpty(defaultValue: T = undefined): Linqable<T> {
+    DefaultIfEmpty(defaultValue: T = undefined): ILinq<T> {
         return new Linq<T>(this, () => new DefaultIfEmptyIteratror(this._target[Symbol.iterator](), defaultValue));
     }
 
     
-    Cast<V>(): Linqable<V> {
+    Cast<V>(): ILinq<V> {
         return new Linq<V>(this, () => new SelectIteratror(this._target[Symbol.iterator](), (a) => <V>a));
     }
 
 
-    Concat(second: Iterable<T>): Linqable<T> {
+    Concat(second: Iterable<T>): ILinq<T> {
         var aggregate = [this._target, second];
         return new Linq<T>(this, () => new SelectManyIteratror(aggregate[Symbol.iterator](), selfFn, selfFn));
     }	
 
 
-    Distinct(): Linqable<T> {
+    Distinct(): ILinq<T> {
         return new Linq<T>(this, () => new DistinctIteratror(this._target[Symbol.iterator]()));
     }
 
-    Except(other: Iterable<T>): Linqable<T> {
+    Except(other: Iterable<T>): ILinq<T> {
         var _set: Set<T> = new Set<T>();
         var result, otherIterator = other[Symbol.iterator]();
         while (!(result = otherIterator.next()).done) {
@@ -642,7 +642,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
 
     GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E,
                                        selResult: (a: K, b: Iterable<E>) => R 
-                                       = defGrouping): Linqable<R> {
+                                       = defGrouping): ILinq<R> {
         var result: IteratorResult<T>;
         var iterator: Iterator<T> = this[Symbol.iterator]();
         var _map = new Map<K, Array<E>>();
@@ -665,7 +665,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K,
                                               iKeySelect: (I) => K, 
                                               resultSelector: (a: T, b: Iterable<I>) => R
-                                              = defGrouping): Linqable<R> {
+                                              = defGrouping): ILinq<R> {
         var _map = new Map<K, Array<I>>();
         var _inner = inner[Symbol.iterator]();
         var result: IteratorResult<I>;
@@ -684,7 +684,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    Intersect(other: Iterable<T>): Linqable<T> {
+    Intersect(other: Iterable<T>): ILinq<T> {
         var _set: Set <T> = new Set<T>();
         var result, otherIterator = other[Symbol.iterator]();
         while (!(result = otherIterator.next()).done) {
@@ -695,27 +695,27 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
 
 
     Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey,
-        iSelector: (I) => TKey, transform: (T, I) => R): Linqable<R> {
+        iSelector: (I) => TKey, transform: (T, I) => R): ILinq<R> {
         return new Linq<R>(this, () => new JoinIteratror<T, I, TKey, R>(
             this._target[Symbol.iterator](), inner[Symbol.iterator](),
             oSelector, iSelector, transform));
     }
 
 
-    OrderBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+    OrderBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): ILinq<T> {
         return new OrderedLinq<T>(this,
             (array) => new ArrayIterator(array, 0, (i) => i >= array.length),
             (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
-    OrderByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+    OrderByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): ILinq<T> {
         return new OrderedLinq<T>(this,
             (array) => new ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
             (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
 
-    ThenBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+    ThenBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): ILinq<T> {
         if (this instanceof OrderedLinq) {
             var superEqual = (<OrderedLinq<T>>this).equal;
             (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
@@ -731,7 +731,7 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    ThenByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Linqable<T> {
+    ThenByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): ILinq<T> {
         if (this instanceof OrderedLinq) {
             var superEqual = (<OrderedLinq<T>>this).equal;
             (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
@@ -747,66 +747,66 @@ class Linq<T> implements Linqable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    Range<T>(start: T, count: number): Linqable<T> {
+    Range<T>(start: T, count: number): ILinq<T> {
         return new Linq<T>(null, () => new GeneratorIterator(start, count, true));
     }
 
 
-    Repeat(element: T, count: number): Linqable<T> {
+    Repeat(element: T, count: number): ILinq<T> {
         return new Linq<T>(null, () => new GeneratorIterator(element, count));
     }
 
 
-    Reverse(): Linqable<T> {
+    Reverse(): ILinq<T> {
         var array: Array<T> = Array.isArray(this._target) ? <Array<T>>this._target : this.ToArray();
         return new Linq<T>(null, () => new ArrayIterator(array, array.length - 1,  (i) => 0 > i, -1));
     }
 
 
-    Select<V>(transform: (T, number?) => V): Linqable<V> {
+    Select<V>(transform: (T, number?) => V): ILinq<V> {
         return new Linq<V>(this, () => new SelectIteratror(this._target[Symbol.iterator](), transform));
     }
 
 
-    SelectMany<S, V>(selector: (T, number) => Iterable<S> = selfFn, result: (T, S) => V = selfFn): Linqable<V> {
+    SelectMany<S, V>(selector: (T, number) => Iterable<S> = selfFn, result: (T, S) => V = selfFn): ILinq<V> {
         return new Linq<V>(this, () => new SelectManyIteratror(this._target[Symbol.iterator](), selector, result));
     }
 
 
-    Skip(skip: number): Linqable<T> {
+    Skip(skip: number): ILinq<T> {
         var iterator = this._target[Symbol.iterator]();
         for (var i = 0; i < skip; i++) iterator.next();
         return new Linq<T>(this, () => new WhereIteratror(iterator, trueFn));
     }
     
 
-    SkipWhile(predicate: (T, number) => boolean = (a, n) => false): Linqable<T> {
+    SkipWhile(predicate: (T, number) => boolean = (a, n) => false): ILinq<T> {
         return new Linq<T>(this, () => new SkipIterator(this._target[Symbol.iterator](), predicate));
     }
 
 
-    Take(take: number): Linqable<T> {
+    Take(take: number): ILinq<T> {
         return new Linq<T>(this, () => new TakeIterator(this._target[Symbol.iterator](), (a, n) => take > n));
     }
     
 
-    TakeWhile(predicate: (T, number) => boolean): Linqable<T> {
+    TakeWhile(predicate: (T, number) => boolean): ILinq<T> {
         return new Linq<T>(this, () => new TakeIterator(this._target[Symbol.iterator](), predicate));
     }
     
 
-    Union(second: Iterable<T>): Linqable<T> {
+    Union(second: Iterable<T>): ILinq<T> {
         var aggregate = [this._target, second];
         return new Linq<T>(this, () => new UnionIteratror(aggregate[Symbol.iterator]()));
     }
 
 
-    public Where(predicate: (T, number?) => Boolean = trueFn): Linqable<T> {
+    public Where(predicate: (T, number?) => Boolean = trueFn): ILinq<T> {
         return new Linq<T>(this, () => new WhereIteratror(this._target[Symbol.iterator](), predicate));
     }
 
 
-    Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Linqable<Z> {
+    Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): ILinq<Z> {
         return new Linq<Z>(this, () => new ZipIteratror(this._target[Symbol.iterator](), second[Symbol.iterator](), func));
     }
 }
@@ -1267,19 +1267,24 @@ export interface IteratorResult<T> {
     value?: T;
 }
 
+
 export interface Iterator<T> {
     next(value?: any): IteratorResult<T>;
     return?(value?: any): IteratorResult<T>;
     throw?(e?: any): IteratorResult<T>;
 }
 
+
 export interface Iterable<T> {
     [Symbol.iterator](): Iterator<T>;
 }
+
 
 export interface IterableIterator<T> extends Iterator<T> {
     [Symbol.iterator](): IterableIterator<T>;
 }
 
 
-
+export interface Enumerable<T> extends Iterable<T> {
+    asEnumerable: () => ILinq<T>;
+}

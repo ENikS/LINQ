@@ -57,23 +57,23 @@ npm install linq-ts
 
 ### Using
 ```javascript
-import {LINQ, Range} from "linq-ts";
+import {asEnumerable, Range} from "linq-ts";
 
 
-var count =  LINQ( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1).Count()
+var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1).Count()
 
-var iterable = LINQ(people)
-            .GroupJoin(pets,
-                       person => person, 
-                       pet => pet.Owner,
-                       (person, petCollection) => {
-                           return {
-                               Owner: person.Name,
-                               Pets: LINQ(petCollection)
-                                    .Select(pet=> pet.Name)
-                                    .ToArray()
-                           };
-                       });
+var iterable = asEnumerable(people)
+               .GroupJoin(pets,
+                          person => person, 
+                          pet => pet.Owner,
+                          (person, petCollection) => {
+                              return {
+                                  Owner: person.Name,
+                                  Pets: asEnumerable(petCollection)
+                                       .Select(pet=> pet.Name)
+                                       .ToArray()
+                              };
+                          });
 
 ```
 For more information visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 

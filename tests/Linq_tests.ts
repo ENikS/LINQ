@@ -14,7 +14,7 @@
 // under the License.
 
 import {assert} from "chai";
-import {LINQ, Range} from "../src/linq";
+import {asEnumerable, Range} from "../src/linq";
 
 
 var jsn = [
@@ -50,25 +50,25 @@ describe('Testing LINQ -', function () {
         var fourByThree = [-2, 1, 5];
         var oneByThree = [-2, 1, 2];
 
-        assert.equal(1, LINQ(one).Average());
-        assert.equal(2, LINQ(two).Average());
-        assert.equal(4.0 / 3, LINQ(fourByThree).Average());
-        assert.equal(1.0 / 3, LINQ(oneByThree).Average());
+        assert.equal(1, asEnumerable(one).Average());
+        assert.equal(2, asEnumerable(two).Average());
+        assert.equal(4.0 / 3, asEnumerable(fourByThree).Average());
+        assert.equal(1.0 / 3, asEnumerable(oneByThree).Average());
     });
 
     it('Aggregate()', function () {
-        assert.equal(6819160329805824, LINQ(jsn).SelectMany(a => a.ids, b => b).Aggregate(1, (a, b) => a * b));
+        assert.equal(6819160329805824, asEnumerable(jsn).SelectMany(a => a.ids, b => b).Aggregate(1, (a, b) => a * b));
     });
 
     it('All()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.isTrue(iterable.All(i => i > 0));
         for (var j = 1; j <= 10; j++)
             assert.isFalse(iterable.All(i => i > j));
     });
 
     it('Any()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.isTrue(iterable.Any());
         for (var j = 0; j <= 9; j++)
             assert.isTrue(iterable.Any(i => i > j));
@@ -76,12 +76,12 @@ describe('Testing LINQ -', function () {
     });
 
     it('Contains', function () {
-        assert.isTrue(LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(4));
-        assert.isFalse(LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(43));
+        assert.isTrue(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(4));
+        assert.isFalse(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(43));
     });
 
     it('Concat()', function () {
-        var iterable = LINQ([0, 1, 2]).Concat([3, 4]);
+        var iterable = asEnumerable([0, 1, 2]).Concat([3, 4]);
         var iterator = iterable[Symbol.iterator]()
 
         assert.equal(0, iterator.next().value);
@@ -94,13 +94,13 @@ describe('Testing LINQ -', function () {
 
 
     it('Count()', function () {
-        assert.equal(10, LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Count());
-        assert.equal(5, LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).Count());
+        assert.equal(10, asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Count());
+        assert.equal(5, asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).Count());
     });
 
     it('Distinct()', function () {
 
-        var iterable = LINQ([0, 0, 1, 3, 5, 6, 5, 7, 8, 8]).Distinct();
+        var iterable = asEnumerable([0, 0, 1, 3, 5, 6, 5, 7, 8, 8]).Distinct();
         var iterator = iterable[Symbol.iterator]()
 
         assert.equal(0, iterator.next().value);
@@ -121,7 +121,7 @@ describe('Testing LINQ -', function () {
             "namespace",
             "namespace",
             "namespace"];
-        var siterable = LINQ(test).Distinct();
+        var siterable = asEnumerable(test).Distinct();
         var siterator = siterable[Symbol.iterator]()
         assert.equal("add", siterator.next().value);
         assert.equal("subtract", siterator.next().value);
@@ -133,7 +133,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('Except()', function () {
-        var iterator = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9]).Except([2, 4, 6])[Symbol.iterator]();
+        var iterator = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9]).Except([2, 4, 6])[Symbol.iterator]();
         assert.equal(1, iterator.next().value);
         assert.equal(3, iterator.next().value);
         assert.equal(5, iterator.next().value);
@@ -145,7 +145,7 @@ describe('Testing LINQ -', function () {
 
 
     it('GroupBy()', function () {
-        var iterable: any = LINQ(pets).GroupBy(pet => pet.Age,
+        var iterable: any = asEnumerable(pets).GroupBy(pet => pet.Age,
             pet => pet);
 
         var iterator = iterable[Symbol.iterator]();
@@ -162,14 +162,14 @@ describe('Testing LINQ -', function () {
     });
 
     it('GroupJoin()', function () {
-        var iterable = LINQ(people)
+        var iterable = asEnumerable(people)
             .GroupJoin(pets,
                        person => person, 
                        pet => pet.Owner,
                        (person, petCollection) => {
                            return {
                                Owner: person.Name,
-                               Pets: LINQ(petCollection)
+                               Pets: asEnumerable(petCollection)
                                     .Select(pet=> pet.Name)
                                     .ToArray()
                            };
@@ -196,18 +196,18 @@ describe('Testing LINQ -', function () {
         var one = Range(1, 10).ToArray();
         var minusTen = [-1, -10, 10, 200, 1000];
         var hundred = [3000, 100, 200, 1000];
-        assert.equal(1, LINQ(one).Min());
-        assert.equal(-10, LINQ(minusTen).Min());
-        assert.equal(100, LINQ(hundred).Min());
+        assert.equal(1, asEnumerable(one).Min());
+        assert.equal(-10, asEnumerable(minusTen).Min());
+        assert.equal(100, asEnumerable(hundred).Min());
     });
 
     it('Max()', function () {
         var ten = Range(1, 10).ToArray();
         var minusTen = [-100, -15, -50, -10];
         var thousand = [-16, 0, 50, 100, 1000];
-        assert.equal(10, LINQ(ten).Max());
-        assert.equal(-10, LINQ(minusTen).Max());
-        assert.equal(1000, LINQ(thousand).Max());
+        assert.equal(10, asEnumerable(ten).Max());
+        assert.equal(-10, asEnumerable(minusTen).Max());
+        assert.equal(1000, asEnumerable(thousand).Max());
     });
 
     it('Range()', function () {
@@ -218,7 +218,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('Repeat()', function () {
-        var iterable = LINQ().Repeat("Test", 5);
+        var iterable = asEnumerable().Repeat("Test", 5);
         var iterator = iterable[Symbol.iterator]()
 
         assert.equal("Test", iterator.next().value);
@@ -231,7 +231,7 @@ describe('Testing LINQ -', function () {
 
     it('Reverse()', function () {
         var array = Range(1, 100).ToArray();
-        var iterator = LINQ(array).Reverse()[Symbol.iterator]()
+        var iterator = asEnumerable(array).Reverse()[Symbol.iterator]()
         for (var i = 100; i > 0; i--) {
             assert.equal(i, iterator.next().value);
         }
@@ -245,15 +245,15 @@ describe('Testing LINQ -', function () {
     });
 
     it('DefaultIfEmpty()', function () {
-        assert.equal(0, LINQ([]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
-        assert.equal(1, LINQ([1]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
-        assert.equal('a', LINQ(<Array<string>>[]).DefaultIfEmpty('a')[Symbol.iterator]().next().value);
-        assert.equal(undefined, LINQ([]).DefaultIfEmpty()[Symbol.iterator]().next().value);
+        assert.equal(0, asEnumerable([]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
+        assert.equal(1, asEnumerable([1]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
+        assert.equal('a', asEnumerable(<Array<string>>[]).DefaultIfEmpty('a')[Symbol.iterator]().next().value);
+        assert.equal(undefined, asEnumerable([]).DefaultIfEmpty()[Symbol.iterator]().next().value);
     });
 
 
     it('ElementAt()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(1, iterable.ElementAt(0));
         assert.equal(6, iterable.ElementAt(5));
         assert.throw(function () {
@@ -262,7 +262,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('ElementAtOrDefault()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(10, iterable.ElementAtOrDefault(9));
         assert.equal(4, iterable.ElementAtOrDefault(3));
         assert.doesNotThrow(function () {
@@ -273,7 +273,7 @@ describe('Testing LINQ -', function () {
 
 
     it('First()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(1, iterable.First());
         assert.equal(6, iterable.First(a=> a > 5));
         assert.throw(function () {
@@ -282,7 +282,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('FirstOrDefault()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(1, iterable.FirstOrDefault());
         assert.equal(6, iterable.FirstOrDefault(a=> a > 5));
         assert.doesNotThrow(function () {
@@ -292,7 +292,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('Intersect()', function () {
-        var iterable = LINQ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).Intersect([1, 3, 5, 11, 23, 44]);
+        var iterable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).Intersect([1, 3, 5, 11, 23, 44]);
         var iterator = iterable[Symbol.iterator]()
 
         assert.equal(1, iterator.next().value);
@@ -303,7 +303,7 @@ describe('Testing LINQ -', function () {
 
     it('Join()', function () {
         var iterable =
-            LINQ(people).Join(pets,
+            asEnumerable(people).Join(pets,
                 person => person,
                 pet => pet.Owner,
                 (person, pet) => {
@@ -318,7 +318,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('OrderBy()', function () {
-        var iterable = LINQ(jsn)
+        var iterable = asEnumerable(jsn)
             .SelectMany(a => a.ids, b => b).OrderBy();
         var iterator = iterable[Symbol.iterator]()
         assert.equal(11, iterator.next().value);
@@ -334,14 +334,14 @@ describe('Testing LINQ -', function () {
         assert.equal(33, iterator.next().value);
         assert.equal(34, iterator.next().value);
         assert.isTrue(iterator.next().done);
-        var citerable = LINQ(jsn).OrderBy(a=> a.name);
+        var citerable = asEnumerable(jsn).OrderBy(a=> a.name);
         var citerator = citerable[Symbol.iterator]()
         assert.equal("d", citerator.next().value.name);
         assert.equal("c", citerator.next().value.name);
         assert.equal("b", citerator.next().value.name);
         assert.equal("a", citerator.next().value.name);
         assert.isTrue(iterator.next().done);
-        citerable = LINQ(jsn).OrderBy(a=> a.name,
+        citerable = asEnumerable(jsn).OrderBy(a=> a.name,
             (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
         citerator = citerable[Symbol.iterator]()
         assert.equal("a", citerator.next().value.name);
@@ -352,7 +352,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('OrderByDescending()', function () {
-        var iterable = LINQ(jsn)
+        var iterable = asEnumerable(jsn)
             .SelectMany(a => a.ids, b => b).OrderByDescending();
         var iterator = iterable[Symbol.iterator]()
         assert.equal(34, iterator.next().value);
@@ -368,7 +368,7 @@ describe('Testing LINQ -', function () {
         assert.equal(12, iterator.next().value);
         assert.equal(11, iterator.next().value);
         assert.isTrue(iterator.next().done);
-        var citerable = LINQ(jsn).OrderByDescending(a=> a.name,
+        var citerable = asEnumerable(jsn).OrderByDescending(a=> a.name,
             (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
         var citerator = citerable[Symbol.iterator]()
         assert.equal("d", citerator.next().value.name);
@@ -376,7 +376,7 @@ describe('Testing LINQ -', function () {
         assert.equal("b", citerator.next().value.name);
         assert.equal("a", citerator.next().value.name);
         assert.isTrue(iterator.next().done);
-        citerable = LINQ(jsn).OrderByDescending(a=> a.name);
+        citerable = asEnumerable(jsn).OrderByDescending(a=> a.name);
         citerator = citerable[Symbol.iterator]()
         assert.equal("a", citerator.next().value.name);
         assert.equal("b", citerator.next().value.name);
@@ -386,7 +386,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('ThenBy()', function () {
-        var iterable: any = LINQ(fruits)
+        var iterable: any = asEnumerable(fruits)
                             .OrderBy(fruit=> fruit.length)
                             .ThenBy(fruit=> fruit.charCodeAt(0))
                             .ThenBy(fruit=> fruit.charCodeAt(4));
@@ -405,7 +405,7 @@ describe('Testing LINQ -', function () {
 
 
     it('ThenByDescending()', function () {
-        var iterable: any = LINQ(fruits)
+        var iterable: any = asEnumerable(fruits)
             .OrderByDescending(fruit=> fruit.length)
             .ThenByDescending(fruit=> fruit.charCodeAt(0))
             .ThenByDescending(fruit=> fruit.charCodeAt(4));
@@ -423,7 +423,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('Last()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(10, iterable.Last());
         assert.equal(10, iterable.Last(a=> a > 5));
         assert.throw(function () {
@@ -432,7 +432,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('LastOrDefault()', function () {
-        var iterable = LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         assert.equal(10, iterable.LastOrDefault());
         assert.equal(10, iterable.LastOrDefault(a=> a > 5));
         assert.doesNotThrow(function () {
@@ -443,7 +443,7 @@ describe('Testing LINQ -', function () {
 
 
     it('Select()', function () {
-        var array = LINQ(jsn).Select((a, b) => a.name).ToArray();
+        var array = asEnumerable(jsn).Select((a, b) => a.name).ToArray();
         assert.equal(array.length, 4);
         assert.equal('d', array[0]);
         assert.equal('c', array[1]);
@@ -453,7 +453,7 @@ describe('Testing LINQ -', function () {
 
     it('SelectMany()', function () {
 
-        var iterable = LINQ(jsn).SelectMany(a => a.ids, b => b);
+        var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(11, iterator.next().value);
         assert.equal(21, iterator.next().value);
@@ -471,40 +471,40 @@ describe('Testing LINQ -', function () {
     });
 
     it('SequenceEqual()', function () {
-        assert.isTrue(LINQ([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3]))
-        assert.isFalse(LINQ([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3, 4]))
-        assert.isFalse(LINQ([0, 1, 2, 3]).SequenceEqual([0, 1, 4, 3]))
+        assert.isTrue(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3]))
+        assert.isFalse(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3, 4]))
+        assert.isFalse(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 4, 3]))
     });
 
     it('Single()', function () {
-        assert.equal(4, LINQ([4]).Single());
-        assert.equal(2, LINQ([1, 2, 3]).Single(a=> a == 2));
+        assert.equal(4, asEnumerable([4]).Single());
+        assert.equal(2, asEnumerable([1, 2, 3]).Single(a=> a == 2));
         assert.throw(function () {
-            LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Single(a=> a > 5);
+            asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Single(a=> a > 5);
         });
     });
 
     it('SingleOrDefault()', function () {
-        assert.equal(4, LINQ([4]).Single());
-        assert.equal(2, LINQ([1, 2, 3]).Single(a=> a == 2));
+        assert.equal(4, asEnumerable([4]).Single());
+        assert.equal(2, asEnumerable([1, 2, 3]).Single(a=> a == 2));
         assert.doesNotThrow(function () {
-            LINQ([1, 2, 3]).SingleOrDefault(a=> a > 50);
+            asEnumerable([1, 2, 3]).SingleOrDefault(a=> a > 50);
         });
-        assert.equal(0, LINQ([1, 2, 3]).SingleOrDefault(a=> a > 50));
+        assert.equal(0, asEnumerable([1, 2, 3]).SingleOrDefault(a=> a > 50));
     });
 
     it('Skip()', function () {
-        assert.equal(3, LINQ([0, 1, 2, 3, 4, 5, 6, 7]).Skip(3).First());
+        assert.equal(3, asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Skip(3).First());
     });
 
     it('SkipWhile()', function () {
-        assert.equal(4, LINQ([0, 1, 2, 3, 4, 5, 6, 7]).SkipWhile(a=> a < 4).FirstOrDefault());
+        assert.equal(4, asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).SkipWhile(a=> a < 4).FirstOrDefault());
 
         var amounts = [
             5000, 2500, 9000, 8000, 
             6500, 4000, 1500, 5500 ];
 
-        var iterable = LINQ(amounts).SkipWhile((amount, index) => amount > index * 1000);
+        var iterable = asEnumerable(amounts).SkipWhile((amount, index) => amount > index * 1000);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(4000, iterator.next().value);
         assert.equal(1500, iterator.next().value);
@@ -513,11 +513,11 @@ describe('Testing LINQ -', function () {
     });
 
     it('Sum()', function () {
-        assert.equal(270, LINQ(jsn).SelectMany(a => a.ids).Sum());
+        assert.equal(270, asEnumerable(jsn).SelectMany(a => a.ids).Sum());
     });
 
     it('Take()', function () {
-        var iterable = LINQ([0, 1, 2, 3, 4, 5, 6, 7]).Take(3);
+        var iterable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Take(3);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
@@ -526,7 +526,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('TakeWhile()', function () {
-        var iterable = LINQ([0, 1, 2, 3, 4, 5, 6, 7]).TakeWhile(a=> a < 4);
+        var iterable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).TakeWhile(a=> a < 4);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
@@ -536,7 +536,7 @@ describe('Testing LINQ -', function () {
     });
 
     it('Union()', function () {
-        var iterable = LINQ([0, 1, 2, 3, 4, 5, 6, 7]).Union([5,6,7,8,9]);
+        var iterable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Union([5,6,7,8,9]);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
@@ -553,14 +553,14 @@ describe('Testing LINQ -', function () {
 
 
     it('Where()', function () {
-        assert.isTrue(LINQ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).All(b => b % 2 == 1))
+        assert.isTrue(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).All(b => b % 2 == 1))
     });
 
     it('Zip()', function () {
         var numbers = [ 1, 2, 3, 4 ];
         var words = [ "one", "two", "three" ];
 
-        var numbersAndWords = LINQ(numbers).Zip(words, (first, second) => first + " " + second);
+        var numbersAndWords = asEnumerable(numbers).Zip(words, (first, second) => first + " " + second);
         var iterator = numbersAndWords[Symbol.iterator]()
         assert.equal("1 one", iterator.next().value);
         assert.equal("2 two", iterator.next().value);
@@ -574,7 +574,7 @@ describe('Enumerable - ', function () {
 
     it('GetEnumerator()', function () {
 
-        var enumerable = LINQ(jsn).SelectMany(a => a.ids, b => b);
+        var enumerable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
         var enumerator = enumerable.GetEnumerator();
 
         assert.isTrue(enumerator.MoveNext());
@@ -615,3 +615,4 @@ describe('Enumerable - ', function () {
     });
 
 });
+
