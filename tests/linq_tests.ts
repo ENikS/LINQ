@@ -484,8 +484,8 @@ describe('Testing LINQ -', function () {
     });
 
     it('SingleOrDefault()', function () {
-        assert.equal(4, asEnumerable([4]).Single());
-        assert.equal(2, asEnumerable([1, 2, 3]).Single(a=> a == 2));
+        assert.equal(4, asEnumerable([4]).SingleOrDefault());
+        assert.equal(2, asEnumerable([1, 2, 3]).SingleOrDefault(a=> a == 2));
         assert.doesNotThrow(function () {
             asEnumerable([1, 2, 3]).SingleOrDefault(a=> a > 50);
         });

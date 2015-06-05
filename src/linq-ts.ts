@@ -43,7 +43,6 @@ export function asEnumerable<T>(TSource: Iterable<T>|IEnumerable<T> = null): Enu
 /**
 * Generates <count> of <T> elements starting with <start>. T is any 
 * type which could be cast to number: number, enum, etc.
-*
 * @param start First value in sequence.
 * @param count Number of elements to iteratel.
 * @example
@@ -56,7 +55,6 @@ export function Range<T>(start: T, count: number): Enumerable<T> {
 
 /**
 * Repeat element <start> of type T <count> of times.
-*
 * @param start First value in sequence.
 * @param count Number of elements to iteratel.
 * @example
@@ -159,10 +157,10 @@ class Linq<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    Contains(source: T, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
+    Contains(value: T, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
         var result, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
-            if (equal(source, result.value)) {
+            if (equal(value, result.value)) {
                 return true;
             }
         }
