@@ -1,25 +1,25 @@
 {
-    "name": "linq-ts",
-    "version": "0.9.2",
-    "description": "LINQ implemented in Typescript",
-    "main": "linq.js",
-    "author": {
-        "name": "Eugene Sadovoi",
-        "email": "evgeni@eniks.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ENikS/Linq.git"
-    },
-    "devDependencies": {
-        "chai": "^2.3.0",
-        "es6-shim": "^0.31.3",
-        "mocha": "^2.2.5"
-    },
-    "scripts": {
-        "test": "mocha node_modules/tests/  --recursive"
-    },
-    "dependencies": {
-        "es6-shim": "^0.31.3"
-    }
+  "name": "linq-ts",
+  "version": "0.9.3",
+  "description": "LINQ implemented in Typescript",
+  "main": "linq.js",
+  "author": {
+    "name": "Eugene Sadovoi",
+    "email": "evgeni@eniks.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ENikS/Linq.git"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "es6-shim": "^0.31.3",
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha node_modules/tests/  --recursive"
+  },
+  "dependencies": {
+    "es6-shim": "^0.31.3"
+  }
 }
