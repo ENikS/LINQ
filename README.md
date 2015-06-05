@@ -79,4 +79,6 @@ var iterable = LINQ(people)
 For more information visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation details
-This library uses native Javascript iterface Iterable<T> as a base for all its iterators. It is also backwards compatible with IEnumerable<T> interface. All relevant methods are implemented with deffered execution so no unnecessary iterations are performed. 
+This library uses Iterable iterface T[System.iterator] natively implemented in Javascript by most of collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
+
+All relevant methods are implemented with deffered execution so no unnecessary iterations are performed. 
