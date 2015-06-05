@@ -1,13 +1,13 @@
 {
   "name": "linq-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "LINQ implemented in Typescript",
   "main": "src/linq-ts.js",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
   },
-  "license" : "MIT",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ENikS/Linq.git"
