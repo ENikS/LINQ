@@ -57,7 +57,7 @@ npm install linq-ts
 
 ### Using
 ```javascript
-import {LINQ, Range} from "linq";
+import {LINQ, Range} from "linq-ts";
 
 
 var count =  LINQ( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1).Count()
