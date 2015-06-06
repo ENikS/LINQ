@@ -7,7 +7,7 @@
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ENikS/Linq.git"
