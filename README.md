@@ -1,4 +1,4 @@
-## Typescript LINQ
+## Typescript LINQ [![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=master)](https://travis-ci.org/ENikS/LINQ)
 
 This library is a complete implementation of LINQ methods available on Enumerable class. 
 
