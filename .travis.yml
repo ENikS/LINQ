@@ -6,10 +6,7 @@ install:
 - npm install
 - npm install -g mocha
 - npm install -g gulp
-- npm install -g tsd
-
-- tsd rate
-- tsd install
+- npm install -g typescript
 
 #script: gulp
 
