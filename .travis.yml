@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- 5.1.0
+
+install:
+- npm install
+- npm install -g mocha
+- npm install -g gulp
+- npm install -g tsd
+
+- tsd rate
+- tsd install
+
+script: gulp
+
+after_success: npm test
+
+deploy:
+  provider: npm
+  email: secret
+  api_key:
+    secure: secret
