@@ -11,7 +11,7 @@ install:
 - tsd rate
 - tsd install
 
-script: gulp
+#script: gulp
 
 after_success: npm test
 
