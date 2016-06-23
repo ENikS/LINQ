@@ -1,12 +1,11 @@
 language: node_js
 node_js:
-- 4.4.5
+- node
 
 install:
-- npm install
-- npm install -g mocha
-- npm install -g gulp
 - npm install -g typescript
+- npm install -g browserify
+- npm install
 
 #script: gulp
 

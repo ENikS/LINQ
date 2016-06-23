@@ -504,8 +504,8 @@ class Linq<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     ThenBy<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         if (this instanceof OrderedLinq) {
-            var superEqual = (<OrderedLinq<T>>this).equal;
-            (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
+            var superEqual = (<OrderedLinq<T>><any>this).equal;
+            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                 var result: number = superEqual(a, b);
                 return (0 != result) ? result : equal(keySelect(a), keySelect(b));
             }
@@ -520,8 +520,8 @@ class Linq<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     ThenByDescending<K>(keySelect: (T) => K = selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         if (this instanceof OrderedLinq) {
-            var superEqual = (<OrderedLinq<T>>this).equal;
-            (<OrderedLinq<T>>this).equal = (a: T, b: T) => {
+            var superEqual = (<OrderedLinq<T>><any>this).equal;
+            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                 var result: number = superEqual(a, b);
                 return (0 != result) ? result : equal(keySelect(a), keySelect(b));
             }

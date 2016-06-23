@@ -1,20 +1,15 @@
 {
     "version": "1.0.0",
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "target": "es2015",
+        "module": "UMD",
         "declaration": true,
         "noImplicitAny": false,
-        "removeComments": true,
-        "sourceMap": false,
-        "noLib": false
+        "removeComments": false,
+        "sourceMap": true,
+        "moduleResolution": "node"
     },
-    "filesGlob": [
-        "./**/*.ts",
-        "!./node_modules/**/*.ts"
-    ],
-    "files": [
-        "./scripts/typings/chai/chai.d.ts",
-        "./scripts/typings/mocha/mocha.d.ts",
+    "exclude": [
+        "node_modules"
     ]
 }

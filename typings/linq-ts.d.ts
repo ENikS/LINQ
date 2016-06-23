@@ -511,9 +511,9 @@ declare module LINQ {
 }
 
 
-declare module "linq-ts" {
-    export = LINQ;
-}
+//declare module "linq-ts" {
+//    export = LINQ;
+//}
 
 
 
