@@ -3,7 +3,6 @@
     "compilerOptions": {
         "target": "es2015",
         "module": "UMD",
-        "declaration": true,
         "noImplicitAny": false,
         "removeComments": false,
         "sourceMap": true,
