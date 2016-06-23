@@ -7,7 +7,7 @@ install:
 - npm install -g browserify
 - npm install
 
-#script: gulp
+script: npm run build:ts
 
 after_success: npm test
 
