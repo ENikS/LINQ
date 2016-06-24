@@ -1,14 +1,13 @@
 {
-    "version": "1.8.56",
-    "compilerOptions": {
-        "target": "es2015",
-        "module": "UMD",
-        "noImplicitAny": false,
-        "removeComments": false,
-        "sourceMap": true,
-        "moduleResolution": "node"
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "UMD",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
