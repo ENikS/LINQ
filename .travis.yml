@@ -15,3 +15,5 @@ deploy:
   file: README.md
   on:
     repo: ENikS/LINQ
+    branch: master
+    tags: true
