@@ -31,8 +31,7 @@
   },
   "scripts": {
     "build:ts": "tsc",
-    "build:js": "browserify src/linq-ts.js > dist/linq.min.js",
-    "build": "npm run build:ts && npm run build:js",
+    "build": "npm run build:ts",
     "test": "mocha tests/  --recursive",
     "clean": "rm -r dist/*"
   }
