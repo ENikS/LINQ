@@ -37,30 +37,35 @@
   <ItemGroup>
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <TypeScriptCompile Include="Scripts\typings\chai\chai.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\mocha\mocha.d.ts" />
+    <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="tests\linq_tests.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="typings\linq-ts.d.ts" />
+    <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
+    <TypeScriptCompile Include="typings\linq-es2015.d.ts" />
     <TypeScriptCompile Include="src\linq-ts.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\typings\chai\" />
-    <Folder Include="Scripts\typings\mocha\" />
     <Folder Include="tests\" />
     <Folder Include="src\" />
-    <Folder Include="Scripts\" />
-    <Folder Include="Scripts\typings\" />
     <Folder Include="typings\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />

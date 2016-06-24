@@ -1,8 +1,9 @@
 {
-  "name": "linq-ts",
-  "version": "1.0.3",
-  "description": "LINQ implemented in Typescript",
+  "name": "linq-es2015",
+  "version": "1.8.4",
+  "description": "Language-Integrated Query (LINQ)",
   "main": "src/linq-ts.js",
+  "typings": "typings/linq-es2015.d.ts",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
@@ -13,9 +14,8 @@
     "url": "https://github.com/ENikS/Linq.git"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "es6-shim": "latest",
-    "mocha": "^2.2.5"
+    "chai": "^3.2.0",
+    "mocha": "^2.5.3"
   },
   "scripts": {
     "build:ts": "tsc",
@@ -23,8 +23,5 @@
     "build": "npm run build:ts && npm run build:js",
     "test": "mocha tests/  --recursive",
     "clean": "rm -r dist/*"
-  },
-  "dependencies": {
-    "es6-shim": "^0.31.3"
   }
 }
