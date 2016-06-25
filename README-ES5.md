@@ -1,4 +1,4 @@
-## Language-Integrated Query (LINQ) [![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=master)](https://travis-ci.org/ENikS/LINQ) [![Coverage Status](https://coveralls.io/repos/github/ENikS/LINQ/badge.svg?branch=master)](https://coveralls.io/github/ENikS/LINQ?branch=master)
+## Language-Integrated Query (LINQ) 
 
 This library is a complete implementation of LINQ methods available on Enumerable class. 
 
