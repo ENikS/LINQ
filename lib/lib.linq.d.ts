@@ -449,6 +449,15 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z>;
 }
 
+
+interface EnumerableConstructor {
+    new <T>(collection: any): Enumerable<T>;
+    new (collection: any): Enumerable<any>;
+}
+
+declare var Enumerable: EnumerableConstructor;
+
+
 interface IEnumerable<T> {
     GetEnumerator(): IEnumerator<T>;
 }
@@ -473,6 +482,8 @@ interface Iterable<T> {
 interface IterableIterator<T> extends Iterator<T> {
     [Symbol.iterator](): IterableIterator<T>;
 }
+
+
 
 
 

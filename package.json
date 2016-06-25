@@ -3,7 +3,7 @@
   "version": "1.8.6",
   "description": "Language-Integrated Query (LINQ)",
   "main": "src/linq-ts.js",
-  "typings": "typings/linq-es2015.d.ts",
+  "typings": "lib/lib.linq.d.ts",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"

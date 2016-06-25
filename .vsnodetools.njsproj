@@ -42,13 +42,14 @@
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
-    <TypeScriptCompile Include="typings\linq-es2015.d.ts" />
+    <TypeScriptCompile Include="lib\lib.linq.d.ts" />
     <TypeScriptCompile Include="src\linq-ts.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="lib\" />
     <Folder Include="test\" />
     <Folder Include="src\" />
     <Folder Include="typings\" />
