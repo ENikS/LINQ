@@ -1,7 +1,7 @@
 {
   "name": "69d1a00e-7f6c-40a4-ab2e-70257bcd245c-es2015",
   "version": "1.8.7",
-  "description": "Language-Integrated Query (LINQ)",
+  "description": "Test project",
   "main": "src/linq-ts.js",
   "typings": "lib/lib.linq.d.ts",
   "author": {
