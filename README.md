@@ -1,4 +1,4 @@
-## Typescript LINQ        [![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=master)](https://travis-ci.org/ENikS/LINQ) [![Coverage Status](https://coveralls.io/repos/github/ENikS/LINQ/badge.svg?branch=master)](https://coveralls.io/github/ENikS/LINQ?branch=master)
+## LINQ [![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=master)](https://travis-ci.org/ENikS/LINQ) [![Coverage Status](https://coveralls.io/repos/github/ENikS/LINQ/badge.svg?branch=master)](https://coveralls.io/github/ENikS/LINQ?branch=master)
 
 This library is a complete implementation of LINQ methods available on Enumerable class. 
 
@@ -52,12 +52,12 @@ Zip
 
 ### Installation
 ```
-npm install linq-ts
+npm install linq-es5
 ```
 
 ### Using
 ```javascript
-import {asEnumerable, Range} from "linq-ts";
+import {asEnumerable, Range} from "linq-es";
 
 
 var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1).Count()
