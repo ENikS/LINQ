@@ -6,8 +6,8 @@ The methods in this class provide an implementation of the standard query operat
 Methods that are used in a query that returns a sequence of values do not consume the target data until the query object is enumerated. This is known as deferred execution. Methods that are used in a query that returns a singleton value execute and consume the target data immediately.
 
 ### Implemented methods
-```
 [Aggregate](https://jsfiddle.net/ENikS/wx3sehr5/) 
+```
 All
 Any 
 Average
