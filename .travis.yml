@@ -13,8 +13,8 @@ install:
 
 script: 
 - npm run build
-- npm test
 - browserify ./lib/src/linq.js -o linq-es2015.js -s Linq
+- npm test
 
 
 deploy:
