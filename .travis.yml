@@ -1,9 +1,7 @@
 sudo: false
 language: node_js
 
-node_js:
-- node
-- "4.4.5"
+node_js: node
 
 install:
 - npm install -g typescript
