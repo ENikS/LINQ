@@ -2,9 +2,12 @@
 
 This library is a complete implementation of LINQ methods available on Enumerable class. 
 
+The methods in this class provide an implementation of the standard query operators for querying data sources that implement IEnumerable<T>. The standard query operators are general purpose methods that follow the LINQ pattern and enable you to express traversal, filter, and projection operations over data in JavaScript or any related programming languages (TypeScript, CoffeeScript, etc).
+Methods that are used in a query that returns a sequence of values do not consume the target data until the query object is enumerated. This is known as deferred execution. Methods that are used in a query that returns a singleton value execute and consume the target data immediately.
+
 ### Implemented methods
+[Aggregate](https://msdn.microsoft.com/en-us/library/bb549218.aspx) [[Browser](https://jsfiddle.net/ENikS/wx3sehr5/)] [Node]
 ```
-Aggregate 
 All
 Any 
 Average
