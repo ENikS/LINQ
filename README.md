@@ -7,7 +7,7 @@ Methods that are used in a query that returns a sequence of values do not consum
 
 ### Implemented methods
 ```
-Aggregate 
+[Aggregate](https://jsfiddle.net/ENikS/wx3sehr5/) 
 All
 Any 
 Average
