@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2015",
     "module": "UMD",
+    "outDir": "lib",
     "noImplicitAny": false,
     "removeComments": false,
     "sourceMap": true,

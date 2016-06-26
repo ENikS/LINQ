@@ -197,3 +197,5 @@ FakesAssemblies/
 *.map
 *.js
 /.vsnodetools.sln
+/lib/test
+/lib/src

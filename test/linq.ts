@@ -13,36 +13,14 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {assert} from "chai";
-import {asEnumerable, Range} from "../src/linq-ts";
+import {jsn, fruits, people, pets} from "./data";
+import {assert} from "chai"; 
+import {asEnumerable, Range} from "../src/linq";
 
 
-var jsn = [
-    { "ids": [11, 21, 31], "name": "d" },
-    { "ids": [12, 22, 32], "name": "c" },
-    { "ids": [13, 23, 33], "name": "b" },
-    { "ids": [14, 24, 34], "name": "a" }
-];
 
 describe('Testing LINQ -', function () {
 
-    var fruits = ["grape",  "passionfruit",
-                  "banana", "mango",
-                  "orange", "raspberry", 
-                  "apple",  "blueberry",
-                  "appla",];
-
-    var julious =   { Name: "Hedlund, Julious" };
-    var magnus =    { Name: "Hedlund, Magnus" };
-    var terry =     { Name: "Adams, Terry" };
-    var charlotte = { Name: "Weiss, Charlotte" };
-    var barley =    { Name: "Barley",   Age: 8, Owner: terry };
-    var boots =     { Name: "Boots",    Age: 4, Owner: terry };
-    var whiskers =  { Name: "Whiskers", Age: 1, Owner: charlotte };
-    var daisy =     { Name: "Daisy",    Age: 4, Owner: magnus };
-
-    var people = [magnus, terry, charlotte];
-    var pets =   [ barley, boots, whiskers, daisy ];
 
     it('Average()', function () {
         var one = [0, 1, 2];

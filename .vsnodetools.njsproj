@@ -38,12 +38,19 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <TypeScriptCompile Include="test\linq-ts.ts">
+    <TypeScriptCompile Include="src\constants.ts" />
+    <TypeScriptCompile Include="src\enumerable.ts" />
+    <TypeScriptCompile Include="src\iterators.ts" />
+    <TypeScriptCompile Include="test\module.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\data.ts" />
+    <TypeScriptCompile Include="test\linq.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
     <TypeScriptCompile Include="lib\lib.linq.d.ts" />
-    <TypeScriptCompile Include="src\linq-ts.ts">
+    <TypeScriptCompile Include="src\linq.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
@@ -58,15 +65,16 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptTarget>ES6</TypeScriptTarget>
-    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptJSXEmit>-1</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptOutFile />
-    <TypeScriptOutDir />
-    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptOutDir>lib</TypeScriptOutDir>
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />

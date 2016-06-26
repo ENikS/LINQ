@@ -15,7 +15,7 @@
 
 
 //-----------------------------------------------------------------------------
-//  LINQ
+// Language-Integrated Query (LINQ)
 //-----------------------------------------------------------------------------
 interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
 
@@ -450,81 +450,19 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
 }
 
 
-interface EnumerableConstructor {
-    new <T>(collection: any): Enumerable<T>;
-    new (collection: any): Enumerable<any>;
-}
 
-declare var Enumerable: EnumerableConstructor;
-
+//-----------------------------------------------------------------------------
+//  C# compatability interface
+//-----------------------------------------------------------------------------
 
 interface IEnumerable<T> {
     GetEnumerator(): IEnumerator<T>;
 }
+
 
 interface IEnumerator<T> {
     Current: T;
     MoveNext(): Boolean;
     Reset(): void;
 }
-
-
-interface Iterator<T> {
-    next(value?: any): IteratorResult<T>;
-    return?(value?: any): IteratorResult<T>;
-    throw?(e?: any): IteratorResult<T>;
-}
-
-interface Iterable<T> {
-    [Symbol.iterator](): Iterator<T>;
-}
-
-interface IterableIterator<T> extends Iterator<T> {
-    [Symbol.iterator](): IterableIterator<T>;
-}
-
-
-
-
-
-declare module LINQ {
-    /**
-    * Converts any Iterable<T> object into LINQ-able object
-    *
-    * @param TSource An Array, Map, Set, String or other Iterable object.
-    * @example
-    *     import {asEnumerable} from "linq-ts";
-    *
-    *     var enumerable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Take(3);
-    *     var sum = enumerable.Sum(); */
-    export function asEnumerable<T>(TSource?: Iterable<T> | IEnumerable<T>): Enumerable<T>;
-
-
-    /**
-    * Generates <count> of <T> elements starting with <start>. T is any 
-    * type which could be cast to number: number, enum, etc.
-    *
-    * @param start First value in sequence.
-    * @param count Number of elements to iteratel.
-    * @example
-    *     var sum = Range(0, 7).Sum(); */
-    export function Range<T>(start: T, count: number): Enumerable<T>;
-
-
-    /**
-    * Repeat element <start> of type T <count> of times.
-    *
-    * @param start First value in sequence.
-    * @param count Number of elements to iteratel.
-    * @example
-    *     var sum = Repeat("v", 7); */
-    export function Repeat<T>(start: T, count: number): Enumerable<T>;
-}
-
-
-//declare module "linq-ts" {
-//    export = LINQ;
-//}
-
-
 
