@@ -13,7 +13,7 @@ install:
 
 script: 
 - npm run build
-- browserify ./lib/src/linq.js -o linq-es2015.js -s Linq
+- browserify ./lib/src/linq.js -o linq-es2015.js -s Enumerable
 - npm test
 
 
