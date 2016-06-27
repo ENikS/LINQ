@@ -16,7 +16,7 @@
 
 import * as Constant from "./utilities";
 import * as Iterator from "./iterators";
-
+import * as Generator from "./generators";
 
 
 //-----------------------------------------------------------------------------
@@ -343,8 +343,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    Cast<V>(): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this._target[Symbol.iterator](), (a) => <V>a));
+    Cast<V extends T>(): Enumerable<V> {
+        return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
     }
 
 
@@ -354,8 +354,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    Distinct(): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.DistinctIteratror(this._target[Symbol.iterator]()));
+    Distinct<V>(keySelector?: (T) => V): Enumerable<T> {
+        return new EnumerableImpl<T>(Generator.Distinct(this._target, keySelector || Constant.selfFn));
     }
 
     Except(other: Iterable<T>): Enumerable<T> {
@@ -491,8 +491,9 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    Select<V>(transform: (T, number?) => V): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this._target[Symbol.iterator](), transform));
+    Select<V>(transform: (T) => V): Enumerable<V>;
+    Select<V>(transform: (T, number) => V): Enumerable<V> {
+        return new EnumerableImpl<V>(Generator.Select(this._target, transform));
     }
 
 
@@ -502,9 +503,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     Skip(skip: number): Enumerable<T> {
-        let iterator = this._target[Symbol.iterator]();
-        for (let i = 0; i < skip; i++) iterator.next();
-        return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(iterator, Constant.trueFn));
+        return new EnumerableImpl<T>(Generator.Skip(this._target, skip));
     }
 
 
@@ -529,8 +528,9 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Where(predicate: (T, number?) => Boolean = Constant.trueFn): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(this._target[Symbol.iterator](), predicate));
+    public Where(predicate: (T) => Boolean): Enumerable<T>;
+    public Where(predicate: (T, number) => Boolean = Constant.trueFn): Enumerable<T> {
+        return new EnumerableImpl<T>(Generator.Where(this._target, predicate));
     }
 
 

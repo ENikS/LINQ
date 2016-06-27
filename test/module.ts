@@ -33,4 +33,24 @@ describe('Module Interface -', function () {
         assert.isNotNull(defaultmethod(simpleArray));
     });
 
+
+    it('Range()', function () {
+        var array = Enumerable.Range(1, 100).ToArray();
+        assert.equal(array.length, 100);
+        for (var i = 0; i < array.length; i++)
+            assert.equal(array[i], i + 1);
+    });
+
+    it('Repeat()', function () {
+        var iterable = Enumerable.Repeat("Test", 5);
+        var iterator = iterable[Symbol.iterator]()
+
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
 });

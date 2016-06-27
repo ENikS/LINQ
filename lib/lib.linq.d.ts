@@ -61,7 +61,13 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     */
     Average(func?: (T) => number): number;  	
 
-    /** Concatenates two sequences. 
+
+    /**
+    * Casts the elements of an Iterable to the specified type.
+    */
+    Cast<V extends T>(): Enumerable<V>;
+
+    /** Concatenates two sequences.
     * @param second The sequence to concatenate to the first sequence.
     * @example
     *     var enumerable = asEnumerable([3, 4, 5, 6, 7]).Concat([1,2,8]);
@@ -98,14 +104,23 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     DefaultIfEmpty(defaultValue?: T): Enumerable<T>;	
     
     /**
-    * Returns distinct elements from a sequence by using the default equality
-    * comparer to compare values.
-    * @example
-    *     var enumerable = asEnumerable([1, 1, 2, 2, 4, 5, 6, 7]).Distinct();
+    * Distinct(equal?: (a: T, b: T) => boolean): Enumerable<T> - is not implemented
+    * 
+    * Implementing this method would require iterating through all prior elements of
+    * the sequence and would degrade performance considerably. Instead Map is used to
+    * guarantee uniqueness and key selector function to allow more flexiblity.
     */
-    Distinct(): Enumerable<T>;	
-    
-    /** 
+
+    /**
+    * Returns distinct elements from a sequence by using object itself or key
+    * comparer to determine uniqueness.
+    * @param keySelector A function to extract the join key from each element of the second sequence
+    * @example
+    *     enumerable(arrayOfObjects).Distinct(o => o.id);
+    */
+    Distinct<V>(keySelector?: (T) => V): Enumerable<T>;
+
+    /**
     * Returns the element at a specified index in a sequence. 
     * @param index The zero-based index of the element to retrieve. 
     * @example
@@ -307,13 +322,21 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     
     /**	
     * Projects each element of a sequence into a new form by incorporating the element's index. 
+    * @param transform A transform function to apply to each source element
+    * @example
+        var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
+    */
+    Select<V>(transform: (T) => V): Enumerable<V>;
+
+    /**	
+    * Projects each element of a sequence into a new form by incorporating the element's index. 
     * @param transform A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
     * @example
         var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
     */
     Select<V>(transform: (T, number) => V): Enumerable<V>;
 
-    /** 
+    /**
     * Projects each element of a sequence to an Iterable<T>, flattens the resulting sequences into one sequence, and invokes a result selector 
     * function on each element therein. The index of each source element is used in the intermediate projected form of that element. 
     * @param selector A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
@@ -431,11 +454,18 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
 
     /**
     * Filters a sequence of values based on a predicate. 
+    * @param predicate A function to test each source element for a condition.
+    * @example
+    *     enumerable([0, 1, 2, 3, 4, 5, 6, 7]).Where(a => a % 2 == 1)
+    */
+    Where(predicate: (T) => Boolean): Enumerable<T>;
+
+    /**
+    * Filters a sequence of values based on a predicate. 
     * @param predicate A function to test each source element for a condition; 
     * the second parameter of the function represents the index of the source element.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Where(a => a % 2 == 1)
-    *     var j = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Where((a,i) => a * i % 2 == 1)
+    *     enumerable([0, 1, 2, 3, 4, 5, 6, 7]).Where((a,i) => a * i % 2 == 1)
     */
     Where(predicate: (T, number) => Boolean): Enumerable<T>;
         

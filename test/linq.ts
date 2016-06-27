@@ -35,40 +35,6 @@ describe('Testing LINQ -', function () {
     });
 
 
-    it('Distinct()', function () {
-
-        var iterable = asEnumerable([0, 0, 1, 3, 5, 6, 5, 7, 8, 8]).Distinct();
-        var iterator = iterable[Symbol.iterator]()
-
-        assert.equal(0, iterator.next().value);
-        assert.equal(1, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.equal(5, iterator.next().value);
-        assert.equal(6, iterator.next().value);
-        assert.equal(7, iterator.next().value);
-        assert.equal(8, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-
-        var test = [
-            "add", "add",
-            "subtract",
-            "multiply",
-            "hello",
-            "class",
-            "namespace",
-            "namespace",
-            "namespace"];
-        var siterable = asEnumerable(test).Distinct();
-        var siterator = siterable[Symbol.iterator]()
-        assert.equal("add", siterator.next().value);
-        assert.equal("subtract", siterator.next().value);
-        assert.equal("multiply", siterator.next().value);
-        assert.equal("hello", siterator.next().value);
-        assert.equal("class", siterator.next().value);
-        assert.equal("namespace", siterator.next().value);
-        assert.isTrue(siterator.next().done);
-    });
-
     it('Except()', function () {
         var iterator = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9]).Except([2, 4, 6])[Symbol.iterator]();
         assert.equal(1, iterator.next().value);
@@ -126,25 +92,6 @@ describe('Testing LINQ -', function () {
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
-        assert.isTrue(iterator.next().done);
-    });
-
-    it('Range()', function () {
-        var array = Range(1, 100).ToArray();
-        assert.equal(array.length, 100);
-        for (var i = 0; i < array.length; i++)
-            assert.equal(array[i], i + 1);
-    });
-
-    it('Repeat()', function () {
-        var iterable = asEnumerable().Repeat("Test", 5);
-        var iterator = iterable[Symbol.iterator]()
-
-        assert.equal("Test", iterator.next().value);
-        assert.equal("Test", iterator.next().value);
-        assert.equal("Test", iterator.next().value);
-        assert.equal("Test", iterator.next().value);
-        assert.equal("Test", iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 
@@ -303,15 +250,6 @@ describe('Testing LINQ -', function () {
     });
 
 
-    it('Select()', function () {
-        var array = asEnumerable(jsn).Select((a, b) => a.name).ToArray();
-        assert.equal(array.length, 4);
-        assert.equal('d', array[0]);
-        assert.equal('c', array[1]);
-        assert.equal('b', array[2]);
-        assert.equal('a', array[3]);
-    });
-
     it('SelectMany()', function () {
 
         var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
@@ -329,10 +267,6 @@ describe('Testing LINQ -', function () {
         assert.equal(24, iterator.next().value);
         assert.equal(34, iterator.next().value);
         assert.isTrue(iterator.next().done);
-    });
-
-    it('Skip()', function () {
-        assert.equal(3, asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Skip(3).First());
     });
 
     it('SkipWhile()', function () {
@@ -385,10 +319,6 @@ describe('Testing LINQ -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-
-    it('Where()', function () {
-        assert.isTrue(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).All(b => b % 2 == 1))
-    });
 
     it('Zip()', function () {
         var numbers = [ 1, 2, 3, 4 ];

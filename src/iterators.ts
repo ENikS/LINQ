@@ -81,19 +81,6 @@ export class IteratorBase<T> {
 }
 
 
-export class DistinctIteratror<T> extends IteratorBase<T> {
-
-    private _set: Set<T> = new Set<T>();
-
-    public next(value?: any): IteratorResult<T> {
-        let result;
-        while (!(result = this._iterator.next()).done && this._set.has(result.value)) { }
-        this._set.add(result.value);
-        return result;
-    }
-}
-
-
 export class IntersectIteratror<T> extends IteratorBase<T> {
 
     constructor(iterator: Iterator<T>, private _set: Set<T>, private _switch: boolean = false) {
@@ -152,18 +139,6 @@ export class MethodIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
-
-    public next(value?: any): IteratorResult<T> {
-        let result;
-        do {
-            result = this._iterator.next();
-        } while (!result.done && !this._method(result.value, this._index++));
-        return result;
-    }
-}
-
-
 export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 
     private _hasSkipped = false;
@@ -203,17 +178,6 @@ export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
             return this._done;
         }
         return { done: false, value: this._method(first.value, second.value) };
-    }
-}
-
-
-export class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterator<V> {
-
-    public next(value?: any): IteratorResult<V> {
-        let result: any = this._iterator.next();
-        if (result.done) return result;
-        result.value = this._method(result.value, this._index++);
-        return result;
     }
 }
 
