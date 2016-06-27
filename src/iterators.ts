@@ -14,7 +14,7 @@
 // under the License.
 
 
-import * as constant from "./constants";
+import * as constant from "./utilities";
 
 
 //-----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export class ArrayIterator<T> implements Iterator<T> {
     }
 
     public next(value?: any): IteratorResult<T> {
-        var result = { value: this._source[this._current], done: this._done(this._current) };
+        let result = { value: this._source[this._current], done: this._done(this._current) };
         this._current += this._increment;
         return result;
     }
@@ -86,7 +86,7 @@ export class DistinctIteratror<T> extends IteratorBase<T> {
     private _set: Set<T> = new Set<T>();
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        let result;
         while (!(result = this._iterator.next()).done && this._set.has(result.value)) { }
         this._set.add(result.value);
         return result;
@@ -101,7 +101,7 @@ export class IntersectIteratror<T> extends IteratorBase<T> {
     }
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        let result;
         while (!(result = this._iterator.next()).done && (this._switch == this._set.has(result.value))) { }
         if (!this._switch) this._set.add(result.value);
         return result;
@@ -116,7 +116,7 @@ export class GeneratorIterator<T> extends IteratorBase<T> implements Iterator<T>
     }
 
     public next<T>(value?: any): IteratorResult<T> {
-        var result = (0 < this._count) ? { value: this._current, done: 0 >= this._count-- } : this._done;
+        let result = (0 < this._count) ? { value: this._current, done: 0 >= this._count-- } : this._done;
         if (this._increment) this._current++;
         return result;
     }
@@ -155,7 +155,7 @@ export class MethodIteratror<T> extends IteratorBase<T> {
 export class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        let result;
         do {
             result = this._iterator.next();
         } while (!result.done && !this._method(result.value, this._index++));
@@ -169,7 +169,7 @@ export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
     private _hasSkipped = false;
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        let result;
         if (this._hasSkipped) return this._iterator.next();
         while (!(result = this._iterator.next()).done && this._method(result.value, this._index++)) { }
         this._hasSkipped = true;
@@ -181,7 +181,7 @@ export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 export class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 
     public next(value?: any): IteratorResult<T> {
-        var result = this._iterator.next();
+        let result = this._iterator.next();
         if (result.done || !this._method(result.value, this._index++)) {
             return this._done;
         }
@@ -197,8 +197,8 @@ export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
     }
 
     public next(value?: any): IteratorResult<Z> {
-        var first = this._iterator.next();
-        var second = this._second.next();
+        let first = this._iterator.next();
+        let second = this._second.next();
         if (first.done || second.done) {
             return this._done;
         }
@@ -210,7 +210,7 @@ export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
 export class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterator<V> {
 
     public next(value?: any): IteratorResult<V> {
-        var result: any = this._iterator.next();
+        let result: any = this._iterator.next();
         if (result.done) return result;
         result.value = this._method(result.value, this._index++);
         return result;
@@ -256,11 +256,11 @@ export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
         super(outer, null);
         this._method = oKeySelect;
 
-        var result: IteratorResult<I>;
+        let result: IteratorResult<I>;
         this._map = new Map<K, Array<I>>();
         while (!(result = inner.next()).done) {
-            var key = iKeySelect(result.value);
-            var group: Array<I> = this._map.get(key);
+            let key = iKeySelect(result.value);
+            let group: Array<I> = this._map.get(key);
             if ('undefined' === typeof group) {
                 group = [];
                 this._map.set(key, group);
@@ -277,8 +277,8 @@ export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
                 this._collectionState = this._iterator.next();
                 if (this._collectionState.done) return this._done;
 
-                var key = this._method(this._collectionState.value);
-                var innerSet = this._map.get(key);
+                let key = this._method(this._collectionState.value);
+                let innerSet = this._map.get(key);
                 if ('undefined' === typeof innerSet) continue;
                 this._collection = innerSet[Symbol.iterator]();
             }
@@ -301,7 +301,7 @@ export class UnionIteratror<T> extends SelectManyIteratror<T, T, T> implements I
     }
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        let result;
         while (!(result = super.next()).done && this._set.has(result.value)) { }
         this._set.add(result.value);
         return result;
@@ -317,9 +317,9 @@ export class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Ite
     }
 
     public next(value?: any): IteratorResult<R> {
-        var result: IteratorResult<K> = this._iterator.next();
+        let result: IteratorResult<K> = this._iterator.next();
         if (result.done) return this._done;
-        var iterable = this._map.get(result.value);
+        let iterable = this._map.get(result.value);
         return { value: this._method(result.value, iterable), done: false };
     }
 }
@@ -334,12 +334,12 @@ export class GroupJoinIteratror<T, I, K, R> extends MethodIteratror<T> implement
     }
 
     public next(value?: any): IteratorResult<R> {
-        var innerSet: Iterable<I>;
-        var result: IteratorResult<T>;
+        let innerSet: Iterable<I>;
+        let result: IteratorResult<T>;
         do {
             result = this._iterator.next();
             if (result.done) return this._done;
-            var key = this._method(result.value);
+            let key = this._method(result.value);
             innerSet = this._map.get(key);
         } while ('undefined' === typeof innerSet);
 

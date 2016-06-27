@@ -31,7 +31,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * var longestName = asEnumerable(fruits)
     *                  .Aggregate("banana", (longest, next) => next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
     */
-    Aggregate<A, B>(seed: A, func?: (A, T) => A, resultSelector?: (A) => B): B;
+    Aggregate<A, B>(seed: A, func: (A, T) => A, resultSelector?: (A) => B): B;
 
     /** 
     * Determines whether all elements of a sequence satisfy a condition.
@@ -40,7 +40,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var e:boolean = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).All((a) => a > 0);
     */
-    All(predicate?: (T) => Boolean): boolean;
+    All(predicate: (T) => Boolean): boolean;
     
     /** 
     * Determines whether a sequence contains any elements or if predicate is 

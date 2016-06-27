@@ -4,6 +4,7 @@
     "module": "UMD",
     "outDir": "lib",
     "noImplicitAny": false,
+    "noImplicitReturns": true,
     "removeComments": false,
     "sourceMap": true,
     "moduleResolution": "node"

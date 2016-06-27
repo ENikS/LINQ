@@ -14,10 +14,10 @@
 // under the License.
 
 export var jsn = [
-    { "ids": [11, 21, 31], "name": "d" },
-    { "ids": [12, 22, 32], "name": "c" },
-    { "ids": [13, 23, 33], "name": "b" },
-    { "ids": [14, 24, 34], "name": "a" }
+    { id: 1, "ids": [11, 21, 31], "name": "d" },
+    { id: 2, "ids": [12, 22, 32], "name": "c" },
+    { id: 3, "ids": [13, 23, 33], "name": "b" },
+    { id: 4, "ids": [14, 24, 34], "name": "a" }
 ];
 
 export var fruits = [
@@ -28,6 +28,8 @@ export var fruits = [
     "appla"
 ];
 
+export var simpleArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+export var oddArray = [ 1, 3, 5, 7, 9, 11, 13, 15 ];
 
 
 var julious = { Name: "Hedlund, Julious" };

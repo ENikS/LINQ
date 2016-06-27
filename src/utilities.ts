@@ -72,6 +72,7 @@ const duplicateKey = "Object already has property [key]";
 export const nothingFound = "No element satisfies the condition in predicate";
 export const noElements = "The source sequence is empty.";
 export const tooMany = "More than one element satisfies the condition in predicate.";
+export const outOfRange = "Argument Out Of Range";
 
 
 

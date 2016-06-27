@@ -22,41 +22,6 @@ import {asEnumerable, Range} from "../src/linq";
 describe('Testing LINQ -', function () {
 
 
-    it('Average()', function () {
-        var one = [0, 1, 2];
-        var two = [0, 1, 2, 3, 4];
-        var fourByThree = [-2, 1, 5];
-        var oneByThree = [-2, 1, 2];
-        assert.equal(1, asEnumerable(one).Average());
-        assert.equal(2, asEnumerable(two).Average());
-        assert.equal(4.0 / 3, asEnumerable(fourByThree).Average());
-        assert.equal(1.0 / 3, asEnumerable(oneByThree).Average());
-    });
-
-    it('Aggregate()', function () {
-        assert.equal(6819160329805824, asEnumerable(jsn).SelectMany(a => a.ids, b => b).Aggregate(1, (a, b) => a * b));
-    });
-
-    it('All()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.isTrue(iterable.All(i => i > 0));
-        for (var j = 1; j <= 10; j++)
-            assert.isFalse(iterable.All(i => i > j));
-    });
-
-    it('Any()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.isTrue(iterable.Any());
-        for (var j = 0; j <= 9; j++)
-            assert.isTrue(iterable.Any(i => i > j));
-        assert.isFalse(iterable.Any(i => i > 10));
-    });
-
-    it('Contains', function () {
-        assert.isTrue(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(4));
-        assert.isFalse(asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Contains(43));
-    });
-
     it('Concat()', function () {
         var iterable = asEnumerable([0, 1, 2]).Concat([3, 4]);
         var iterator = iterable[Symbol.iterator]()
@@ -69,11 +34,6 @@ describe('Testing LINQ -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-
-    it('Count()', function () {
-        assert.equal(10, asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Count());
-        assert.equal(5, asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1).Count());
-    });
 
     it('Distinct()', function () {
 
@@ -169,24 +129,6 @@ describe('Testing LINQ -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-    it('Min()', function () {
-        var one = Range(1, 10).ToArray();
-        var minusTen = [-1, -10, 10, 200, 1000];
-        var hundred = [3000, 100, 200, 1000];
-        assert.equal(1, asEnumerable(one).Min());
-        assert.equal(-10, asEnumerable(minusTen).Min());
-        assert.equal(100, asEnumerable(hundred).Min());
-    });
-
-    it('Max()', function () {
-        var ten = Range(1, 10).ToArray();
-        var minusTen = [-100, -15, -50, -10];
-        var thousand = [-16, 0, 50, 100, 1000];
-        assert.equal(10, asEnumerable(ten).Max());
-        assert.equal(-10, asEnumerable(minusTen).Max());
-        assert.equal(1000, asEnumerable(thousand).Max());
-    });
-
     it('Range()', function () {
         var array = Range(1, 100).ToArray();
         assert.equal(array.length, 100);
@@ -228,45 +170,6 @@ describe('Testing LINQ -', function () {
         assert.equal(undefined, asEnumerable([]).DefaultIfEmpty()[Symbol.iterator]().next().value);
     });
 
-
-    it('ElementAt()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(1, iterable.ElementAt(0));
-        assert.equal(6, iterable.ElementAt(5));
-        assert.throw(function () {
-            iterable.ElementAt(50);
-        });
-    });
-
-    it('ElementAtOrDefault()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(10, iterable.ElementAtOrDefault(9));
-        assert.equal(4, iterable.ElementAtOrDefault(3));
-        assert.doesNotThrow(function () {
-            iterable.ElementAtOrDefault(50);
-        });
-        assert.equal(0, iterable.ElementAtOrDefault(50));
-    });
-
-
-    it('First()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(1, iterable.First());
-        assert.equal(6, iterable.First(a=> a > 5));
-        assert.throw(function () {
-            iterable.First(a=> a > 50);
-        });
-    });
-
-    it('FirstOrDefault()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(1, iterable.FirstOrDefault());
-        assert.equal(6, iterable.FirstOrDefault(a=> a > 5));
-        assert.doesNotThrow(function () {
-            iterable.FirstOrDefault(a=> a > 50);
-        });
-        assert.equal(0, iterable.FirstOrDefault(a=> a > 50));
-    });
 
     it('Intersect()', function () {
         var iterable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).Intersect([1, 3, 5, 11, 23, 44]);
@@ -399,25 +302,6 @@ describe('Testing LINQ -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-    it('Last()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(10, iterable.Last());
-        assert.equal(10, iterable.Last(a=> a > 5));
-        assert.throw(function () {
-            iterable.Last(a=> a > 50);
-        });
-    });
-
-    it('LastOrDefault()', function () {
-        var iterable = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        assert.equal(10, iterable.LastOrDefault());
-        assert.equal(10, iterable.LastOrDefault(a=> a > 5));
-        assert.doesNotThrow(function () {
-            iterable.LastOrDefault(a=> a > 50);
-        });
-        assert.equal(0, iterable.LastOrDefault(a=> a > 50));
-    });
-
 
     it('Select()', function () {
         var array = asEnumerable(jsn).Select((a, b) => a.name).ToArray();
@@ -447,29 +331,6 @@ describe('Testing LINQ -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-    it('SequenceEqual()', function () {
-        assert.isTrue(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3]))
-        assert.isFalse(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 2, 3, 4]))
-        assert.isFalse(asEnumerable([0, 1, 2, 3]).SequenceEqual([0, 1, 4, 3]))
-    });
-
-    it('Single()', function () {
-        assert.equal(4, asEnumerable([4]).Single());
-        assert.equal(2, asEnumerable([1, 2, 3]).Single(a=> a == 2));
-        assert.throw(function () {
-            asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Single(a=> a > 5);
-        });
-    });
-
-    it('SingleOrDefault()', function () {
-        assert.equal(4, asEnumerable([4]).SingleOrDefault());
-        assert.equal(2, asEnumerable([1, 2, 3]).SingleOrDefault(a=> a == 2));
-        assert.doesNotThrow(function () {
-            asEnumerable([1, 2, 3]).SingleOrDefault(a=> a > 50);
-        });
-        assert.equal(0, asEnumerable([1, 2, 3]).SingleOrDefault(a=> a > 50));
-    });
-
     it('Skip()', function () {
         assert.equal(3, asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Skip(3).First());
     });
@@ -487,10 +348,6 @@ describe('Testing LINQ -', function () {
         assert.equal(1500, iterator.next().value);
         assert.equal(5500, iterator.next().value);
         assert.isTrue(iterator.next().done);
-    });
-
-    it('Sum()', function () {
-        assert.equal(270, asEnumerable(jsn).SelectMany(a => a.ids).Sum());
     });
 
     it('Take()', function () {
