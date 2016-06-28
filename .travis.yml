@@ -10,10 +10,10 @@ install:
 - npm install coveralls
 - npm install mocha-lcov-reporter
 - npm install
+- mkdir dist
 
 script: 
 - npm run build
-- browserify ./lib/src/linq.js -o linq-es2015.js -s Enumerable
 - npm test
 
 
