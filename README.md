@@ -38,9 +38,59 @@ var iterable = asEnumerable(people)
 For more information about original implementation please visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation details
+This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable.
+
 This library uses Iterable iterface T[System.iterator] natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
 
 All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
 
-### Noming Convention
-Method names are following original C# convention (Name starts with capital letter) for compatibility reasons. It is done so the code could be cut/pasted from C# to JavaScritp with minor reformatting.
+### Naming Convention
+Method names follows original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
+
+### Implemented methods
+```
+Aggregate 
+All
+Any 
+Average
+Concat 
+Contains
+Count 
+DefaultIfEmpty
+Distinct 
+ElementAt
+ElementAtOrDefault 
+Except
+First 
+FirstOrDefault
+GroupBy
+GroupJoin
+Intersect
+Join
+Last
+LastOrDefault
+Max
+Min
+OrderBy
+OrderByDescending
+ThenBy
+ThenByDescending
+Range
+Repeat
+Reverse
+Select
+SelectMany
+SequenceEqual
+Single
+SingleOrDefault
+Skip
+SkipWhile
+Sum
+Take
+TakeWhile
+ToArray
+ToMap
+Union
+Where
+Zip
+```
