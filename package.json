@@ -79,8 +79,7 @@
     "browserify": "^13.0.1",
     "chai": "^3.2.0",
     "jsmin": "^1.0.1",
-    "mocha": "^2.5.3",
-    "typescript": "^1.8.10"
+    "mocha": "^2.5.3"
   },
   "scripts": {
     "build:ts": "./node_modules/typescript/bin/tsc",
