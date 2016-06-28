@@ -8,6 +8,7 @@ install:
 - npm install -g browserify
 - npm install -g istanbul
 - npm install -g coveralls
+- npm install -g jsmin
 - npm install mocha-lcov-reporter
 - npm install
 
