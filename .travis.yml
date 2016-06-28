@@ -10,7 +10,6 @@ install:
 - npm install -g coveralls
 - npm install mocha-lcov-reporter
 - npm install
-- mkdir dist
 
 script: 
 - npm run build
