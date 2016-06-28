@@ -40,5 +40,5 @@ deploy:
 
 after_script:
 - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec lib/ --recursive
-- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+- cat ./coverage/lcov.info | coveralls
 
