@@ -45,7 +45,7 @@ This library uses Iterable iterface T[System.iterator] natively implemented by m
 All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
 
 ### Naming Convention
-Method names follows original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
+Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
 
 ### Implemented methods
 ```
