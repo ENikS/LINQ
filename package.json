@@ -4,6 +4,7 @@
   "description": "Test project",
   "main": "lib/src/linq.js",
   "typings": "lib/lib.linq.d.ts",
+  "homepage": "http://eniks.github.io/LINQ",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
