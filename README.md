@@ -3,58 +3,11 @@
 [![npm version](https://badge.fury.io/js/linq-es5.svg)](https://badge.fury.io/js/linq-es5)
 [![Downloads](https://img.shields.io/npm/dm/linq-es5.svg)](https://www.npmjs.com/package/linq-es5)
 ## Language-Integrated Query (LINQ) 
-This library is a complete implementation of LINQ methods available on Enumerable class. 
 
-The methods in this class provide an implementation of the standard query operators for querying data sources that implement IEnumerable<T>. The standard query operators are general purpose methods that follow the LINQ pattern and enable you to express traversal, filter, and projection operations over data in JavaScript or any related programming languages (TypeScript, CoffeeScript, etc).
+LINQ is a set of features that extends powerful query capabilities to any JavaScript based language. This library is a complete implementation of LINQ Enumerable class. 
+
+The methods in this class provide an implementation of the standard query operators for querying data sources that implement Iterable<T>. The standard query operators are general purpose methods that follow the LINQ pattern and enable you to express traversal, filter, and projection operations over data in JavaScript or any related programming languages (TypeScript, CoffeeScript, etc).
 Methods that are used in a query that returns a sequence of values do not consume the target data until the query object is enumerated. This is known as deferred execution. Methods that are used in a query that returns a singleton value execute and consume the target data immediately.
-
-### Implemented methods
-[Aggregate](https://msdn.microsoft.com/en-us/library/bb549218.aspx) [[Browser](https://jsfiddle.net/ENikS/wx3sehr5/)] [Node]
-```
-All
-Any 
-Average
-Concat 
-Contains
-Count 
-DefaultIfEmpty
-Distinct 
-ElementAt
-ElementAtOrDefault 
-Except
-First 
-FirstOrDefault
-GroupBy
-GroupJoin
-Intersect
-Join
-Last
-LastOrDefault
-Max
-Min
-OrderBy
-OrderByDescending
-ThenBy
-ThenByDescending
-Range
-Repeat
-Reverse
-Select
-SelectMany
-SequenceEqual
-Single
-SingleOrDefault
-Skip
-SkipWhile
-Sum
-Take
-TakeWhile
-ToArray
-ToMap
-Union
-Where
-Zip
-```
 
 ### Installation
 ```
@@ -82,9 +35,12 @@ var iterable = asEnumerable(people)
                           });
 
 ```
-For more information visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
+For more information about original implementation please visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation details
-This library uses Iterable iterface T[System.iterator] natively implemented in Javascript by most of collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
+This library uses Iterable iterface T[System.iterator] natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
 
-All relevant methods are implemented with deffered execution so no unnecessary iterations are performed. 
+All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
+
+### Noming Convention
+Method names are following original C# convention (Name starts with capital letter) for compatibility reasons. It is done so the code could be cut/pasted from C# to JavaScritp with minor reformatting.
