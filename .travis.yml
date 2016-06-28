@@ -6,8 +6,8 @@ node_js: node
 install:
 - npm install -g typescript
 - npm install -g browserify
-- npm install istanbul
-- npm install coveralls
+- npm install -g istanbul
+- npm install -g coveralls
 - npm install mocha-lcov-reporter
 - npm install
 - mkdir dist
