@@ -19,7 +19,7 @@ import {asEnumerable, Range} from "../src/linq";
 
 
 
-describe('Iterator overrided based -', function () {
+describe('Custom Iterator based -', function () {
 
 
 
