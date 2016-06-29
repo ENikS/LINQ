@@ -138,12 +138,15 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     ElementAtOrDefault(index: number): T;
     
     /** 
-    * Produces the set difference of two sequences by using the default equality comparer to compare values. 
+    * Produces the set difference of two sequences by using the default equality comparer
+    * to compare values.
     * This method returns those elements in first that do not appear in second. 
     * It does not also return those elements in second that do not appear in first.
-    * @param other An Iterable<T> whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.
+    * @param other An Iterable<T> whose elements that also occur in the first sequence
+    * will cause those elements to be removed from the returned sequence.
     * @example
-    *     var enumerable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Except([2,3,5]);
+    *     asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([2,3,5]);
+    *   // Will return 0, 1, 4, 6, 7
     */
     Except(other: Iterable<T>): Enumerable<T>;
     
@@ -217,7 +220,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *               return person.Name + " - " + pet.Name;
     *           });
     */
-    Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey, iSelector: (I) => TKey, transform: (T, I) => R): Enumerable<R>;
+    Join<I, K, R>(inner: Iterable<I>, oSelector: (T) => K, iSelector: (I) => K, transform: (T, I) => R): Enumerable<R>;
     
     /**	
     * Returns the last element of a sequence that satisfies a specified condition. 
@@ -302,7 +305,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var sum = asEnumerable().Range(0, 7).Sum();
     */
-    Range(start: T, count: number): Enumerable<T>;
+    Range<V>(start: V, count: Number): Enumerable<V>;
     
     /** 
     * Generates a sequence that contains one repeated value. 
@@ -311,7 +314,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var sum = asEnumerable().Repeat("v", 7);
     */
-    Repeat(element: T, count: number): Enumerable<T>;
+    Repeat<V>(element: V, count: number): Enumerable<V>;
     
     /** 
     * Inverts the order of the elements in a sequence. 
@@ -344,7 +347,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
     */
-    SelectMany<S, V>(selector: (T, number) => Iterable<S>, result?: (T, S) => any): Enumerable<V>;
+    SelectMany<S, V>(selector?: (T, number) => Iterable<S>, result?: (T, S) => any): Enumerable<V>;
     
     /**
     * Determines whether two sequences are equal by comparing their elements
@@ -386,9 +389,10 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * Bypasses elements in a sequence as long as a specified condition is true 
     * and then returns the remaining elements. The element's index is used in 
     * the logic of the predicate function. 
-    * @param predicate A function to test each source element for a condition; the second parameter of the function represents the index of the source element.
+    * @param predicate A function to test each source element for a condition;
+    * the second parameter of the function represents the index of the source element.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).SkipWhile((amount, index) => amount > index * 1000);
+    *     enumerable.SkipWhile((amount, index) => amount > index * 1000);
     */
     SkipWhile(predicate: (T, number) => boolean): Enumerable<T>;
     
@@ -397,7 +401,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * invoking a transform function on each element of the input sequence. 
     * @param transform A transform function to apply to each element.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Sum();
+    *     var e = enumerable.Sum();
     */
     Sum(transform?: (T) => number): number;	
     
@@ -406,14 +410,15 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * sequence. 
     * @param take The number of elements to return.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Take(3);
+    *     enumerable.Take(3);
     */
     Take(take: number): Enumerable<T>;
     
     /**
     * Returns elements from a sequence as long as a specified condition is true.
     * The element's index is used in the logic of the predicate function. 
-    * @param predicate A function to test each source element for a condition; the second parameter of the function represents the index of the source element.
+    * @param predicate A function to test each source element for a condition;
+    * the second parameter of the function represents the index of the source element.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).TakeWhile(a=> a < 4);
     */
@@ -447,10 +452,11 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Produces the set union of two sequences. Union returns only unique values. 
     * @param second An IEnumerable<T> whose distinct elements form the second set for the union.
+    * @param keySelector A function to extract the key which used to check for equality
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Union([5,6,7,8,9]);
     */
-    Union(second: Iterable<T>): Enumerable<T>;	
+    Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T>;
 
     /**
     * Filters a sequence of values based on a predicate. 

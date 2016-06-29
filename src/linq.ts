@@ -14,7 +14,7 @@
 // under the License.
 
 
-import * as Iterator from "./iterators";
+import * as Generator from "./generators";
 import * as Implementaion from "./enumerable";
 
 
@@ -41,7 +41,7 @@ function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> = null): Enumera
 *     var sum = Range(0, 7).Sum();
 */
 function getRange<T>(start: T, count: number): Enumerable<T> {
-    return new Implementaion.EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(start, count, true));
+    return new Implementaion.EnumerableImpl<T>(Generator.Range(start, count));
 }
 
 
@@ -52,8 +52,8 @@ function getRange<T>(start: T, count: number): Enumerable<T> {
 * @example
 *     var sum = Repeat("v", 7);
 */
-function getRepeat<T>(start: T, count: number): Enumerable<T> {
-    return new Implementaion.EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(start, count));
+function getRepeat<T>(value: T, count: number): Enumerable<T> {
+    return new Implementaion.EnumerableImpl<T>(Generator.Repeat(value, count));
 }
 
 

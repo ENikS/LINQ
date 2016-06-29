@@ -61,12 +61,43 @@ export function getDefaultVal(type) {
     } catch (e) { return {}; }
 }
 
+/** Returns a map of element bsed on extracted keys  **/
+export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (I) => K, selElement?: (T) => E): Map<K, Array<E>> {
+    let map = new Map<K, Array<E>>();
+    for (let value of iterable) {
+        let key = keySelector(value);
+        if ('undefined' === typeof key) throw invalidKey;
+        let group: Array<E> = map.get(key);
+        if ('undefined' === typeof group) {
+            group = [];
+            map.set(key, group);
+        }
+        group.push(selElement(value));
+    }
+    return map;
+}
+
+export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) => K): Map<K, Array<T>> {
+    let map = new Map<K, Array<T>>();
+    for (let value of iterable) {
+        let key = keySelector(value);
+        if ('undefined' === typeof key) throw invalidKey;
+        let group: Array<T> = map.get(key);
+        if ('undefined' === typeof group) {
+            group = [];
+            map.set(key, group);
+        }
+        group.push(value);
+    }
+    return map;
+}
 
 
 //-----------------------------------------------------------------------------
 //  Constants
 //-----------------------------------------------------------------------------
 
+const invalidKey = "Key selector returned undefined Key";
 const noString = "Type must be a string.";
 const duplicateKey = "Object already has property [key]";
 export const nothingFound = "No element satisfies the condition in predicate";

@@ -81,35 +81,6 @@ export class IteratorBase<T> {
 }
 
 
-export class IntersectIteratror<T> extends IteratorBase<T> {
-
-    constructor(iterator: Iterator<T>, private _set: Set<T>, private _switch: boolean = false) {
-        super(iterator);
-    }
-
-    public next(value?: any): IteratorResult<T> {
-        let result;
-        while (!(result = this._iterator.next()).done && (this._switch == this._set.has(result.value))) { }
-        if (!this._switch) this._set.add(result.value);
-        return result;
-    }
-}
-
-
-export class GeneratorIterator<T> extends IteratorBase<T> implements Iterator<T> {
-
-    constructor(private _current: any, private _count: number, private _increment: boolean = false) {
-        super(null);
-    }
-
-    public next<T>(value?: any): IteratorResult<T> {
-        let result = (0 < this._count) ? { value: this._current, done: 0 >= this._count-- } : this._done;
-        if (this._increment) this._current++;
-        return result;
-    }
-}
-
-
 export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 
     constructor(sourceIterator: Iterator<T>, private _default: T) {
@@ -131,44 +102,10 @@ export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class MethodIteratror<T> extends IteratorBase<T> {
+export class ZipIteratror<T, V, Z> extends IteratorBase<T> implements Iterator<Z> {
 
-    constructor(iterator: Iterator<T>, protected _method: Function = null, protected _index = 0) {
+    constructor(iterator: Iterator<T>, private _second: Iterator<V>, protected _method: (T, V) => Z, protected _index = 0) {
         super(iterator);
-    }
-}
-
-
-export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
-
-    private _hasSkipped = false;
-
-    public next(value?: any): IteratorResult<T> {
-        let result;
-        if (this._hasSkipped) return this._iterator.next();
-        while (!(result = this._iterator.next()).done && this._method(result.value, this._index++)) { }
-        this._hasSkipped = true;
-        return result;
-    }
-}
-
-
-export class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
-
-    public next(value?: any): IteratorResult<T> {
-        let result = this._iterator.next();
-        if (result.done || !this._method(result.value, this._index++)) {
-            return this._done;
-        }
-        return result;
-    }
-}
-
-
-export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
-
-    constructor(first: Iterator<T>, private _second: Iterator<V>, func: (T, V) => Z) {
-        super(first, func);
     }
 
     public next(value?: any): IteratorResult<Z> {
@@ -182,131 +119,3 @@ export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
 }
 
 
-export class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
-
-    protected _resultSelector;
-    protected _collection: Iterator<V>;
-    protected _collectionState: IteratorResult<T> = this._done;
-    protected _resultState: IteratorResult<any> = this._done;
-
-    constructor(sourceIterator: Iterator<T>, selector: (T, number) => Iterable<V>, transform: (T, V) => Z = constant.selfFn) {
-        super(sourceIterator, selector);
-        this._resultSelector = transform;
-    }
-
-    public next(value?: any): IteratorResult<Z> {
-        do {
-            if (this._resultState.done) {
-                this._collectionState = this._iterator.next();
-                if (this._collectionState.done) return this._done;
-                this._collection = this._method(this._collectionState.value)[Symbol.iterator]();
-            }
-
-            this._resultState = this._collection.next();
-            if (!this._resultState.done) {
-                this._resultState.value = this._resultSelector(this._resultState.value);
-            }
-        } while (this._resultState.done);
-        return this._resultState;
-    }
-}
-
-
-export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
-
-    private _map: Map<K, Array<I>>;
-
-    constructor(outer: Iterator<T>, inner: Iterator<I>, oKeySelect: (T) => K, iKeySelect: (I) => K, transform: (T, any) => R) {
-        super(outer, null);
-        this._method = oKeySelect;
-
-        let result: IteratorResult<I>;
-        this._map = new Map<K, Array<I>>();
-        while (!(result = inner.next()).done) {
-            let key = iKeySelect(result.value);
-            let group: Array<I> = this._map.get(key);
-            if ('undefined' === typeof group) {
-                group = [];
-                this._map.set(key, group);
-            }
-            group.push(result.value);
-        }
-        this._resultSelector = transform;
-    }
-
-    /** Gets the next element in the collection. */
-    public next(value?: any): IteratorResult<R> {
-        do {
-            if (this._resultState.done) {
-                this._collectionState = this._iterator.next();
-                if (this._collectionState.done) return this._done;
-
-                let key = this._method(this._collectionState.value);
-                let innerSet = this._map.get(key);
-                if ('undefined' === typeof innerSet) continue;
-                this._collection = innerSet[Symbol.iterator]();
-            }
-            this._resultState = this._collection.next();
-            if (!this._resultState.done) {
-                this._resultState.value = this._resultSelector(this._collectionState.value, this._resultState.value);
-            }
-        } while (this._resultState.done);
-        return this._resultState;
-    }
-}
-
-
-export class UnionIteratror<T> extends SelectManyIteratror<T, T, T> implements Iterator<T> {
-
-    private _set = new Set<T>();
-
-    constructor(sourceIterator: Iterator<T>) {
-        super(sourceIterator, constant.selfFn);
-    }
-
-    public next(value?: any): IteratorResult<T> {
-        let result;
-        while (!(result = super.next()).done && this._set.has(result.value)) { }
-        this._set.add(result.value);
-        return result;
-    }
-}
-
-
-export class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Iterator<R> {
-
-    constructor(iterator: Iterator<K>, resultSelect: (a: K, b: Iterable<E>) => R,
-        private _map: Map<K, Array<E>>) {
-        super(iterator, resultSelect);
-    }
-
-    public next(value?: any): IteratorResult<R> {
-        let result: IteratorResult<K> = this._iterator.next();
-        if (result.done) return this._done;
-        let iterable = this._map.get(result.value);
-        return { value: this._method(result.value, iterable), done: false };
-    }
-}
-
-
-export class GroupJoinIteratror<T, I, K, R> extends MethodIteratror<T> implements Iterator<R> {
-
-    constructor(iterator: Iterator<T>, oKeySelect: (T) => K,
-        private _transform: (a: T, b: Iterable<I>) => R,
-        private _map: Map<K, Array<I>>) {
-        super(iterator, oKeySelect);
-    }
-
-    public next(value?: any): IteratorResult<R> {
-        let innerSet: Iterable<I>;
-        let result: IteratorResult<T>;
-        do {
-            result = this._iterator.next();
-            if (result.done) return this._done;
-            let key = this._method(result.value);
-            innerSet = this._map.get(key);
-        } while ('undefined' === typeof innerSet);
-
-        return { value: this._transform(result.value, innerSet), done: false };
-    }
-}

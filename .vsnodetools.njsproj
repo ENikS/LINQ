@@ -45,6 +45,9 @@
     <TypeScriptCompile Include="test\deferred.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="test\ienumerable.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="test\immediate.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
@@ -52,7 +55,7 @@
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\data.ts" />
-    <TypeScriptCompile Include="test\linq.ts">
+    <TypeScriptCompile Include="test\nogen.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />

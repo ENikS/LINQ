@@ -31,7 +31,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     //  Fields
     //-------------------------------------------------------------------------
 
-    protected _target: Iterable<T>;
+    protected _target: Iterable<any>;
     protected _factory: Function;
     protected _factoryArg: any;
     protected _initialize: Function;
@@ -349,84 +349,46 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     Concat(second: Iterable<T>): Enumerable<T> {
-        let aggregate = [this._target, second];
-        return new EnumerableImpl<T>(this, () => new Iterator.SelectManyIteratror(aggregate[Symbol.iterator](), Constant.selfFn, Constant.selfFn));
+        return new EnumerableImpl<T>(Generator.SelectManyFast([this._target, second]));
     }
 
 
     Distinct<V>(keySelector?: (T) => V): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.Distinct(this._target, keySelector || Constant.selfFn));
+        return new EnumerableImpl<T>(keySelector ? Generator.Distinct(this._target, keySelector)
+                                                 : Generator.DistinctFast(this._target));
     }
 
     Except(other: Iterable<T>): Enumerable<T> {
-        let _set: Set<T> = new Set<T>();
-        let result, otherIterator = other[Symbol.iterator]();
-        while (!(result = otherIterator.next()).done) {
-            _set.add(result.value);
+        let set: Set<T> = new Set<T>();
+        for (let value of other) {
+            set.add(value);
         }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this._target[Symbol.iterator](), _set, true));
+        return new EnumerableImpl<T>(Generator.Intersect(this._target, set, true));
     }
 
 
-    GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E,
-        selResult: (a: K, b: Iterable<E>) => R
-            = Constant.defGrouping): Enumerable<R> {
-        let result: IteratorResult<T>;
-        let iterator: Iterator<T> = this[Symbol.iterator]();
-        let _map = new Map<K, Array<E>>();
-        while (!(result = iterator.next()).done) {
-            let key = selKey(result.value);
-            let group: Array<E> = _map.get(key);
-            if ('undefined' === typeof group) {
-                group = [];
-                _map.set(key, group);
-            }
-            group.push(selElement(result.value));
-        }
-        let factory = () => new Iterator.GroupByIteratror(_map.keys(), selResult, _map);
-        let tst = factory();
-
-        return new EnumerableImpl<R>(this, () => new Iterator.GroupByIteratror(_map.keys(), selResult, _map));
+    GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E = Constant.selfFn, selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
+        let map: Map<K, Array<E>> = Constant.getKeyedMap(this._target, selKey, selElement);
+        return new EnumerableImpl<R>(Generator.GroupBy(map, selResult));
     }
 
 
-    GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K,
-        iKeySelect: (I) => K,
-        resultSelector: (a: T, b: Iterable<I>) => R
-            = Constant.defGrouping): Enumerable<R> {
-        let _map = new Map<K, Array<I>>();
-        let _inner = inner[Symbol.iterator]();
-        let result: IteratorResult<I>;
-        while (!(result = _inner.next()).done) {
-            let key = iKeySelect(result.value);
-            if ('undefined' === typeof key) throw "Inner Key selector returned undefined Key";
-            let group: Array<I> = _map.get(key);
-            if ('undefined' === typeof group) {
-                group = [];
-                _map.set(key, group);
-            }
-            group.push(result.value);
-        }
-        return new EnumerableImpl<R>(this, () => new Iterator.GroupJoinIteratror(this._target[Symbol.iterator](),
-            oKeySelect, resultSelector, _map));
+    GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K, iKeySelect: (I) => K, resultSelector: (a: T, b: Iterable<I>) => R = Constant.defGrouping): Enumerable<R> {
+        return new EnumerableImpl<R>(Generator.GroupJoin(this._target, oKeySelect, resultSelector, Constant.getKeyedMapFast(inner, iKeySelect)));
     }
 
 
     Intersect(other: Iterable<T>): Enumerable<T> {
-        let _set: Set<T> = new Set<T>();
-        let result, otherIterator = other[Symbol.iterator]();
-        while (!(result = otherIterator.next()).done) {
-            _set.add(result.value);
+        let set: Set<T> = new Set<T>();
+        for (let value of other) {
+            set.add(value);
         }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this._target[Symbol.iterator](), _set));
+        return new EnumerableImpl<T>(Generator.Intersect(this._target, set, false));
     }
 
 
-    Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey,
-        iSelector: (I) => TKey, transform: (T, I) => R): Enumerable<R> {
-        return new EnumerableImpl<R>(this, () => new Iterator.JoinIteratror<T, I, TKey, R>(
-            this._target[Symbol.iterator](), inner[Symbol.iterator](),
-            oSelector, iSelector, transform));
+    Join<I, K, R>(inner: Iterable<I>, oSelector: (T) => K, iSelector: (I) => K, transform: (T, I) => R): Enumerable<R> {
+        return new EnumerableImpl<R>(Generator.Join<T, K, R, I>(this._target, oSelector, transform, Constant.getKeyedMapFast(inner, iSelector)));
     }
 
 
@@ -475,13 +437,13 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    Range<T>(start: T, count: number): Enumerable<T> {
-        return new EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(start, count, true));
+    Range<V> (start: V, count: number): Enumerable < V > {
+        return new EnumerableImpl<V>(Generator.Range(start, count));
     }
 
 
-    Repeat(element: T, count: number): Enumerable<T> {
-        return new EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(element, count));
+    Repeat<V>(element: V, count: number): Enumerable<V> {
+        return new EnumerableImpl<V>(Generator.Repeat(element, count));
     }
 
 
@@ -497,8 +459,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = Constant.selfFn): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectManyIteratror(this._target[Symbol.iterator](), selector, result));
+    SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = (t, s) => s): Enumerable<V> {
+        return new EnumerableImpl<V>(Generator.SelectMany(this._target, selector, result));
     }
 
 
@@ -507,24 +469,26 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    SkipWhile(predicate: (T, number) => boolean = (a, n) => false): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.SkipIterator(this._target[Symbol.iterator](), predicate));
+    SkipWhile(predicate: (T) => boolean): Enumerable<T>;
+    SkipWhile(predicate: (T, number) => boolean): Enumerable<T> {
+        return new EnumerableImpl<T>(Generator.SkipWhile(this._target, predicate));
     }
 
 
     Take(take: number): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this._target[Symbol.iterator](), (a, n) => take > n));
+        return new EnumerableImpl<T>(Generator.TakeWhile(this._target, (a, n) => take > n));
     }
 
 
     TakeWhile(predicate: (T, number) => boolean): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this._target[Symbol.iterator](), predicate));
+        return new EnumerableImpl<T>(Generator.TakeWhile(this._target, predicate));
     }
 
 
-    Union(second: Iterable<T>): Enumerable<T> {
-        let aggregate = [this._target, second];
-        return new EnumerableImpl<T>(this, () => new Iterator.UnionIteratror(aggregate[Symbol.iterator]()));
+    Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T>
+    {
+        return new EnumerableImpl<T>(keySelector ? Generator.Union(this._target, second, keySelector)
+                                                 : Generator.UnionFast(this._target, second));
     }
 
 
