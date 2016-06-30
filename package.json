@@ -2,8 +2,9 @@
   "name": "69d1a00e-7f6c-40a4-ab2e-70257bcd245c-es2015",
   "version": "1.8.27",
   "description": "Test project",
-  "main": "lib/src/linq.js",
-  "typings": "lib/lib.linq.d.ts",
+  "main": "src/linq.js",
+  "typings": "dist/linq.d.ts",
+  "homepage": "http://eniks.github.io/LINQ",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
@@ -81,12 +82,10 @@
   },
   "scripts": {
     "build:ts": "tsc",
-    "build:dr": "mkdir -p dist",
-    "build:js": "browserify ./lib/src/linq.js -o ./dist/linq-es5.js -s Enumerable",
-    "build:min": "./node_modules/jsmin/bin/jsmin ./dist/linq-es5.js > ./dist/linq-es5.min.js",
-    "build": "npm run build:ts && npm run build:dr && npm run build:js &&  npm run build:min",
-    "test": "mocha lib/ --recursive",
-    "clean": "rm -r dist/*"
+    "build:js": "browserify ./src/linq.js -o ./dist/linq.js -s Enumerable",
+    "build:min": "jsmin ./dist/linq.js > ./dist/linq.min.js",
+    "build": "npm run build:ts && npm run build:js &&  npm run build:min",
+    "test": "mocha test/ --recursive"
   },
   "dependencies": {
     "es6-shim": "^0.35.1"
