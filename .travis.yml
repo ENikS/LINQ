@@ -6,9 +6,6 @@ node_js: node
 install:
 - npm install -g typescript
 - npm install -g browserify
-- npm install istanbul
-- npm install coveralls
-- npm install mocha-lcov-reporter
 - npm install
 
 script: 
@@ -39,7 +36,4 @@ deploy:
     all_branches: true
     tags: true
 
-after_script:
-- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec lib/ --recursive
-- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
