@@ -3,7 +3,7 @@
   "version": "1.9.16",
   "description": "Test project",
   "main": "src/linq.js",
-  "typings": "dist/lib.linq.d.ts",
+  "typings": "dist/linq.d.ts",
   "homepage": "http://eniks.github.io/LINQ",
   "author": {
     "name": "Eugene Sadovoi",
