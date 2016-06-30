@@ -21,7 +21,10 @@ deploy:
     secure: SBHKHYtIPdyEs8d2Ezmb4UXPMndUjT2K+8HmNkch2+fspnREjBum642mOrSfo1ySfhwlRtt1zYcVlmw+bu2pafqRP37Tqd7NxydogvSJCmUd8y7kcVv1y1nOXwm+EwPasrE8qRkvhpbUg0f2loFSn8sxkC0J6qJzB0l9UvuD9DskoMh5VdtsxuPFD1r+HvsPBJxHmU93KBmnwL5u669k5rwkXisYV0yTzHyZvS352Q1TQccY5f57um6b/KbUIkf1MQ1VyQkFftqpn1N/lOkyJxiVYuJWk8yuTPy6gRT+d/jP+Gg6qPehVd6rbxDg/W0lZ6ZagXkh2zUijRJoOeFieJVGSy/EqMKXxUS+4SvZtxGqMvEpe1bA2KEOhg5Nt9JbVx9ZMcKWzlpI9fY93VbuHBQtJG9HvN1s7O4FZuqz7+i+nSwVCuMLitzsTch+q0oeODW1DvR7VVpG3WAyXO9zTXWfxBdqiC3yxOUrlkhd5pgzA8I6kFHLNugl5hsD/ZzPHt2n20dPAOlZHAdHyzOt0wv4NpeJCGThtLw+OAAQKVXU5UMfRAYjzsRd5cLbNlCl8FXtsC8dNXNXndkRORGT9406yAJO7ERIoop3+oK+ASkUoeiNI/WtRETco6JkZzYnDK1WB3yCLLaGNH+LsTKlhS9bbOqwtPtOH3g93UFeyXk=
   skip_cleanup: true
   overwrite: true
-  file: linq-es2015.js
+  file: 
+  - ./dist/linq.js
+  - ./dist/linq.min.js
+  - ./dist/linq.d.ts
   on:
     repo: ENikS/LINQ
     all_branches: true
