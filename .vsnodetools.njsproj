@@ -39,7 +39,11 @@
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="dist\linq.d.ts" />
+    <TypeScriptCompile Include="src\enumerable.ts" />
+    <TypeScriptCompile Include="src\generators.ts" />
+    <TypeScriptCompile Include="src\iterators.ts" />
     <TypeScriptCompile Include="src\linq.ts" />
+    <TypeScriptCompile Include="src\utilities.ts" />
     <TypeScriptCompile Include="test\data.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
