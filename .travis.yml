@@ -2,9 +2,6 @@ sudo: false
 language: node_js
 
 node_js: 
-- node
-- "5"
-- "4"
 - "0"
 
 install:
@@ -29,7 +26,6 @@ deploy:
   on:
     tags: true
     all_branches: true
-    node: '6.2'
 
 - provider: npm
   email: evgeni@eniks.com
@@ -39,6 +35,5 @@ deploy:
   on:
     all_branches: true
     tags: true
-    node: '6.2'
 
 
