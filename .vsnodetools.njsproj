@@ -38,7 +38,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <TypeScriptCompile Include="dist\lib.linq.d.ts" />
+    <TypeScriptCompile Include="dist\linq.d.ts" />
     <TypeScriptCompile Include="src\linq.ts" />
     <TypeScriptCompile Include="test\data.ts">
       <TestFramework>Mocha</TestFramework>
@@ -76,7 +76,8 @@
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptOutFile />
-    <TypeScriptOutDir></TypeScriptOutDir>
+    <TypeScriptOutDir>
+    </TypeScriptOutDir>
     <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
