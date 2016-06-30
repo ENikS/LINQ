@@ -23,8 +23,8 @@ deploy:
   skip_cleanup: true
   overwrite: true
   file: 
-  - ./dist/linq-es5.js
-  - ./dist/linq-es5.min.js
+  - ./dist/linq.js
+  - ./dist/linq.min.js
   on:
     tags: true
     all_branches: true
