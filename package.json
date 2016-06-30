@@ -81,7 +81,7 @@
   },
   "scripts": {
     "build:ts": "tsc",
-    "build:js": "mkdir -p ./dist && browserify ./lib/src/linq.js -o ./dist/linq-es5.js -s Enumerable",
+    "build:js": "mkdir -p dist && browserify ./lib/src/linq.js -o ./dist/linq-es5.js -s Enumerable",
     "build:min": "./node_modules/jsmin/bin/jsmin ./dist/linq-es5.js > ./dist/linq-es5.min.js",
     "build": "npm run build:ts && npm run build:js &&  npm run build:min",
     "test": "mocha lib/ --recursive",
