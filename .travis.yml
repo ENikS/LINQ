@@ -24,7 +24,6 @@ deploy:
   - ./dist/linq.min.js
   - ./dist/linq.d.ts
   on:
-    tags: true
     all_branches: true
 
 - provider: npm
