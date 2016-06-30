@@ -86,7 +86,7 @@
     "build": "npm run build:ts && npm run build:js &&  npm run build:min",
     "test": "mocha lib/ --recursive",
     "clean": "rm -r dist/*"
-  }
+  },
   "dependencies": {
     "es6-shim": "^0.35.1"
   }
