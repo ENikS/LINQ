@@ -1,6 +1,6 @@
 {
   "name": "linq-es5",
-  "version": "1.8.36",
+  "version": "1.8.37",
   "description": "Test project",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
