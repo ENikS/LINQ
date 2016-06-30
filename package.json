@@ -1,7 +1,7 @@
 {
   "name": "linq-es5",
   "version": "1.8.37",
-  "description": "Test project",
+  "description": "Complete implementation of Language-Integrated Query (LINQ)",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
   "homepage": "http://eniks.github.io/LINQ",
