@@ -9,8 +9,6 @@ node_js:
 
 install:
 - npm install -g typescript
-- npm install -g browserify
-- npm install -g jsmin
 - npm install
 
 script: 
@@ -30,6 +28,7 @@ deploy:
   on:
     repo: ENikS/LINQ
     tags: true
+    all_branches: true
     node: node
   
 - provider: npm
@@ -39,7 +38,7 @@ deploy:
   skip_cleanup: true
   on:
     repo: ENikS/LINQ
-    branch: linq-es5
+    all_branches: true
     tags: true
     node: node
 
