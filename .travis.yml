@@ -10,6 +10,7 @@ node_js:
 install:
 - npm install -g typescript
 - npm install -g browserify
+- npm install -g jsmin
 - npm install
 
 script: 
