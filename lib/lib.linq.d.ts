@@ -347,7 +347,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
     */
-    SelectMany<S, V>(selector?: (T, number) => Iterable<S>, result?: (T, S) => any): Enumerable<V>;
+    SelectMany<S, V>(selector?: (T, number) => Iterable<S>, result?: (T, S) => V): Enumerable<V>;
     
     /**
     * Determines whether two sequences are equal by comparing their elements
@@ -450,7 +450,8 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     //ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
 
     /** 
-    * Produces the set union of two sequences. Union returns only unique values. 
+    * Produces the set union of two sequences. Union returns only unique values.
+    * This method excludes duplicates from the return set.
     * @param second An IEnumerable<T> whose distinct elements form the second set for the union.
     * @param keySelector A function to extract the key which used to check for equality
     * @example
