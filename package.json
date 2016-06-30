@@ -1,6 +1,6 @@
 {
   "name": "69d1a00e-7f6c-40a4-ab2e-70257bcd245c-es2015",
-  "version": "1.8.22",
+  "version": "1.8.28",
   "description": "Test project",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
