@@ -74,15 +74,19 @@
     "url": "https://github.com/ENikS/Linq.git"
   },
   "devDependencies": {
+    "browserify": "^13.0.1",
     "chai": "^3.2.0",
+    "jsmin": "^1.0.1",
     "mocha": "^2.5.3"
   },
   "scripts": {
     "build:ts": "tsc",
-    "build": "npm run build:ts",
+    "build:js": "mkdir -p ./dist && browserify ./lib/src/linq.js -o ./dist/linq-es5.js -s Enumerable",
+    "build:min": "./node_modules/jsmin/bin/jsmin ./dist/linq-es2015.js > ./dist/linq-es5.min.js",
+    "build": "npm run build:ts && npm run build:js &&  npm run build:min",
     "test": "mocha lib/ --recursive",
     "clean": "rm -r dist/*"
-  },
+  }
   "dependencies": {
     "es6-shim": "^0.35.1"
   }
