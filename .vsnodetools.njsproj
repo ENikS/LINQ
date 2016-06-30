@@ -38,6 +38,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
+    <TypeScriptCompile Include="dist\lib.linq.d.ts" />
     <TypeScriptCompile Include="src\generators.ts" />
     <TypeScriptCompile Include="src\utilities.ts" />
     <TypeScriptCompile Include="src\enumerable.ts" />
@@ -54,19 +55,21 @@
     <TypeScriptCompile Include="test\module.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="test\data.ts" />
+    <TypeScriptCompile Include="test\data.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="test\nogen.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
-    <TypeScriptCompile Include="lib\lib.linq.d.ts" />
     <TypeScriptCompile Include="src\linq.ts">
-      <TestFramework>Mocha</TestFramework>
+      <TestFramework>
+      </TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="lib\" />
+    <Folder Include="dist\" />
     <Folder Include="test\" />
     <Folder Include="src\" />
     <Folder Include="typings\" />
@@ -80,7 +83,7 @@
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptOutFile />
-    <TypeScriptOutDir>lib</TypeScriptOutDir>
+    <TypeScriptOutDir></TypeScriptOutDir>
     <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
