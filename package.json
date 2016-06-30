@@ -1,6 +1,6 @@
 {
   "name": "69d1a00e-7f6c-40a4-ab2e-70257bcd245c-es2015",
-  "version": "1.8.16",
+  "version": "1.8.19",
   "description": "Test project",
   "main": "lib/src/linq.js",
   "typings": "lib/lib.linq.d.ts",
@@ -66,9 +66,7 @@
     "ToMap",
     "Union",
     "Where",
-    "Zip",
-    "es6",
-    "es2015"
+    "Zip"
   ],
   "license": "Apache-2.0",
   "repository": {
@@ -84,5 +82,8 @@
     "build": "npm run build:ts",
     "test": "mocha lib/ --recursive",
     "clean": "rm -r dist/*"
+  },
+  "dependencies": {
+    "es6-shim": "^0.35.1"
   }
 }

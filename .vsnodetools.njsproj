@@ -38,25 +38,28 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <TypeScriptCompile Include="src\utilities.ts" />
-    <TypeScriptCompile Include="src\enumerable.ts" />
-    <TypeScriptCompile Include="src\iterators.ts" />
-    <TypeScriptCompile Include="test\deferred.ts" />
+    <TypeScriptCompile Include="src\linq.ts" />
+    <TypeScriptCompile Include="test\data.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\deferred.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\ienumerable.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="test\immediate.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\module.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="test\data.ts" />
-    <TypeScriptCompile Include="test\linq.ts">
+    <TypeScriptCompile Include="test\nogen.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
     <TypeScriptCompile Include="lib\lib.linq.d.ts" />
-    <TypeScriptCompile Include="src\linq.ts">
-      <TestFramework>Mocha</TestFramework>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="typings\shim.es6.d.ts" />
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
