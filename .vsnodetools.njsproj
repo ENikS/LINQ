@@ -59,7 +59,6 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
     <TypeScriptCompile Include="lib\lib.linq.d.ts" />
-    <TypeScriptCompile Include="typings\shim.es6.d.ts" />
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
