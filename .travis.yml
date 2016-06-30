@@ -28,7 +28,6 @@ deploy:
   - ./dist/linq-es5.min.js
   on:
     repo: ENikS/LINQ
-    all_branches: true
     tags: true
     node: node
   
@@ -39,7 +38,6 @@ deploy:
   skip_cleanup: true
   on:
     repo: ENikS/LINQ
-    all_branches: true
     tags: true
     node: node
 
