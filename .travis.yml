@@ -26,20 +26,16 @@ deploy:
   - ./dist/linq-es5.js
   - ./dist/linq-es5.min.js
   on:
-    repo: ENikS/LINQ
     tags: true
     all_branches: true
-    node: node
-  
+
 - provider: npm
   email: evgeni@eniks.com
   api_key:
     secure: AxlcuR87p8q1gntjM/mNz9E3fBFlzkdflK5n0th/g4vQ+atRHHDERz/zT4wpjvjKUhrLJ5nMOLDJqSF7CY6dh/tcgeyhfFBdhT6fMcvhX+oWyBzB2dJWbYfIrAFfa8zfj4Ek+dmMppteAfcD7rsPnwUuSEmJibIXfa4Dey/S5CrVYYQ+EPnjSw5nxjQEOowbv2uLH4tpXHfai2SaVFq55TzFsAIzKcZtBAQbJsT8pA4WD2MadY3GLX4y/IjTyNfgZYGbe+vZjm1m7oJ9QOT8SWZlX80Y4lwbJE93aO9exhCts7B4gHeVJxzKKSFjgaYjqbrygmS4PXConojtfqGD3KxqrQhaxIq1IfHJeE+rQnsODmaY52CQsVgEf6vz1JeMG3/aVmt8LVaAiAcq0gdaPCQ3p2RyyGvkQQPzsdCyn60rAfYXD/NczbiodPGA1zByAbrqykNDu5deaywcIH8Cw71Q74X5hrapBJ5oUlyRB7Vot6Lu/CxS3c4w7/+9mK+9xC40/Jue2CyCmw879XmvvDUGyyXz67r8w/vZfT7yTv/vlFlPO8V3GGodCExX3tdJj27buvvNw/jyvC+QbmFiAEiAigVZOs4q6uVxpwMqElFOU17nB/9QWn/fCsv8iYW8DYJXZQHLDY1Zkdh1Bw86GEM7Lered9Ib1Gl1vJx3FwQ=
   skip_cleanup: true
   on:
-    repo: ENikS/LINQ
     all_branches: true
     tags: true
-    node: node
 
 
