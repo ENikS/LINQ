@@ -28,6 +28,7 @@ deploy:
     repo: ENikS/LINQ
     all_branches: true
     tags: true
+    node: '6'
   
 - provider: npm
   email: evgeni@eniks.com
@@ -38,5 +39,6 @@ deploy:
     repo: ENikS/LINQ
     all_branches: true
     tags: true
+    node: '6'
 
 
