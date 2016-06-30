@@ -38,6 +38,7 @@ deploy:
   skip_cleanup: true
   on:
     repo: ENikS/LINQ
+    branch: linq-es5
     tags: true
     node: node
 
