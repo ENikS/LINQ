@@ -1,6 +1,6 @@
 {
   "name": "linq-es2015",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Complete implementation of LINQ (ECMAScript 2015 Language Specification)",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
