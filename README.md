@@ -11,7 +11,7 @@ Methods that are used in a query that returns a sequence of values do not consum
 
 ### Installation
 ```
-npm install linq-es5
+npm install linq-es2015
 ```
 
 ### Using
