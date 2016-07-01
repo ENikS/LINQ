@@ -68,13 +68,23 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     //-------------------------------------------------------------------------
 
 
-
-    Aggregate<A, B>(seed: A, func: (A, T) => A, resultSelector: (A) => B = Constant.selfFn): B {
-        let result: A = seed;
-        for (let value of this) {
-            result = func(result, value);
+    Aggregate<A, B>(func: (A, T) => A, resultSelector: (A) => B): B;
+    Aggregate<A, B>(seed: A, func: (A, T) => A = Constant.selfFn, resultSelector: (A) => B = Constant.selfFn): B {
+        let zero, method, selector;
+        if ("function" === typeof seed) {
+            method = seed;
+            selector = func;
+        } else {
+            zero = seed;
+            method = func;
+            selector = resultSelector;
         }
-        return resultSelector(result);
+        let result: A = zero;
+        for (let value of this) {
+            if (!result) result = Constant.getDefaultVal(typeof(value));
+            result = method(result, value);
+        }
+        return selector(result);
     }
 
 

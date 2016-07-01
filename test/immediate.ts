@@ -22,11 +22,19 @@ describe('Immediate Execution Methods -', function () {
 
     // Aggregate
 
-    it('Aggregate()', function () {
-        assert.equal(3628800, Linq.From(simpleArray)
-                                  .Aggregate(1, (a, b) => a * b));
+
+    it('Aggregate() - No seed', function () {
+        assert.equal(55, Linq.From(simpleArray).Aggregate((a, b) => a + b));
     });
-    
+
+    it('Aggregate()', function () {
+        assert.equal(3628800, Linq.From(simpleArray).Aggregate(1, (a, b) => a * b));
+    });
+
+    it('Aggregate() - Transform', function () {
+        assert.equal(1814400, Linq.From(simpleArray).Aggregate(1, (a, b) => a * b, o => o / 2));
+    });
+
 
 
     // All
