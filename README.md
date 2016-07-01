@@ -41,7 +41,7 @@ For more information about original implementation please visit MSDN: https://ms
 ### Implementation details
 This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable.
 
-This library uses Iterable interface T[System.iterator] natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
+This library uses Iterables <T>[System.iterator] natively implemented by most Javascript engines and JavaScript generators (function* ...). As result iterations are done much faster compared to linq-es5 implementation. The code is also backwards compatible with linq-es5 implementation. 
 
 All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
 
