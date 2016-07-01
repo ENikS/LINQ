@@ -19,7 +19,8 @@ npm install linq-es2015
 import {asEnumerable, Range} from "linq-es2015";
 
 
-var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1).Count()
+var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1)
+                                                            .Count()
 
 var iterable = asEnumerable(people)
                .GroupJoin(pets,
