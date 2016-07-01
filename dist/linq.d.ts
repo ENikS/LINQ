@@ -23,6 +23,19 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * Applies an accumulator function over a sequence.The specified seed value 
     * is used as the initial accumulator value, and the specified function is 
     * used to select the result value. 
+    * @param func An accumulator function to be invoked on each element.
+    * @param resultSelector A function to transform the final accumulator value into the result value.
+    * @example
+    * var fruits = [ "apple", "mango", "orange", "passionfruit", "grape" ]; 
+    * var longestName = asEnumerable(fruits)
+    *                  .Aggregate("banana", (longest, next) => next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
+    */
+    Aggregate<A, B>(func: (A, T) => A, resultSelector?: (A) => B): B;
+
+    /**
+    * Applies an accumulator function over a sequence.The specified seed value 
+    * is used as the initial accumulator value, and the specified function is 
+    * used to select the result value. 
     * @param seed The initial accumulator value.
     * @param func An accumulator function to be invoked on each element.
     * @param resultSelector A function to transform the final accumulator value into the result value.
@@ -33,7 +46,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     */
     Aggregate<A, B>(seed: A, func: (A, T) => A, resultSelector?: (A) => B): B;
 
-    /** 
+    /**
     * Determines whether all elements of a sequence satisfy a condition.
     * @returns True is all elements satisfy criteria. 
     * @param predicate A function to test each element for a condition.
