@@ -38,12 +38,12 @@ var iterable = asEnumerable(people)
 ```
 For more information about original implementation please visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
-### Implementation details
-This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable.
-
-This library uses Iterables <T>[System.iterator] natively implemented by most Javascript engines and JavaScript generators (function* ...). As result iterations are done much faster compared to linq-es5 implementation. The code is also backwards compatible with linq-es5. 
-
-All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
+### Implementation
+This library is a continuous effort to implement **LINQ** using latest features of TypeScript and JavaScript languages (For ES5 compatible library look at **linq-es5 branch**). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
+Browserified and minified standalone UMD modules are located in ./dist directory and could be used directly in compatible browsers.
+This library uses latest **ECMAScript 2015** language specification and utilizes **Iterables** (**[System.iterator]**), JavaScript generators (**function*** ...), and **for of** loops. All relevant methods are implemented with deferred execution so no unnecessary iterations are performed. 
+The code is backwards compatible with **linq-es5** and **C#** implementations.
+ 
 
 ### Naming Convention
 Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
