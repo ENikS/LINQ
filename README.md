@@ -51,50 +51,50 @@ Method names follow original C# convention (Name starts with capital letter) for
 ### Implemented methods
 | Name |	Description |
 | --- | --- |
-[Aggregate]           (./man/aggregate.md)			    | Applies an accumulator function over a sequence.
-[All]				          (./man/all.md)					      | Determines whether all elements of a sequence satisfy a condition.
-[Any]				          (./man/any.md)					      | Determines whether a sequence contains any elements.
-[AsEnumerable]        (./man/asenumerable.md)			  | Returns the input typed as Iterable.
-[Average]			        (./man/average.md)				    | Computes the average of a sequence of Decimal values.
-[Cast]				        (./man/cast.md)					      | Casts the elements of an IEnumerable to the specified type.
-[Concat]			        (./man/concat.md)				      | Concatenates two sequences.
-[Contains]			      (./man/contains.md)				    | Determines whether a sequence contains a specified element by using the default equality comparer.
-[Count]				        (./man/count.md)				      | Returns the number of elements in a sequence.
-[DefaultIfEmpty]      (./man/defaultifempty.md)		  | Returns the elements of the specified sequence or the type parameter's default value in a singleton collection if the sequence is empty.
-[Distinct]			      (./man/distinct.md)				    | Returns distinct elements from a sequence by using the default equality comparer to compare values.
-[ElementAt]			      (./man/elementat.md)			    | Returns the element at a specified index in a sequence.
-[ElementAtOrDefault]  (./man/elementatordefault.md)	| Returns the element at a specified index in a sequence or a default value if the index is out of range.
-[Except]			        (./man/except.md)				      | Produces the set difference of two sequences by using the default equality comparer to compare values.
-[First]				        (./man/first.md)				      | Returns the first element of a sequence.
-[FirstOrDefault]	    (./man/firstordefault.md)		  | Returns the first element of a sequence, or a default value if the sequence contains no elements.
-[GroupBy]			        (./man/groupby.md)				    | Groups the elements of a sequence according to a specified key selector function.
-[GroupJoin]			      (./man/groupjoin.md)			    | Correlates the elements of two sequences based on equality of keys and groups the results. The default equality comparer is used to compare keys.
-[Intersect]			      (./man/intersect.md)			    | Produces the set intersection of two sequences by using the default equality comparer to compare values.
-[Join]				        (./man/join.md)					      | Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
-[Last]				        (./man/last.md)					      | Returns the last element of a sequence.
-[LastOrDefault]		    (./man/lastordefault.md)		  | Returns the last element of a sequence, or a default value if the sequence contains no elements.
-[Max]				          (./man/max.md)					      | Returns the maximum value in a sequence of Decimal values.
-[Min]				          (./man/min.md)					      | Returns the minimum value in a sequence of Decimal values.
-[OfType]			        (./man/oftype.md)				      | Filters the elements of an IEnumerable based on a specified type.
-[OrderBy]			        (./man/orderby.md)				    | Sorts the elements of a sequence in ascending order according to a key.
-[Range]				        (./man/range.md)				      | Generates a sequence of integral numbers within a specified range.
-[Repeat]			        (./man/repeat.md)				      | Generates a sequence that contains one repeated value.
-[Reverse]			        (./man/reverse.md)				    | Inverts the order of the elements in a sequence.
-[Select]			        (./man/select.md)				      | Projects each element of a sequence into a new form.
-[SelectMany]		      (./man/selectmany.md)			    | Projects each element of a sequence to an Iterable, flattens the resulting sequences into one sequence, and invokes a result selector function on each element therein. The index of each source element is used in the intermediate projected form of that element.
-[SequenceEqual]		    (./man/sequenceequal.md)		  | Determines whether two sequences are equal by comparing the elements by using the default equality comparer for their type.
-[Single]			        (./man/single.md)				      | Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
-[SingleOrDefault]	    (./man/singleordefault.md)	  | Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
-[Skip]				        (./man/skip.md)					      | Bypasses a specified number of elements in a sequence and then returns the remaining elements.
-[SkipWhile]			      (./man/skipwhile.md)			    | Bypasses elements in a sequence as long as a specified condition is true and then returns the remaining elements.
-[Sum]				          (./man/sum.md)					      | Computes the sum of the sequence of Single values that are obtained by invoking a transform function on each element of the input sequence.
-[Take]				        (./man/take.md)					      | Returns a specified number of contiguous elements from the start of a sequence.
-[TakeWhile]			      (./man/takewhile.md)			    | Returns elements from a sequence as long as a specified condition is true.
-[ThenBy]			        (./man/thenby.md)				      | Performs a subsequent ordering of the elements in a sequence in ascending order by using a specified comparer.
-[ThenByDescending]    (./man/thenbydescending.md)   | Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
-[ToArray]			        (./man/toarray.md)				    | Creates an array from a Iterable.
-[ToMap]               (./man/todictionary.md)       | Creates a Map<TKey, TValue> from an Iterable according to a specified key selector function, a comparer, and an element selector function.
-[Union]				        (./man/union.md)				      | Produces the set union of two sequences by using a specified IEqualityComparer<T>.
-[Where]				        (./man/where.md)				      | Filters a sequence of values based on a predicate. Each element's index is used in the logic of the predicate function.
-[Zip]				          (./man/zip.md)					      | Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+[Aggregate]           (https://github.com/ENikS/LINQ/blob/master/man/aggregate.md)			    | Applies an accumulator function over a sequence.
+[All]				          (https://github.com/ENikS/LINQ/blob/master/man/all.md)					      | Determines whether all elements of a sequence satisfy a condition.
+[Any]				          (https://github.com/ENikS/LINQ/blob/master/man/any.md)					      | Determines whether a sequence contains any elements.
+[AsEnumerable]        (https://github.com/ENikS/LINQ/blob/master/man/asenumerable.md)			  | Returns the input typed as Iterable.
+[Average]			        (https://github.com/ENikS/LINQ/blob/master/man/average.md)				    | Computes the average of a sequence of Decimal values.
+[Cast]				        (https://github.com/ENikS/LINQ/blob/master/man/cast.md)					      | Casts the elements of an IEnumerable to the specified type.
+[Concat]			        (https://github.com/ENikS/LINQ/blob/master/man/concat.md)				      | Concatenates two sequences.
+[Contains]			      (https://github.com/ENikS/LINQ/blob/master/man/contains.md)				    | Determines whether a sequence contains a specified element by using the default equality comparer.
+[Count]				        (https://github.com/ENikS/LINQ/blob/master/man/count.md)				      | Returns the number of elements in a sequence.
+[DefaultIfEmpty]      (https://github.com/ENikS/LINQ/blob/master/man/defaultifempty.md)		  | Returns the elements of the specified sequence or the type parameter's default value in a singleton collection if the sequence is empty.
+[Distinct]			      (https://github.com/ENikS/LINQ/blob/master/man/distinct.md)				    | Returns distinct elements from a sequence by using the default equality comparer to compare values.
+[ElementAt]			      (https://github.com/ENikS/LINQ/blob/master/man/elementat.md)			    | Returns the element at a specified index in a sequence.
+[ElementAtOrDefault]  (https://github.com/ENikS/LINQ/blob/master/man/elementatordefault.md)	| Returns the element at a specified index in a sequence or a default value if the index is out of range.
+[Except]			        (https://github.com/ENikS/LINQ/blob/master/man/except.md)				      | Produces the set difference of two sequences by using the default equality comparer to compare values.
+[First]				        (https://github.com/ENikS/LINQ/blob/master/man/first.md)				      | Returns the first element of a sequence.
+[FirstOrDefault]	    (https://github.com/ENikS/LINQ/blob/master/man/firstordefault.md)		  | Returns the first element of a sequence, or a default value if the sequence contains no elements.
+[GroupBy]			        (https://github.com/ENikS/LINQ/blob/master/man/groupby.md)				    | Groups the elements of a sequence according to a specified key selector function.
+[GroupJoin]			      (https://github.com/ENikS/LINQ/blob/master/man/groupjoin.md)			    | Correlates the elements of two sequences based on equality of keys and groups the results. The default equality comparer is used to compare keys.
+[Intersect]			      (https://github.com/ENikS/LINQ/blob/master/man/intersect.md)			    | Produces the set intersection of two sequences by using the default equality comparer to compare values.
+[Join]				        (https://github.com/ENikS/LINQ/blob/master/man/join.md)					      | Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+[Last]				        (https://github.com/ENikS/LINQ/blob/master/man/last.md)					      | Returns the last element of a sequence.
+[LastOrDefault]		    (https://github.com/ENikS/LINQ/blob/master/man/lastordefault.md)		  | Returns the last element of a sequence, or a default value if the sequence contains no elements.
+[Max]				          (https://github.com/ENikS/LINQ/blob/master/man/max.md)					      | Returns the maximum value in a sequence of Decimal values.
+[Min]				          (https://github.com/ENikS/LINQ/blob/master/man/min.md)					      | Returns the minimum value in a sequence of Decimal values.
+[OfType]			        (https://github.com/ENikS/LINQ/blob/master/man/oftype.md)				      | Filters the elements of an IEnumerable based on a specified type.
+[OrderBy]			        (https://github.com/ENikS/LINQ/blob/master/man/orderby.md)				    | Sorts the elements of a sequence in ascending order according to a key.
+[Range]				        (https://github.com/ENikS/LINQ/blob/master/man/range.md)				      | Generates a sequence of integral numbers within a specified range.
+[Repeat]			        (https://github.com/ENikS/LINQ/blob/master/man/repeat.md)				      | Generates a sequence that contains one repeated value.
+[Reverse]			        (https://github.com/ENikS/LINQ/blob/master/man/reverse.md)				    | Inverts the order of the elements in a sequence.
+[Select]			        (https://github.com/ENikS/LINQ/blob/master/man/select.md)				      | Projects each element of a sequence into a new form.
+[SelectMany]		      (https://github.com/ENikS/LINQ/blob/master/man/selectmany.md)			    | Projects each element of a sequence to an Iterable, flattens the resulting sequences into one sequence, and invokes a result selector function on each element therein. The index of each source element is used in the intermediate projected form of that element.
+[SequenceEqual]		    (https://github.com/ENikS/LINQ/blob/master/man/sequenceequal.md)		  | Determines whether two sequences are equal by comparing the elements by using the default equality comparer for their type.
+[Single]			        (https://github.com/ENikS/LINQ/blob/master/man/single.md)				      | Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
+[SingleOrDefault]	    (https://github.com/ENikS/LINQ/blob/master/man/singleordefault.md)	  | Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
+[Skip]				        (https://github.com/ENikS/LINQ/blob/master/man/skip.md)					      | Bypasses a specified number of elements in a sequence and then returns the remaining elements.
+[SkipWhile]			      (https://github.com/ENikS/LINQ/blob/master/man/skipwhile.md)			    | Bypasses elements in a sequence as long as a specified condition is true and then returns the remaining elements.
+[Sum]				          (https://github.com/ENikS/LINQ/blob/master/man/sum.md)					      | Computes the sum of the sequence of Single values that are obtained by invoking a transform function on each element of the input sequence.
+[Take]				        (https://github.com/ENikS/LINQ/blob/master/man/take.md)					      | Returns a specified number of contiguous elements from the start of a sequence.
+[TakeWhile]			      (https://github.com/ENikS/LINQ/blob/master/man/takewhile.md)			    | Returns elements from a sequence as long as a specified condition is true.
+[ThenBy]			        (https://github.com/ENikS/LINQ/blob/master/man/thenby.md)				      | Performs a subsequent ordering of the elements in a sequence in ascending order by using a specified comparer.
+[ThenByDescending]    (https://github.com/ENikS/LINQ/blob/master/man/thenbydescending.md)   | Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
+[ToArray]			        (https://github.com/ENikS/LINQ/blob/master/man/toarray.md)				    | Creates an array from a Iterable.
+[ToMap]               (https://github.com/ENikS/LINQ/blob/master/man/todictionary.md)       | Creates a Map<TKey, TValue> from an Iterable according to a specified key selector function, a comparer, and an element selector function.
+[Union]				        (https://github.com/ENikS/LINQ/blob/master/man/union.md)				      | Produces the set union of two sequences by using a specified IEqualityComparer<T>.
+[Where]				        (https://github.com/ENikS/LINQ/blob/master/man/where.md)				      | Filters a sequence of values based on a predicate. Each element's index is used in the logic of the predicate function.
+[Zip]				          (https://github.com/ENikS/LINQ/blob/master/man/zip.md)					      | Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
 
