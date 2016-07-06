@@ -548,7 +548,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public public Where(predicate: (T, number?) => Boolean = Constant.trueFn): Enumerable<T> {
+    public Where(predicate: (T, number?) => Boolean = Constant.trueFn): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(this._target[Symbol.iterator](), predicate));
     }
 
