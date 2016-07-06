@@ -50,4 +50,4 @@ Method names follow original C# convention (Name starts with capital letter) for
 
 ### Implemented methods
 For list of implemented methods and for help for individual methods please follow this link:
-https://github.com/ENikS/LINQ/tree/master/man
+https://github.com/ENikS/LINQ/tree/master/man/README.md
