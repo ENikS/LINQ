@@ -97,9 +97,9 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
 //  Constants
 //-----------------------------------------------------------------------------
 
-const CONST_INVALID_KEY = "Key selector returned undefined Key";
-const CONST_NO_STRING = "Type must be a string.";
-const CONST_DUPLICATE = "Object already has property [key]";
+export const CONST_INVALID_KEY = "Key selector returned undefined Key";
+export const CONST_NO_STRING = "Type must be a string.";
+export const CONST_DUPLICATE = "Object already has property [key]";
 export const CONST_NOTHING_FOUND = "No element satisfies the condition in predicate";
 export const CONST_NO_ELEMENTS = "The source sequence is empty.";
 export const CONST_TOO_MANY = "More than one element satisfies the condition in predicate.";
