@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=linq-es5)](https://travis-ci.org/ENikS/LINQ) 
 [![npm version](https://badge.fury.io/js/linq-es5.svg)](https://badge.fury.io/js/linq-es5)
 [![Downloads](https://img.shields.io/npm/dm/linq-es5.svg)](https://www.npmjs.com/package/linq-es5)
 
