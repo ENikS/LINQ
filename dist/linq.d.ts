@@ -318,7 +318,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var sum = asEnumerable().Range(0, 7).Sum();
     */
-    Range<V>(start: V, count: Number): Enumerable<V>;
+    Range(start: Number, count: Number): Enumerable<Number>;
     
     /** 
     * Generates a sequence that contains one repeated value. 
