@@ -71,7 +71,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     public Aggregate<A, B>(func: (A, T) => A, resultSelector: (A) => B): B;
     public Aggregate<A, B>(seed: A, func: (A, T) => A = Constant.selfFn, resultSelector: (A) => B = Constant.selfFn): B {
         let zero, method, selector;
-        if ("function" === typeof seed) {
+        if (Constant.CONST_FUNCTION === typeof seed) {
             method = seed;
             selector = func;
         } else {
@@ -134,10 +134,18 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Count(predicate: (T) => boolean = Constant.trueFn): number {
+    public Count(predicate: (T) => boolean): number {
         let count = 0;
-        for (let value of this) {
-            if (predicate(value)) {
+        if (predicate) {
+            for (let value of this) {
+                if (predicate(value)) {
+                    count++;
+                }
+            }
+        } else if (undefined != this._target[Constant.CONST_LENGTH]) {
+            count = this._target[Constant.CONST_LENGTH];
+        } else {
+            for (let value of this) {
                 count++;
             }
         }
@@ -157,7 +165,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
                 hasValue = true;
             }
         }
-        if (!hasValue) throw Constant.noElements;
+        if (!hasValue) throw Constant.CONST_NO_ELEMENTS;
         return max;
     }
 
@@ -174,7 +182,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
                 hasValue = true;
             }
         }
-        if (!hasValue) throw Constant.noElements;
+        if (!hasValue) throw Constant.CONST_NO_ELEMENTS;
         return min;
     }
 
@@ -187,7 +195,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             }
             return value;
         }
-        throw Constant.outOfRange;
+        throw Constant.CONST_OUTOFRANGE;
     }
 
 
@@ -209,7 +217,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
                 return value;
             }
         }
-        throw Constant.nothingFound;
+        throw Constant.CONST_NOTHING_FOUND;
     }
 
 
@@ -234,7 +242,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             }
         }
         if (!found) {
-            throw Constant.nothingFound;
+            throw Constant.CONST_NOTHING_FOUND;
         }
         return value;
     }
@@ -276,12 +284,12 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
                     hasValue = true;
                 }
                 else {
-                    throw Constant.tooMany;
+                    throw Constant.CONST_TOO_MANY;
                 }
             }
         }
         if (hasValue) return value;
-        throw Constant.nothingFound;
+        throw Constant.CONST_NOTHING_FOUND;
     }
 
 
@@ -294,7 +302,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
                     hasValue = true;
                 }
                 else {
-                    throw Constant.tooMany;
+                    throw Constant.CONST_TOO_MANY;
                 }
             }
             lastKnown = item;
@@ -521,7 +529,7 @@ export class OrderedLinq<T> extends EnumerableImpl<T> {
 
     }
     public [Symbol.iterator](): Iterator<T> {
-        if ('undefined' === typeof this._factoryArg) {
+        if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
             this._factoryArg.sort(this.equal);
         }

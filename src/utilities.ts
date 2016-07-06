@@ -28,14 +28,14 @@ export var selfFn = o => o;
 
 /** Default Grouping */
 export var defGrouping = (a, b) => {
-    if ('undefined' != typeof b['key']) throw duplicateKey;
+    if (CONST_UNDEFINED != typeof b['key']) throw CONST_DUPLICATE;
     b['key'] = a;
     return b;
 };
 
 /** Returns default value for the type */
 export function getDefaultVal(type) {
-    if (typeof type !== 'string') throw new TypeError(noString);
+    if (typeof type !== CONST_STRING) throw new TypeError(CONST_NO_STRING);
 
     // Handle simple types (primitives and plain function/object)
     switch (type) {
@@ -46,12 +46,12 @@ export function getDefaultVal(type) {
         case 'object': return {};
         case 'string': return "";
         case 'symbol': return Symbol();
-        case 'undefined': return void 0;
+        case CONST_UNDEFINED: return void 0;
     }
 
     try {
         // Look for constructor in this or current scope
-        var ctor = typeof this[type] === 'function'
+        var ctor = typeof this[type] === CONST_FUNCTION
             ? this[type]
             : eval(type);
 
@@ -66,9 +66,9 @@ export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (I) => 
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if ('undefined' === typeof key) throw invalidKey;
+        if (CONST_UNDEFINED === typeof key) throw CONST_INVALID_KEY;
         let group: Array<E> = map.get(key);
-        if ('undefined' === typeof group) {
+        if (CONST_UNDEFINED === typeof group) {
             group = [];
             map.set(key, group);
         }
@@ -81,9 +81,9 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
     let map = new Map<K, Array<T>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if ('undefined' === typeof key) throw invalidKey;
+        if (CONST_UNDEFINED === typeof key) throw CONST_INVALID_KEY;
         let group: Array<T> = map.get(key);
-        if ('undefined' === typeof group) {
+        if (CONST_UNDEFINED === typeof group) {
             group = [];
             map.set(key, group);
         }
@@ -97,13 +97,14 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
 //  Constants
 //-----------------------------------------------------------------------------
 
-const invalidKey = "Key selector returned undefined Key";
-const noString = "Type must be a string.";
-const duplicateKey = "Object already has property [key]";
-export const nothingFound = "No element satisfies the condition in predicate";
-export const noElements = "The source sequence is empty.";
-export const tooMany = "More than one element satisfies the condition in predicate.";
-export const outOfRange = "Argument Out Of Range";
-
-
-
+const CONST_INVALID_KEY = "Key selector returned undefined Key";
+const CONST_NO_STRING = "Type must be a string.";
+const CONST_DUPLICATE = "Object already has property [key]";
+export const CONST_NOTHING_FOUND = "No element satisfies the condition in predicate";
+export const CONST_NO_ELEMENTS = "The source sequence is empty.";
+export const CONST_TOO_MANY = "More than one element satisfies the condition in predicate.";
+export const CONST_OUTOFRANGE = "Argument Out Of Range";
+export const CONST_UNDEFINED = "undefined";
+export const CONST_LENGTH = "length";
+export const CONST_STRING = "string";
+export const CONST_FUNCTION = "function";
