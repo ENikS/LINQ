@@ -1,3 +1,4 @@
+# Implemented methods
 | Name |    Description |
 | --- | --- |
 [Aggregate]           (./aggregate.md)              | Applies an accumulator function over a sequence.
@@ -5,7 +6,7 @@
 [Any]                         (./any.md)                          | Determines whether a sequence contains any elements.
 [AsEnumerable]        (./asenumerable.md)             | Returns the input typed as Iterable.
 [Average]                   (./average.md)                  | Computes the average of a sequence of Decimal values.
-[Cast]                      (./cast.md)                       | Casts the elements of an IEnumerable to the specified type.
+[Cast]                      (./cast.md)4                       | Casts the elements of an IEnumerable to the specified type.
 [Concat]                    (./concat.md)                     | Concatenates two sequences.
 [Contains]                (./contains.md)                   | Determines whether a sequence contains a specified element by using the default equality comparer.
 [Count]                     (./count.md)                      | Returns the number of elements in a sequence.
