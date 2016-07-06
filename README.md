@@ -54,7 +54,7 @@ Method names follow original C# convention (Name starts with capital letter) for
 [Aggregate]           (./man/aggregate.md)			    | Applies an accumulator function over a sequence.
 [All]				          (./man/all.md)					      | Determines whether all elements of a sequence satisfy a condition.
 [Any]				          (./man/any.md)					      | Determines whether a sequence contains any elements.
-[AsEnumerable]        (./man/asenumerable.md)			  | Returns the input typed as IEnumerable<T>.
+[AsEnumerable]        (./man/asenumerable.md)			  | Returns the input typed as Iterable.
 [Average]			        (./man/average.md)				    | Computes the average of a sequence of Decimal values.
 [Cast]				        (./man/cast.md)					      | Casts the elements of an IEnumerable to the specified type.
 [Concat]			        (./man/concat.md)				      | Concatenates two sequences.
@@ -81,7 +81,7 @@ Method names follow original C# convention (Name starts with capital letter) for
 [Repeat]			        (./man/repeat.md)				      | Generates a sequence that contains one repeated value.
 [Reverse]			        (./man/reverse.md)				    | Inverts the order of the elements in a sequence.
 [Select]			        (./man/select.md)				      | Projects each element of a sequence into a new form.
-[SelectMany]		      (./man/selectmany.md)			    | Projects each element of a sequence to an IEnumerable<T>, flattens the resulting sequences into one sequence, and invokes a result selector function on each element therein. The index of each source element is used in the intermediate projected form of that element.
+[SelectMany]		      (./man/selectmany.md)			    | Projects each element of a sequence to an Iterable, flattens the resulting sequences into one sequence, and invokes a result selector function on each element therein. The index of each source element is used in the intermediate projected form of that element.
 [SequenceEqual]		    (./man/sequenceequal.md)		  | Determines whether two sequences are equal by comparing the elements by using the default equality comparer for their type.
 [Single]			        (./man/single.md)				      | Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
 [SingleOrDefault]	    (./man/singleordefault.md)	  | Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
@@ -92,10 +92,8 @@ Method names follow original C# convention (Name starts with capital letter) for
 [TakeWhile]			      (./man/takewhile.md)			    | Returns elements from a sequence as long as a specified condition is true.
 [ThenBy]			        (./man/thenby.md)				      | Performs a subsequent ordering of the elements in a sequence in ascending order by using a specified comparer.
 [ThenByDescending]    (./man/thenbydescending.md)   | Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
-[ToArray]			        (./man/toarray.md)				    | Creates an array from a IEnumerable<T>.
-[ToDictionary]        (./man/todictionary.md)			  | Creates a Dictionary<TKey, TValue> from an IEnumerable<T> according to a specified key selector function, a comparer, and an element selector function.
-[ToList]			        (./man/tolist.md)				      | Creates a List<T> from an IEnumerable<T>.
-[ToLookup]			      (./man/tolookup.md)				    | Creates a Lookup<TKey, TElement> from an IEnumerable<T> according to a specified key selector function, a comparer and an element selector function.
+[ToArray]			        (./man/toarray.md)				    | Creates an array from a Iterable.
+[ToMap]               (./man/todictionary.md)       | Creates a Map<TKey, TValue> from an Iterable according to a specified key selector function, a comparer, and an element selector function.
 [Union]				        (./man/union.md)				      | Produces the set union of two sequences by using a specified IEqualityComparer<T>.
 [Where]				        (./man/where.md)				      | Filters a sequence of values based on a predicate. Each element's index is used in the logic of the predicate function.
 [Zip]				          (./man/zip.md)					      | Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
