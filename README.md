@@ -49,5 +49,5 @@ The code is backwards compatible with **linq-es5** and **C#** implementations.
 Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
 
 ### Implemented methods
-For list of implemented methods and for help for individual methods please follow this link:
+For list of implemented methods and for help on individual methods please follow this link:
 https://github.com/ENikS/LINQ/tree/master/man/README.md
