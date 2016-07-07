@@ -1,4 +1,4 @@
-# (...) Method
+# Single(...) Method
 Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
 
 ## Syntax
