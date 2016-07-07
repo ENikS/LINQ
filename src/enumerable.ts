@@ -25,14 +25,14 @@ import * as Iterator from "./iterators";
 
 export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
-    protected _target: Iterable<T> | IEnumerable<T>;
+    protected _target: Iterable<T> | IEnumerable<T> | string;
     protected _factory: Function;
     protected _factoryArg: any;
     protected _initialize: Function;
 
     ///////////////////////////////////////////////////////////////////////////
 
-    constructor(target: Iterable<any> | IEnumerable<any>, factory?: Function, arg?: any) {
+    constructor(target: Iterable<any> | IEnumerable<any> | string, factory?: Function, arg?: any) {
         this._target = target;
         this._factory = factory;
         this._factoryArg = arg;
@@ -42,7 +42,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
-        return (null != this._factory) ? this._factory(this._factoryArg)
+        return (this._factory) ? this._factory(this._factoryArg)
             : (null != this._target) ? this._target[Symbol.iterator]()
                 : { next: () => { return { done: true, value: undefined }; } };
     }
@@ -359,12 +359,12 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public DefaultIfEmpty(defaultValue: T = undefined): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.DefaultIfEmptyIteratror(this._target[Symbol.iterator](), defaultValue));
+        return new EnumerableImpl<T>(this, () => new Iterator.DefaultIfEmptyIteratror(this[Symbol.iterator](), defaultValue));
     }
 
 
     public Cast<V>(): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this._target[Symbol.iterator](), (a) => <V>a));
+        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this[Symbol.iterator](), (a) => <V>a));
     }
 
 
@@ -375,7 +375,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Distinct<V>(keySelector: (T) => V = Constant.selfFn): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.DistinctIteratror(this._target[Symbol.iterator](), keySelector));
+        return new EnumerableImpl<T>(this, () => new Iterator.DistinctIteratror(this[Symbol.iterator](), keySelector));
     }
 
     public Except(other: Iterable<T>): Enumerable<T> {
@@ -384,7 +384,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         while (!(result = otherIterator.next()).done) {
             _set.add(result.value);
         }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this._target[Symbol.iterator](), _set, true));
+        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this[Symbol.iterator](), _set, true));
     }
 
 
@@ -426,7 +426,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             }
             group.push(result.value);
         }
-        return new EnumerableImpl<R>(this, () => new Iterator.GroupJoinIteratror(this._target[Symbol.iterator](),
+        return new EnumerableImpl<R>(this, () => new Iterator.GroupJoinIteratror(this[Symbol.iterator](),
             oKeySelect, resultSelector, _map));
     }
 
@@ -437,14 +437,14 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         while (!(result = otherIterator.next()).done) {
             _set.add(result.value);
         }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this._target[Symbol.iterator](), _set));
+        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this[Symbol.iterator](), _set));
     }
 
 
     public Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey,
         iSelector: (I) => TKey, transform: (T, I) => R): Enumerable<R> {
         return new EnumerableImpl<R>(this, () => new Iterator.JoinIteratror<T, I, TKey, R>(
-            this._target[Symbol.iterator](), inner[Symbol.iterator](),
+            this[Symbol.iterator](), inner[Symbol.iterator](),
             oSelector, iSelector, transform));
     }
 
@@ -511,34 +511,34 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Select<V>(transform: (T, number?) => V): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this._target[Symbol.iterator](), transform));
+        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this[Symbol.iterator](), transform));
     }
 
 
     public SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = (t, s) => s): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectManyIteratror(this._target[Symbol.iterator](), selector, result));
+        return new EnumerableImpl<V>(this, () => new Iterator.SelectManyIteratror(this[Symbol.iterator](), selector, result));
     }
 
 
     public Skip(skip: number): Enumerable<T> {
-        var iterator = this._target[Symbol.iterator]();
+        var iterator = this[Symbol.iterator]();
         for (var i = 0; i < skip; i++) iterator.next();
         return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(iterator, Constant.trueFn));
     }
 
 
     public SkipWhile(predicate: (T, number) => boolean = (a, n) => false): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.SkipIterator(this._target[Symbol.iterator](), predicate));
+        return new EnumerableImpl<T>(this, () => new Iterator.SkipIterator(this[Symbol.iterator](), predicate));
     }
 
 
     public Take(take: number): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this._target[Symbol.iterator](), (a, n) => take > n));
+        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this[Symbol.iterator](), (a, n) => take > n));
     }
 
 
     public TakeWhile(predicate: (T, number) => boolean): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this._target[Symbol.iterator](), predicate));
+        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this[Symbol.iterator](), predicate));
     }
 
 
@@ -549,12 +549,12 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Where(predicate: (T, number?) => Boolean = Constant.trueFn): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(this._target[Symbol.iterator](), predicate));
+        return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(this[Symbol.iterator](), predicate));
     }
 
 
     public Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z> {
-        return new EnumerableImpl<Z>(this, () => new Iterator.ZipIteratror(this._target[Symbol.iterator](), second[Symbol.iterator](), func));
+        return new EnumerableImpl<Z>(this, () => new Iterator.ZipIteratror(this[Symbol.iterator](), second[Symbol.iterator](), func));
     }
 }
 

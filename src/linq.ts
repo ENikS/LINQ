@@ -29,7 +29,7 @@ import * as Implementaion from "./enumerable";
 *     var sum = enumerable.Sum();
 *
 */
-function getEnumerable<T>(TSource: Iterable<T>|IEnumerable<T> = null): Enumerable<T> {
+function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> | string = null): Enumerable<T> {
     return new Implementaion.EnumerableImpl<T>(TSource);
 }
 
