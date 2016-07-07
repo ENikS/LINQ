@@ -5,8 +5,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "removeComments": false,
-    "sourceMap": true,
-    "moduleResolution": "node"
+    "sourceMap": true
   },
   "exclude": [
     "node_modules"

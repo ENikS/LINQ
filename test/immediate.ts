@@ -92,8 +92,16 @@ describe('Immediate Execution Methods -', function () {
 
     // Count
 
-    it('Count() - No predicate', function () {
+    it('Count() - Array', function () {
         assert.equal(10, Linq.From(simpleArray).Count());
+    });
+
+    it('Count() - String', function () {
+        assert.equal(10, Linq.From("1234567890").Count());
+    });
+
+    it('Count() - No predicate', function () {
+        assert.equal(10, Linq.Range(0, 10).Count());
     });
 
     it('Count()', function () {
