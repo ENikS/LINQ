@@ -14,7 +14,7 @@ Methods that are used in a query that returns a sequence of values do not consum
 npm install linq-es2015
 ```
 
-### Using
+### Using 
 ```javascript
 import {asEnumerable, Range} from "linq-es2015";
 
@@ -36,7 +36,9 @@ var iterable = asEnumerable(people)
                           });
 
 ```
-For more information about original implementation please visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
+For live example please follow this ([link](tonicdev.com/eniks/using-linq))
+
+Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation
 This library is a continuous effort to implement **LINQ** using latest features of TypeScript and JavaScript languages (For ES5 compatible library look at **linq-es5 branch**). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
