@@ -36,7 +36,7 @@ var iterable = asEnumerable(people)
                           });
 
 ```
-For live example please follow this ([link](tonicdev.com/eniks/using-linq))
+For live example please follow this ([link](https://tonicdev.com/eniks/using-linq))
 
 Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
