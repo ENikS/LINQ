@@ -41,6 +41,24 @@ describe('Module Interface -', function () {
             assert.equal(array[i], i + 1);
     });
 
+    it('Range() - Source', function () {
+        var array = Enumerable.Range(1, 100)
+            .Where(o => o % 2 == 1)
+            .ToArray();
+        assert.equal(array.length, 50);
+        assert.equal(Enumerable.Range(0, 15).Where(o => o % 2 == 1).Count(), 7);
+    });
+
+    it('Range() - Input', function () {
+        var iterable = Enumerable.Range(1, 10).Except(Enumerable.Range(2, 7));
+        var iterator = iterable[Symbol.iterator]()
+
+        assert.equal(1, iterator.next().value);
+        assert.equal(9, iterator.next().value);
+        assert.equal(10, iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
     it('Repeat()', function () {
         var iterable = Enumerable.Repeat("Test", 5);
         var iterator = iterable[Symbol.iterator]()

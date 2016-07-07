@@ -522,7 +522,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 }
 
 
-export class OrderedLinq<T> extends EnumerableImpl<T> {
+class OrderedLinq<T> extends EnumerableImpl<T> {
 
     constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: Function) {
         super(target, factory);
