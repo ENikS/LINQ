@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=linq-es5)](https://travis-ci.org/ENikS/LINQ) 
+[![npm version](https://badge.fury.io/js/linq-es5.svg)](https://badge.fury.io/js/linq-es5)
+[![Downloads](https://img.shields.io/npm/dm/linq-es5.svg)](https://www.npmjs.com/package/linq-es5)
+
 ## Language-Integrated Query (LINQ) 
 
 LINQ is a set of features that extends powerful query capabilities to any JavaScript based language. This library is a complete implementation of LINQ Enumerable class. 
@@ -44,49 +48,5 @@ All relevant methods are implemented with deferred  execution so no unnecessary 
 Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
 
 ### Implemented methods
-```
-Aggregate 
-All
-Any 
-Average
-Concat 
-Contains
-Count 
-DefaultIfEmpty
-Distinct 
-ElementAt
-ElementAtOrDefault 
-Except
-First 
-FirstOrDefault
-GroupBy
-GroupJoin
-Intersect
-Join
-Last
-LastOrDefault
-Max
-Min
-OrderBy
-OrderByDescending
-ThenBy
-ThenByDescending
-Range
-Repeat
-Reverse
-Select
-SelectMany
-SequenceEqual
-Single
-SingleOrDefault
-Skip
-SkipWhile
-Sum
-Take
-TakeWhile
-ToArray
-ToMap
-Union
-Where
-Zip
-```
+For list of implemented methods and for help on individual methods please follow this link:
+https://github.com/ENikS/LINQ/tree/master/man/README.md
