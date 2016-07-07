@@ -41,7 +41,7 @@ For live example you could play with please follow these links to ([Node](https:
 Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation
-This library is a continuous effort to implement **LINQ** using latest features of TypeScript and JavaScript languages (For ES5 compatible library look at **linq-es5 branch**). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
+This library is a continuous effort to implement **LINQ** using latest features of TypeScript and JavaScript languages (For ES5 compatible library look at **linq-es5** branch). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
 Browserified and minified standalone UMD modules are located in ./dist directory and could be used directly in compatible browsers.
 This library uses latest **ECMAScript 2015** language specification and utilizes **Iterables** (**[System.iterator]**), JavaScript generators (**function*** ...), and **for of** loops. All relevant methods are implemented with deferred execution so no unnecessary iterations are performed. 
 The code is backwards compatible with **linq-es5** and **C#** implementations.
