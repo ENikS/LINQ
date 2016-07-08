@@ -52,8 +52,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
         return (null != this._factory) ? this._factory(this._factoryArg)
-            : (null != this._target) ? this._target[Symbol.iterator]()
-                : { next: () => { return { done: true, value: undefined }; } };
+                                       : this._target[Symbol.iterator]();
     }
 
     /** Returns C# style enumerator */
