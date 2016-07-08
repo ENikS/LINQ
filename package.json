@@ -4,7 +4,7 @@
   "description": "Complete implementation of Language-Integrated Query (LINQ)",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
-  "homepage": "http://eniks.github.io/LINQ",
+  "homepage": "https://github.com/ENikS/LINQ/wiki",
   "author": {
     "name": "Eugene Sadovoi",
     "email": "evgeni@eniks.com"
