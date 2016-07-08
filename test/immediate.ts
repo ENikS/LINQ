@@ -18,7 +18,7 @@ import {assert} from "chai";
 import * as Linq from "../src/linq";
 
 
-describe('Immediate Execution Methods -', function () {
+describe('Immediate Execution -', function () {
 
     // Aggregate
 
@@ -136,14 +136,19 @@ describe('Immediate Execution Methods -', function () {
 
     // ElementAt
 
-    it('ElementAt()', function () {
-        assert.equal(1, Linq.From(simpleArray).ElementAt(0));
+    it('ElementAt() - Iterable', function () {
+        assert.equal(3, Linq.Range(0, 10).ElementAt(3));
+    });
+
+    it('ElementAt() - Array', function () {
         assert.equal(6, Linq.From(simpleArray).ElementAt(5));
     });
 
     it('ElementAt() - Out of Range', function () {
         assert.throw(function () {
             Linq.From(simpleArray).ElementAt(-1);
+        });
+        assert.throw(function () {
             Linq.From(simpleArray).ElementAt(50);
         });
     });
@@ -152,14 +157,24 @@ describe('Immediate Execution Methods -', function () {
 
     // ElementAtOrDefault
 
-    it('ElementAtOrDefault()', function () {
-        assert.equal(6, Linq.From(simpleArray).ElementAtOrDefault(5));
+    it('ElementAtOrDefault() - Array', function () {
+        assert.equal(Linq.From(simpleArray).ElementAtOrDefault(5), 6);
     });
 
-    it('ElementAtOrDefault() - DefaultValue', function () {
-        assert.doesNotThrow(function () {
-            assert.equal(0, Linq.From(simpleArray).ElementAtOrDefault(500));
-        });
+    it('ElementAtOrDefault() - Iterable', function () {
+        assert.equal(Linq.Range(1, 10).ElementAtOrDefault(5), 6);
+    });
+
+    it('ElementAtOrDefault() - Default of Array', function () {
+        assert.equal(Linq.From(simpleArray).ElementAtOrDefault(-500), 0);
+    });
+
+    it('ElementAtOrDefault() - Default of empty Array', function () {
+        assert.equal(Linq.From([]).ElementAtOrDefault(-500), undefined);
+    });
+
+    it('ElementAtOrDefault() - Default of Iterable', function () {
+        assert.equal(Linq.Range(1, 10).ElementAtOrDefault(500), 0);
     });
 
 

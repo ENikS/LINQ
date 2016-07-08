@@ -187,6 +187,12 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public ElementAt(index: number): T {
+        if (this._target instanceof Array) {
+            if (0 > index || this._target[Constant.CONST_LENGTH] <= index) {
+                throw Constant.CONST_OUTOFRANGE;
+            }
+            return this._target[index];
+        }
         let count = 0;
         for (let value of this) {
             if (index > count++) {
@@ -199,6 +205,14 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public ElementAtOrDefault(index: number): T {
+        if (this._target instanceof Array) {
+            let length = this._target[Constant.CONST_LENGTH];
+            if (0 > index || length <= index) {
+                return 0 < length ? Constant.getDefaultVal(typeof(this._target[0]))
+                                  : undefined;
+            }
+            return this._target[index];
+        }
         let value, count = 0;
         for (let item of this) {
             if (index === count++) {
