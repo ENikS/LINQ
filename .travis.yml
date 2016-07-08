@@ -6,6 +6,7 @@ node_js: node
 install:
 - npm install -g typescript
 - npm install -g istanbul
+- npm install -g remap-istanbul
 - npm install -g coveralls
 - npm install mocha-lcov-reporter
 - npm install
@@ -13,9 +14,6 @@ install:
 script: 
 - npm run build
 - npm test
-
-after_success:
-- test $TRAVIS_BRANCH = "master" &&  echo -e "Done building master"
 
 deploy:
 - provider: releases
@@ -41,6 +39,8 @@ deploy:
     tags: true
 
 after_script:
-#- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test/ --recursive
-#- cat ./coverage/lcov.info | coveralls
+- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test/ --recursive
+- remap-istanbul -i coverage/coverage.json -o coverage/coverage.json
+- istanbul report lcov
+- test $TRAVIS_BRANCH = "master" &&  cat ./coverage/lcov.info | coveralls
 
