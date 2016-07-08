@@ -39,6 +39,6 @@ deploy:
     tags: true
 
 after_script:
-- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec lib/ --recursive
+- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test/ --recursive
 - cat ./coverage/lcov.info | coveralls
 
