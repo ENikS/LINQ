@@ -35,7 +35,9 @@ var iterable = asEnumerable(people)
                           });
 
 ```
-For more information about original implementation please visit MSDN: https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
+For live example you could play with please follow these link https://jsfiddle.net/ENikS/pyvjcfa0
+
+Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation details
 This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable.
@@ -49,4 +51,4 @@ Method names follow original C# convention (Name starts with capital letter) for
 
 ### Implemented methods
 For list of implemented methods and for help on individual methods please follow this link:
-https://github.com/ENikS/LINQ/tree/master/man/README.md
+https://github.com/ENikS/LINQ/wiki
