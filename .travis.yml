@@ -14,6 +14,8 @@ script:
 - npm run build
 - npm test
 
+after_success:
+- test $TRAVIS_BRANCH = "master" &&  echo -e "Done building master"
 
 deploy:
 - provider: releases
