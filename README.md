@@ -16,24 +16,10 @@ npm install linq-es5
 
 ### Using
 ```javascript
-import {asEnumerable, Range} from "linq-es5";
+var Enumerable = require("linq-es5");
 
-
-var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1)
-                                                            .Count()
-
-var iterable = asEnumerable(people)
-               .GroupJoin(pets,
-                          person => person, 
-                          pet => pet.Owner,
-                          (person, petCollection) => {
-                              return {
-                                  Owner: person.Name,
-                                  Pets: asEnumerable(petCollection)
-                                       .Select(pet=> pet.Name)
-                                       .ToArray()
-                              };
-                          });
+var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1)
+                                                                       .Count()
 
 ```
 For live example you could play with please follow these link https://jsfiddle.net/ENikS/pyvjcfa0
