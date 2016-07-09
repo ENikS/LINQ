@@ -364,6 +364,11 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
 
+    public Cast<V>(): Enumerable<V> {
+        return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
+    }
+
+
     //-------------------------------------------------------------------------
     //  Deferred execution methods
     //-------------------------------------------------------------------------
@@ -375,27 +380,26 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Cast<V>(): Enumerable<V> {
-        return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
-    }
-
-
     public Concat(second: Iterable<T>): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.SelectManyFast([this._target, second]));
+        this._target = Generator.SelectManyFast([this._target, second])
+        return this;
     }
 
 
     public Distinct<V>(keySelector?: (T) => V): Enumerable<T> {
-        return new EnumerableImpl<T>(keySelector ? Generator.Distinct(this._target, keySelector)
-                                                 : Generator.DistinctFast(this._target));
+        this._target = keySelector ? Generator.Distinct(this._target, keySelector)
+                                   : Generator.DistinctFast(this._target)
+        return this;
     }
+
 
     public Except(other: Iterable<T>): Enumerable<T> {
         let set: Set<T> = new Set<T>();
         for (let value of other) {
             set.add(value);
         }
-        return new EnumerableImpl<T>(Generator.Intersect(this._target, set, true));
+        this._target = Generator.Intersect(this._target, set, true);
+        return this;
     }
 
 
@@ -415,7 +419,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         for (let value of other) {
             set.add(value);
         }
-        return new EnumerableImpl<T>(Generator.Intersect(this._target, set, false));
+        this._target = Generator.Intersect(this._target, set, false)
+        return this;
     }
 
 
@@ -425,10 +430,10 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public OrderBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
-        return new OrderedLinq<T>(this,
-            (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
-            (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        return new OrderedLinq<T>(this, (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
+                                        (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
+
 
     public OrderByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         return new OrderedLinq<T>(this,
@@ -486,7 +491,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Select<V>(transform: (T) => V): Enumerable<V>;
-    Select<V>(transform: (T, number) => V): Enumerable<V> {
+    public Select<V>(transform: (T, number) => V): Enumerable<V> {
         return new EnumerableImpl<V>(Generator.Select(this._target, transform));
     }
 
@@ -497,36 +502,42 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Skip(skip: number): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.Skip(this._target, skip));
+        this._target = Generator.Skip(this._target, skip)
+        return this;
     }
 
 
     public SkipWhile(predicate: (T) => boolean): Enumerable<T>;
     public SkipWhile(predicate: (T, number) => boolean): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.SkipWhile(this._target, predicate));
+        this._target = Generator.SkipWhile(this._target, predicate);
+        return this;
     }
 
 
     public Take(take: number): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.TakeWhile(this._target, (a, n) => take > n));
+        this._target = Generator.TakeWhile(this._target, (a, n) => take > n);
+        return this;
     }
 
 
     public TakeWhile(predicate: (T, number) => boolean): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.TakeWhile(this._target, predicate));
+        this._target = Generator.TakeWhile(this._target, predicate);
+        return this;
     }
 
 
     public Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T>
     {
-        return new EnumerableImpl<T>(keySelector ? Generator.Union(this._target, second, keySelector)
-                                                 : Generator.UnionFast(this._target, second));
+        this._target = keySelector ? Generator.Union(this._target, second, keySelector)
+                                   : Generator.UnionFast(this._target, second)
+        return this;
     }
 
 
     public Where(predicate: (T) => Boolean): Enumerable<T>;
     public Where(predicate: (T, number) => Boolean = Constant.trueFn): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.Where(this._target, predicate));
+        this._target = Generator.Where(this._target, predicate);
+        return this;
     }
 
 
@@ -542,6 +553,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> {
         super(target, factory);
 
     }
+
     public [Symbol.iterator](): Iterator<T> {
         if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
