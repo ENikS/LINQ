@@ -23,6 +23,18 @@ export function* Select<T, V>(target: Iterable<T>, transform: (T, number) => V) 
 }
 
 
+export function* DefaultIfEmpty<T>(target: Iterable<T>, defaultValue: T) {
+    let iterator = target[Symbol.iterator]();
+    let result = iterator.next();
+    if (result.done) {
+        yield defaultValue;
+    } else {
+        yield result.value;
+        yield* target;
+    }
+}
+
+
 export function* Distinct<T, V>(target: Iterable<T>, keySelector: (T) => V) {
     let set: Set<V> = new Set<V>();
     for (let value of target) {

@@ -371,7 +371,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public DefaultIfEmpty(defaultValue: T = undefined): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.DefaultIfEmptyIteratror(this._target[Symbol.iterator](), defaultValue));
+        return new EnumerableImpl<T>(Generator.DefaultIfEmpty(this, defaultValue));
     }
 
 

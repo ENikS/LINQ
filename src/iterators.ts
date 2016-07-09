@@ -71,34 +71,3 @@ export class ArrayIterator<T> implements Iterator<T> {
         return result;
     }
 }
-
-
-export class IteratorBase<T> {
-
-    protected _done: any = { value: undefined, done: true };
-
-    constructor(protected _iterator: Iterator<T>) { }
-}
-
-
-export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
-
-    constructor(sourceIterator: Iterator<T>, private _default: T) {
-        super(sourceIterator);
-    }
-
-    public next(value?: any): IteratorResult<T> {
-        return this.check(this._iterator.next());
-    }
-
-    private check(result: IteratorResult<T>) {
-        if (result.done) {
-            result.value = this._default;
-        } else {
-            this.check = (a) => a;
-        }
-        return result;
-    }
-}
-
-
