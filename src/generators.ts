@@ -176,10 +176,8 @@ export function* SelectMany<T, C, R>(target: Iterable<T>, selector: (T, number) 
 
 
 export function* SelectManyFast<T, C>(target: Iterable<Iterable<C>>) {
-    for (let item of target) {
-        for (let collectionItem of item) {
-            yield collectionItem;
-        }
+    for (let subIterable of target) {
+        yield* subIterable;
     }
 }
 
