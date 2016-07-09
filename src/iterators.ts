@@ -102,20 +102,3 @@ export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class ZipIteratror<T, V, Z> extends IteratorBase<T> implements Iterator<Z> {
-
-    constructor(iterator: Iterator<T>, private _second: Iterator<V>, protected _method: (T, V) => Z, protected _index = 0) {
-        super(iterator);
-    }
-
-    public next(value?: any): IteratorResult<Z> {
-        let first = this._iterator.next();
-        let second = this._second.next();
-        if (first.done || second.done) {
-            return this._done;
-        }
-        return { done: false, value: this._method(first.value, second.value) };
-    }
-}
-
-

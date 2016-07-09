@@ -181,3 +181,14 @@ export function* SelectManyFast<T, C>(target: Iterable<Iterable<C>>) {
     }
 }
 
+
+export function* Zip<T, V, Z>(first: Iterable<T>, second: Iterable<V>, transform: (T, V) => Z, _index = 0) {
+    let iteratorOne = first[Symbol.iterator]();
+    let iteratorTwo = second[Symbol.iterator]();
+    let retOne, retTwo;
+
+    while (!(retOne = iteratorOne.next()).done && !(retTwo = iteratorTwo.next()).done) {
+        yield transform(retOne.value, retTwo.value)
+    }
+}
+

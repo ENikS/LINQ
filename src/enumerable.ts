@@ -531,7 +531,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z> {
-        return new EnumerableImpl<Z>(this, () => new Iterator.ZipIteratror(this._target[Symbol.iterator](), second[Symbol.iterator](), func));
+        return new EnumerableImpl<Z>(Generator.Zip(this._target, second, func));
     }
 }
 
