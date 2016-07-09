@@ -78,7 +78,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /**
     * Casts the elements of an Iterable to the specified type.
     */
-    Cast<V extends T>(): Enumerable<V>;
+    Cast<V>(): Enumerable<V>;
 
     /** Concatenates two sequences.
     * @param second The sequence to concatenate to the first sequence.

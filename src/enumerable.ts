@@ -375,7 +375,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Cast<V extends T>(): Enumerable<V> {
+    public Cast<V>(): Enumerable<V> {
         return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
     }
 

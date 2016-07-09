@@ -21,11 +21,15 @@ import Linq from "../src/linq";
 describe('Deferred Execution -', function () {
 
     // Cast
-    // TODO: Implement Cast as typecast with no overhead
 
-    //it('Cast()', function () {
-    //    let ss = Linq(simpleArray);
-    //});
+    it('Cast()', function () {
+
+        class a { }
+        class b extends a { }
+
+        let iterable = Linq<b>([]);
+        assert.equal(iterable.Cast<a>(), iterable);
+    });
 
 
 
