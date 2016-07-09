@@ -451,9 +451,18 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @param keySelector A function to extract a key from each element.
     * @param elementSelector A transform function to produce a result element value from each element.
     */
-    ToMap<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
+    ToMap<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;
 
     /** 
+    * Creates a Map< TKey, TValue > from an IEnumerable< T > according
+    * to a specified key selector function, a comparer, and an element selector
+    * function. 
+    * @param keySelector A function to extract a key from each element.
+    * @param elementSelector A transform function to produce a result element value from each element.
+    */
+    ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;
+
+    /**
     * Creates a Map< TKey, TValue > from an IEnumerable< T > according
     * to a specified key selector function, a comparer, and an element selector
     * function. 

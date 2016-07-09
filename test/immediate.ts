@@ -391,4 +391,12 @@ describe('Immediate Execution -', function () {
         assert.equal(jsn[0].name, Linq.From(jsn).ToMap(k => k.id, o => o.name).get(1));
     });
 
+    it('ToDictionary() - No Selector', function () {
+        assert.equal(jsn[0], Linq.From(jsn).ToDictionary(o => o.id).get(1));
+    });
+
+    it('ToDictionary()', function () {
+        assert.equal(jsn[0].name, Linq.From(jsn).ToDictionary(k => k.id, o => o.name).get(1));
+    });
+
 });
