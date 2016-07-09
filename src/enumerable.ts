@@ -32,7 +32,6 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     //-------------------------------------------------------------------------
 
     protected _target: Iterable<any>;
-    protected _factory: Function;
     protected _factoryArg: any;
     protected _initialize: Function;
 
@@ -43,16 +42,18 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
     constructor(target: Iterable<any> | IEnumerable<any>, factory?: Function, arg?: any) {
         this._target = <Iterable<any>>target;
-        this._factory = factory;
         this._factoryArg = arg;
+
+        if (factory) {
+            this[Symbol.iterator] = () => factory(this._factoryArg);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
-        return (null != this._factory) ? this._factory(this._factoryArg)
-                                       : this._target[Symbol.iterator]();
+        return this._target[Symbol.iterator]();
     }
 
     /** Returns C# style enumerator */
@@ -552,14 +553,8 @@ class OrderedLinq<T> extends EnumerableImpl<T> {
     constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: Function) {
         super(target, factory);
 
+        this._factoryArg = this.ToArray();
+        this._factoryArg.sort(this.equal);
     }
-
-    public [Symbol.iterator](): Iterator<T> {
-        if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
-            this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
-            this._factoryArg.sort(this.equal);
-        }
-        return this._factory(this._factoryArg);
-    }
-
 }
+
