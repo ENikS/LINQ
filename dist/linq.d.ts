@@ -78,7 +78,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /**
     * Casts the elements of an Iterable to the specified type.
     */
-    Cast<V extends T>(): Enumerable<V>;
+    Cast<V>(): Enumerable<V>;
 
     /** Concatenates two sequences.
     * @param second The sequence to concatenate to the first sequence.
@@ -387,7 +387,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var e = asEnumerable([4]).SingleOrDefault();
     */
-    SingleOrDefault<TSource>(predicate?: (T) => boolean): T;	
+    SingleOrDefault(predicate?: (T) => boolean): T;	
     
     /** 
     * Bypasses a specified number of elements in a sequence and then returns 
@@ -451,9 +451,18 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @param keySelector A function to extract a key from each element.
     * @param elementSelector A transform function to produce a result element value from each element.
     */
-    ToMap<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
+    ToMap<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;
 
     /** 
+    * Creates a Map< TKey, TValue > from an IEnumerable< T > according
+    * to a specified key selector function, a comparer, and an element selector
+    * function. 
+    * @param keySelector A function to extract a key from each element.
+    * @param elementSelector A transform function to produce a result element value from each element.
+    */
+    ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;
+
+    /**
     * Creates a Map< TKey, TValue > from an IEnumerable< T > according
     * to a specified key selector function, a comparer, and an element selector
     * function. 

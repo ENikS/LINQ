@@ -18,7 +18,7 @@ import {assert} from "chai";
 import * as Linq from "../src/linq";
 
 
-describe('Immediate Execution Methods -', function () {
+describe('Immediate Execution -', function () {
 
     // Aggregate
 
@@ -136,15 +136,20 @@ describe('Immediate Execution Methods -', function () {
 
     // ElementAt
 
-    it('ElementAt()', function () {
-        assert.equal(1, Linq.From(simpleArray).ElementAt(0));
+    it('ElementAt() - Iterable', function () {
+        assert.equal(3, Linq.Range(0, 10).ElementAt(3));
+    });
+
+    it('ElementAt() - Array', function () {
         assert.equal(6, Linq.From(simpleArray).ElementAt(5));
     });
 
     it('ElementAt() - Out of Range', function () {
         assert.throw(function () {
             Linq.From(simpleArray).ElementAt(-1);
-            Linq.From(simpleArray).ElementAt(50);
+        });
+        assert.throw(function () {
+            Linq.Range(0, 10).ElementAt(50);
         });
     });
 
@@ -152,14 +157,63 @@ describe('Immediate Execution Methods -', function () {
 
     // ElementAtOrDefault
 
-    it('ElementAtOrDefault()', function () {
-        assert.equal(6, Linq.From(simpleArray).ElementAtOrDefault(5));
+    it('ElementAtOrDefault() - Array', function () {
+        assert.equal(Linq.From(simpleArray).ElementAtOrDefault(5), 6);
     });
 
-    it('ElementAtOrDefault() - DefaultValue', function () {
-        assert.doesNotThrow(function () {
-            assert.equal(0, Linq.From(simpleArray).ElementAtOrDefault(500));
-        });
+    it('ElementAtOrDefault() - Iterable', function () {
+        assert.equal(Linq.Range(1, 10).ElementAtOrDefault(5), 6);
+    });
+
+    it('ElementAtOrDefault() - Default of Array', function () {
+        assert.equal(Linq.From(simpleArray).ElementAtOrDefault(-500), 0);
+    });
+
+    it('ElementAtOrDefault() - Default of empty Array', function () {
+        assert.equal(Linq.From([]).ElementAtOrDefault(-500), undefined);
+    });
+
+    it('ElementAtOrDefault() - Default of Iterable', function () {
+        assert.equal(Linq.Range(1, 10).ElementAtOrDefault(500), 0);
+    });
+
+    it('ElementAtOrDefault() - Default Boolean', function () {
+        assert.isFalse(Linq.From([true, false, false]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Null', function () {
+        assert.isNull(Linq.Repeat(null, 1).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Undefined', function () {
+        assert.isUndefined(Linq.Repeat(undefined, 1).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Object', function () {
+        assert.isUndefined(Linq.From([this, this, {}]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default String', function () {
+        assert.isString(Linq.Repeat("String", 3).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Symbol', function () {
+        assert.isDefined(Linq.From([Symbol(), Symbol]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Function', function () {
+        assert.isUndefined(Linq.Repeat(() => { }, 3).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Class', function () {
+        class Polygon {
+            constructor(public height = 0, public width = 1) {
+                this.height = height;
+                this.width = width;
+            }
+        }
+
+        assert.isUndefined(Linq.Repeat(Polygon, 3).ElementAtOrDefault(5));
     });
 
 
@@ -272,6 +326,12 @@ describe('Immediate Execution Methods -', function () {
 
     it('Single() - Empty', function () {
         assert.throw(function () {
+            Linq.From(simpleArray).Single(a => a > 15);
+        });
+    });
+
+    it('Single() - More than one', function () {
+        assert.throw(function () {
             Linq.From(simpleArray).Single(a => a > 5);
         });
     });
@@ -283,25 +343,19 @@ describe('Immediate Execution Methods -', function () {
 
     it('SingleOrDefault() - No predicate', function () {
         assert.equal(4, Linq.From([4]).SingleOrDefault());
-        assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
-        });
     });
 
     it('SingleOrDefault()', function () {
-        assert.equal(4, Linq.From([4]).SingleOrDefault());
         assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
-        });
     });
 
     it('SingleOrDefault() - Empty', function () {
-        assert.equal(4, Linq.From([4]).SingleOrDefault());
-        assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
+        assert.equal(0, Linq.From(simpleArray).SingleOrDefault(a => a == 20));
+    });
+
+    it('SingleOrDefault() - More than one', function () {
+        assert.Throw(function () {
+            Linq.From(simpleArray).SingleOrDefault(a => a > 5);
         });
     });
 
@@ -335,6 +389,14 @@ describe('Immediate Execution Methods -', function () {
 
     it('ToMap()', function () {
         assert.equal(jsn[0].name, Linq.From(jsn).ToMap(k => k.id, o => o.name).get(1));
+    });
+
+    it('ToDictionary() - No Selector', function () {
+        assert.equal(jsn[0], Linq.From(jsn).ToDictionary(o => o.id).get(1));
+    });
+
+    it('ToDictionary()', function () {
+        assert.equal(jsn[0].name, Linq.From(jsn).ToDictionary(k => k.id, o => o.name).get(1));
     });
 
 });

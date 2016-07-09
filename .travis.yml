@@ -25,6 +25,7 @@ deploy:
   - ./dist/linq.d.ts
   on:
     all_branches: true
+    tags: true
 
 - provider: npm
   email: evgeni@eniks.com

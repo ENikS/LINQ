@@ -59,8 +59,32 @@ describe('Module Interface -', function () {
         assert.isTrue(iterator.next().done);
     });
 
+    it('Range() - on Enumerable', function () {
+        var enumerable = Enumerable.Range(1, 10);
+        var iterable = enumerable.Range(1, 10).Except(Enumerable.Range(2, 7));
+        var iterator = iterable[Symbol.iterator]()
+
+        assert.equal(1, iterator.next().value);
+        assert.equal(9, iterator.next().value);
+        assert.equal(10, iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
     it('Repeat()', function () {
         var iterable = Enumerable.Repeat("Test", 5);
+        var iterator = iterable[Symbol.iterator]()
+
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.equal("Test", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('Repeat() - on Enumerable', function () {
+        var enumerable = Enumerable.Repeat("Test", 5);
+        var iterable = enumerable.Repeat("Test", 5);
         var iterator = iterable[Symbol.iterator]()
 
         assert.equal("Test", iterator.next().value);
