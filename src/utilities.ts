@@ -28,37 +28,25 @@ export var selfFn = o => o;
 
 /** Default Grouping */
 export var defGrouping = (a, b) => {
-    if (CONST_UNDEFINED != typeof b['key']) throw CONST_DUPLICATE;
-    b['key'] = a;
+    if (CONST_UNDEFINED != typeof b[CONST_KEY]) throw CONST_DUPLICATE;
+    b[CONST_KEY] = a;
     return b;
 };
 
 /** Returns default value for the type */
-export function getDefaultVal(type) {
+export function getDefaultVal(type, value = undefined) : any {
     if (typeof type !== CONST_STRING) throw new TypeError(CONST_NO_STRING);
 
     // Handle simple types (primitives and plain function/object)
     switch (type) {
-        case 'boolean': return false;
-        case 'function': return function () { };
-        case 'null': return null;
-        case 'number': return 0;
-        case 'object': return {};
-        case 'string': return "";
-        case 'symbol': return Symbol();
-        case CONST_UNDEFINED: return void 0;
+        case CONST_BOOLEAN:     return false;
+        case CONST_NULL:        return null;
+        case CONST_NUMBER:      return 0;
+        case CONST_OBJECT:      return null === value ? null : undefined;
+        case CONST_STRING:      return CONST_EMPTY_STRING;
+        case CONST_SYMBOL:      return Symbol();
     }
-
-    try {
-        // Look for constructor in this or current scope
-        var ctor = typeof this[type] === CONST_FUNCTION
-            ? this[type]
-            : eval(type);
-
-        return new ctor;
-
-        // Constructor not found, return new object
-    } catch (e) { return {}; }
+    return undefined;
 }
 
 /** Returns a map of element bsed on extracted keys  **/
@@ -97,14 +85,21 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
 //  Constants
 //-----------------------------------------------------------------------------
 
-export const CONST_INVALID_KEY = "Key selector returned undefined Key";
-export const CONST_NO_STRING = "Type must be a string.";
-export const CONST_DUPLICATE = "Object already has property [key]";
+export const CONST_INVALID_KEY  = "Key selector returned undefined Key";
+export const CONST_NO_STRING    = "Type must be a string.";
+export const CONST_DUPLICATE    = "Object already has property [key]";
 export const CONST_NOTHING_FOUND = "No element satisfies the condition in predicate";
-export const CONST_NO_ELEMENTS = "The source sequence is empty.";
-export const CONST_TOO_MANY = "More than one element satisfies the condition in predicate.";
-export const CONST_OUTOFRANGE = "Argument Out Of Range";
-export const CONST_UNDEFINED = "undefined";
-export const CONST_LENGTH = "length";
-export const CONST_STRING = "string";
-export const CONST_FUNCTION = "function";
+export const CONST_NO_ELEMENTS  = "The source sequence is empty.";
+export const CONST_TOO_MANY     = "More than one element satisfies the condition in predicate.";
+export const CONST_OUTOFRANGE   = "Argument Out Of Range";
+export const CONST_KEY          = "key";
+export const CONST_UNDEFINED    = "undefined";
+export const CONST_LENGTH       = "length";
+export const CONST_FUNCTION     = "function";
+export const CONST_BOOLEAN      = "boolean";
+export const CONST_NULL         = "null";
+export const CONST_NUMBER       = "number";
+export const CONST_OBJECT       = "object";
+export const CONST_STRING       = "string";
+export const CONST_SYMBOL       = "symbol";
+export const CONST_EMPTY_STRING = "";

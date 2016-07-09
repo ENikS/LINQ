@@ -38,20 +38,37 @@ describe('Custom Iterator based -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-    it('DefaultIfEmpty()', function () {
-        assert.equal(0, asEnumerable([]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
-        assert.equal(1, asEnumerable([1]).DefaultIfEmpty(0)[Symbol.iterator]().next().value);
-        assert.equal('a', asEnumerable(<Array<string>>[]).DefaultIfEmpty('a')[Symbol.iterator]().next().value);
-        assert.equal(undefined, asEnumerable([]).DefaultIfEmpty()[Symbol.iterator]().next().value);
+
+    it('DefaultIfEmpty() - Not empty', function () {
+        var iterable = Range(0, 5).DefaultIfEmpty(0);
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(iterator.next().value, 0);
+        assert.equal(iterator.next().value, 1);
+        assert.equal(iterator.next().value, 2);
+        assert.equal(iterator.next().value, 3);
+        assert.equal(iterator.next().value, 4);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('DefaultIfEmpty() - Default', function () {
+        var iterable = asEnumerable([]).DefaultIfEmpty(0);
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(iterator.next().value, 0);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('DefaultIfEmpty() - No Default', function () {
+        var iterable = asEnumerable([]).DefaultIfEmpty();
+        var iterator = iterable[Symbol.iterator]()
+        assert.isUndefined(iterator.next().value);
+        assert.isTrue(iterator.next().done);
     });
 
 
 
     it('OrderBy()', function () {
-        var iterable = asEnumerable(jsn)
-            .SelectMany(a => a.ids).OrderBy();
+        var iterable = asEnumerable(jsn).SelectMany(a => a.ids).OrderBy();
         var iterator = iterable[Symbol.iterator]()
-        debugger;
         assert.equal(11, iterator.next().value);
         assert.equal(12, iterator.next().value);
         assert.equal(13, iterator.next().value);

@@ -149,7 +149,7 @@ describe('Immediate Execution -', function () {
             Linq.From(simpleArray).ElementAt(-1);
         });
         assert.throw(function () {
-            Linq.From(simpleArray).ElementAt(50);
+            Linq.Range(0, 10).ElementAt(50);
         });
     });
 
@@ -175,6 +175,45 @@ describe('Immediate Execution -', function () {
 
     it('ElementAtOrDefault() - Default of Iterable', function () {
         assert.equal(Linq.Range(1, 10).ElementAtOrDefault(500), 0);
+    });
+
+    it('ElementAtOrDefault() - Default Boolean', function () {
+        assert.isFalse(Linq.From([true, false, false]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Null', function () {
+        assert.isNull(Linq.Repeat(null, 1).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Undefined', function () {
+        assert.isUndefined(Linq.Repeat(undefined, 1).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Object', function () {
+        assert.isUndefined(Linq.From([this, this, {}]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default String', function () {
+        assert.isString(Linq.Repeat("String", 3).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Symbol', function () {
+        assert.isDefined(Linq.From([Symbol(), Symbol]).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Function', function () {
+        assert.isUndefined(Linq.Repeat(() => { }, 3).ElementAtOrDefault(5));
+    });
+
+    it('ElementAtOrDefault() - Default Class', function () {
+        class Polygon {
+            constructor(public height = 0, public width = 1) {
+                this.height = height;
+                this.width = width;
+            }
+        }
+
+        assert.isUndefined(Linq.Repeat(Polygon, 3).ElementAtOrDefault(5));
     });
 
 

@@ -208,7 +208,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         if (this._target instanceof Array) {
             let length = this._target[Constant.CONST_LENGTH];
             if (0 > index || length <= index) {
-                return 0 < length ? Constant.getDefaultVal(typeof(this._target[0]))
+                let value = this._target[0];
+                return 0 < length ? Constant.getDefaultVal(typeof (value), value)
                                   : undefined;
             }
             return this._target[index];
@@ -220,7 +221,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             }
             value = item;
         }
-        return Constant.getDefaultVal(typeof value); // Last good value
+        return Constant.getDefaultVal(typeof value, value); // Last good value
     }
 
 
