@@ -156,13 +156,31 @@ describe('Custom Iterator based -', function () {
         assert.isTrue(iterator.next().done);
     });
 
+    it('ThenBy() - No order', function () {
+        var iterable: any = asEnumerable(fruits)
+            .ThenBy(fruit => fruit.charCodeAt(0))
+            .ThenBy(fruit => fruit.charCodeAt(4));
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal("appla", iterator.next().value);
+        assert.equal("apple", iterator.next().value);
+        assert.equal("blueberry", iterator.next().value);
+        assert.equal("banana", iterator.next().value);
+        assert.equal("grape", iterator.next().value);
+        assert.equal("mango", iterator.next().value);
+        assert.equal("orange", iterator.next().value);
+        assert.equal("passionfruit", iterator.next().value);
+        assert.equal("raspberry", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
+
 
 
     it('ThenByDescending()', function () {
         var iterable: any = asEnumerable(fruits)
-            .OrderByDescending(fruit=> fruit.length)
-            .ThenByDescending(fruit=> fruit.charCodeAt(0))
-            .ThenByDescending(fruit=> fruit.charCodeAt(4));
+            .OrderByDescending(fruit => fruit.length)
+            .ThenByDescending(fruit => fruit.charCodeAt(0))
+            .ThenByDescending(fruit => fruit.charCodeAt(4));
         var iterator = iterable[Symbol.iterator]()
         assert.equal("passionfruit", iterator.next().value);
         assert.equal("raspberry", iterator.next().value);
@@ -171,6 +189,23 @@ describe('Custom Iterator based -', function () {
         assert.equal("banana", iterator.next().value);
         assert.equal("mango", iterator.next().value);
         assert.equal("grape", iterator.next().value);
+        assert.equal("apple", iterator.next().value);
+        assert.equal("appla", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('ThenByDescending() - No order', function () {
+        var iterable: any = asEnumerable(fruits)
+            .ThenByDescending(fruit => fruit.charCodeAt(0))
+            .ThenByDescending(fruit => fruit.charCodeAt(4));
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal("raspberry", iterator.next().value);
+        assert.equal("passionfruit", iterator.next().value);
+        assert.equal("orange", iterator.next().value);
+        assert.equal("mango", iterator.next().value);
+        assert.equal("grape", iterator.next().value);
+        assert.equal("banana", iterator.next().value);
+        assert.equal("blueberry", iterator.next().value);
         assert.equal("apple", iterator.next().value);
         assert.equal("appla", iterator.next().value);
         assert.isTrue(iterator.next().done);
