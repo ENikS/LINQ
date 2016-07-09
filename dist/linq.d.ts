@@ -387,7 +387,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var e = asEnumerable([4]).SingleOrDefault();
     */
-    SingleOrDefault<TSource>(predicate?: (T) => boolean): T;	
+    SingleOrDefault(predicate?: (T) => boolean): T;	
     
     /** 
     * Bypasses a specified number of elements in a sequence and then returns 

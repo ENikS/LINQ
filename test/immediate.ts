@@ -326,6 +326,12 @@ describe('Immediate Execution -', function () {
 
     it('Single() - Empty', function () {
         assert.throw(function () {
+            Linq.From(simpleArray).Single(a => a > 15);
+        });
+    });
+
+    it('Single() - More than one', function () {
+        assert.throw(function () {
             Linq.From(simpleArray).Single(a => a > 5);
         });
     });
@@ -337,25 +343,19 @@ describe('Immediate Execution -', function () {
 
     it('SingleOrDefault() - No predicate', function () {
         assert.equal(4, Linq.From([4]).SingleOrDefault());
-        assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
-        });
     });
 
     it('SingleOrDefault()', function () {
-        assert.equal(4, Linq.From([4]).SingleOrDefault());
         assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
-        });
     });
 
     it('SingleOrDefault() - Empty', function () {
-        assert.equal(4, Linq.From([4]).SingleOrDefault());
-        assert.equal(2, Linq.From(simpleArray).SingleOrDefault(a => a == 2));
-        assert.doesNotThrow(function () {
-            Linq.From(simpleArray).SingleOrDefault(a => a > 50);
+        assert.equal(0, Linq.From(simpleArray).SingleOrDefault(a => a == 20));
+    });
+
+    it('SingleOrDefault() - More than one', function () {
+        assert.Throw(function () {
+            Linq.From(simpleArray).SingleOrDefault(a => a > 5);
         });
     });
 

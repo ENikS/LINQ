@@ -40,7 +40,6 @@ export function getDefaultVal(type, value = undefined) : any {
     // Handle simple types (primitives and plain function/object)
     switch (type) {
         case CONST_BOOLEAN:     return false;
-        case CONST_NULL:        return null;
         case CONST_NUMBER:      return 0;
         case CONST_OBJECT:      return null === value ? null : undefined;
         case CONST_STRING:      return CONST_EMPTY_STRING;
@@ -97,7 +96,6 @@ export const CONST_UNDEFINED    = "undefined";
 export const CONST_LENGTH       = "length";
 export const CONST_FUNCTION     = "function";
 export const CONST_BOOLEAN      = "boolean";
-export const CONST_NULL         = "null";
 export const CONST_NUMBER       = "number";
 export const CONST_OBJECT       = "object";
 export const CONST_STRING       = "string";

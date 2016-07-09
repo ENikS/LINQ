@@ -62,4 +62,18 @@ describe('Enumerable - ', function () {
         }
     });
 
+
+    it('Reset()', function () {
+
+        var enumerable = Range(0, 100);
+        var enumerator = enumerable.GetEnumerator();
+        var index = 0
+        while (enumerator.MoveNext()) {
+            assert.equal(index++, enumerator.Current);
+        }
+        assert.throw(function () {
+            enumerator.Reset();
+        });
+
+    });
 });
