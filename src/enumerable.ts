@@ -198,7 +198,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             }
             value = result.value;
         }
-        return Constant.getDefaultVal(typeof value); // Last good value
+        return Constant.getDefaultVal(typeof value, value); // Last good value
     }
 
 
@@ -364,7 +364,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Cast<V>(): Enumerable<V> {
-        return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this[Symbol.iterator](), (a) => <V>a));
+        return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
     }
 
 

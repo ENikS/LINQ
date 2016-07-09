@@ -34,31 +34,18 @@ export var defGrouping = (a, b) => {
 };
 
 /** Returns default value for the type */
-export function getDefaultVal(type) {
+export function getDefaultVal(type, value = undefined) : any {
     if (typeof type !== 'string') throw new TypeError(noString);
 
     // Handle simple types (primitives and plain function/object)
     switch (type) {
         case 'boolean': return false;
-        case 'function': return function () { };
-        case 'null': return null;
         case 'number': return 0;
-        case 'object': return {};
+        case 'object': return (null === value) ? null : void 0;
         case 'string': return "";
-        case 'symbol': return Symbol();
-        case 'undefined': return void 0;
+        case 'function': return ("Symbol" === value['name']) ? Symbol() : void 0;
     }
-
-    try {
-        // Look for constructor in this or current scope
-        var ctor = typeof this[type] === 'function'
-            ? this[type]
-            : eval(type);
-
-        return new ctor;
-
-        // Constructor not found, return new object
-    } catch (e) { return {}; }
+    return void 0;
 }
 
 
