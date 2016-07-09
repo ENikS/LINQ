@@ -426,7 +426,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Join<I, K, R>(inner: Iterable<I>, oSelector: (T) => K, iSelector: (I) => K, transform: (T, I) => R): Enumerable<R> {
-        return new EnumerableImpl<R>(Generator.Join<T, K, R, I>(this._target, oSelector, transform, Constant.getKeyedMapFast(inner, iSelector)));
+        this._target = Generator.Join<T, K, R, I>(this._target, oSelector, transform, Constant.getKeyedMapFast(inner, iSelector));
+        return this as any as Enumerable<R>;
     }
 
 
@@ -493,12 +494,14 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
     public Select<V>(transform: (T) => V): Enumerable<V>;
     public Select<V>(transform: (T, number) => V): Enumerable<V> {
-        return new EnumerableImpl<V>(Generator.Select(this._target, transform));
+        this._target = Generator.Select(this._target, transform)
+        return this as any as Enumerable<V>;
     }
 
 
     public SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = (t, s) => s): Enumerable<V> {
-        return new EnumerableImpl<V>(Generator.SelectMany(this._target, selector, result));
+        this._target = Generator.SelectMany(this._target, selector, result);
+        return this as any as Enumerable<V>;
     }
 
 
@@ -543,7 +546,8 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z> {
-        return new EnumerableImpl<Z>(Generator.Zip(this._target, second, func));
+        this._target = Generator.Zip(this._target, second, func);
+        return this as any as Enumerable<Z>
     }
 }
 
