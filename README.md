@@ -4,7 +4,7 @@
 [![Downloads](https://img.shields.io/npm/dm/linq-es2015.svg)](https://www.npmjs.com/package/linq-es2015)
 ## Language-Integrated Query (LINQ) 
 
-This library is a set of features that extends powerful query capabilities to any JavaScript based language. It is a complete implementation of LINQ (Language-Integrated Query) pattern.
+This library is a set of features that extends powerful query capabilities to any JavaScript based language. It is a complete implementation of [LINQ (Language-Integrated Query)](https://en.wikipedia.org/wiki/Language_Integrated_Query) pattern.
 
 The library is a continuous effort to implement LINQ using latest features of TypeScript and JavaScript languages (For [ES5](http://www.ecma-international.org/ecma-262/5.1/) compatible library look at [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) branch). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
 Browserified and minified standalone UMD modules are located in ./dist directory and could be used directly in compatible browsers.
