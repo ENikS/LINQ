@@ -11,12 +11,12 @@ Browserified and minified standalone UMD modules are located in ./dist directory
 This library uses latest [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) language specification and utilizes [Iterables](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface): ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)), JavaScript generators ([function*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)), and [for of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loops. All relevant methods are implemented with [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/) so no unnecessary iterations are performed. 
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
-### Installation
+## Installation
 ```
 npm install linq-es2015
 ```
 
-### Using 
+## Using 
 ```javascript
 import {asEnumerable, Range} from "linq-es2015";
 
@@ -40,10 +40,12 @@ var iterable = asEnumerable(people)
 ```
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
 
-### Naming Convention
+## Naming Convention
 Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
 
-### Implemented methods
-For list of implemented methods and for help on individual methods please follow this link:
-https://github.com/ENikS/LINQ/wiki
+## Documentation
+*  [Library Reference](https://github.com/ENikS/LINQ/wiki)
+*  [LINQ (Language-Integrated Query)](https://msdn.microsoft.com/en-us/library/bb397926.aspx)
+*  [Original Documentation (C#)](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
+
 
