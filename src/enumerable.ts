@@ -32,28 +32,23 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     //-------------------------------------------------------------------------
 
     protected _target: Iterable<any>;
+    protected _factory: Function;
     protected _factoryArg: any;
     protected _initialize: Function;
 
 
-    //-------------------------------------------------------------------------
-    //  Constructor
-    //-------------------------------------------------------------------------
-
     constructor(target: Iterable<any> | IEnumerable<any>, factory?: Function, arg?: any) {
         this._target = <Iterable<any>>target;
+        this._factory = factory;
         this._factoryArg = arg;
-
-        if (factory) {
-            this[Symbol.iterator] = () => factory(this._factoryArg);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
-        return this._target[Symbol.iterator]();
+        return (null != this._factory) ? this._factory(this._factoryArg)
+                                       : this._target[Symbol.iterator]();
     }
 
     /** Returns C# style enumerator */
@@ -188,7 +183,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public ElementAt(index: number): T {
-        if (this._target instanceof Array) {
+        if (Array.isArray(this._target)) {
             if (0 > index || this._target[Constant.CONST_LENGTH] <= index) {
                 throw Constant.CONST_OUTOFRANGE;
             }
@@ -206,7 +201,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public ElementAtOrDefault(index: number): T {
-        if (this._target instanceof Array) {
+        if (Array.isArray(this._target)) {
             let length = this._target[Constant.CONST_LENGTH];
             if (0 > index || length <= index) {
                 let value = this._target[0];
@@ -432,15 +427,12 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 
     public OrderBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
-        return new OrderedLinq<T>(this, (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
-                                        (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        return new OrderedLinq<T>(this, (array) => Generator.Forward(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
 
     public OrderByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
-        return new OrderedLinq<T>(this,
-            (array) => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
-            (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        return new OrderedLinq<T>(this, (array) => Generator.Reverse(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
 
@@ -454,8 +446,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
-                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+                (array) => Generator.Forward(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
         }
     }
 
@@ -470,8 +461,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
-                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+                (array) => Generator.Reverse(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
         }
     }
 
@@ -488,7 +478,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
     public Reverse(): Enumerable<T> {
         let array: Array<T> = Array.isArray(this._target) ? <Array<T>>this._target : this.ToArray();
-        return new EnumerableImpl<T>(null, () => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1));
+        return new EnumerableImpl<T>(null, () => Generator.Reverse(array));
     }
 
 
@@ -554,11 +544,16 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
 class OrderedLinq<T> extends EnumerableImpl<T> {
 
-    constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: Function) {
+    constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: (a: T, b: T) => number) {
         super(target, factory);
+    }
 
-        this._factoryArg = this.ToArray();
-        this._factoryArg.sort(this.equal);
+    public [Symbol.iterator](): Iterator<T> {
+        if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
+            this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
+            this._factoryArg.sort(this.equal);
+        }
+        return this._factory(this._factoryArg);
     }
 }
 

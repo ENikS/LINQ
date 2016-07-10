@@ -14,12 +14,14 @@
 // under the License.
 
 
+export function* Forward<T>(target: Array<T>) {
+    yield* target;
+}
 
-export function* ArrayGen<T>(_source: Array<T>, _current: number, _done: Function, _increment = 1) {
-
-    let result = { value: this._source[this._current], done: this._done(this._current) };
-    this._current += this._increment;
-    return result;
+export function* Reverse<T>(target: Array<T>) {
+    for (let i = target.length - 1; i >= 0; i--) {
+        yield target[i];
+    }
 }
 
 
