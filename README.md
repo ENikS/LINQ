@@ -41,7 +41,8 @@ var iterable = asEnumerable(people)
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
 
 ## Naming Convention
-Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
+When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
+If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org/wiki/CamelCase) notation.
 
 ## Documentation
 *  [Library Reference](https://github.com/ENikS/LINQ/wiki)

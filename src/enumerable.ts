@@ -34,13 +34,59 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     protected _target: Iterable<any>;
     protected _factory: Function;
     protected _factoryArg: any;
-    protected _initialize: Function;
 
 
     constructor(target: Iterable<any> | IEnumerable<any>, factory?: Function, arg?: any) {
         this._target = <Iterable<any>>target;
         this._factory = factory;
         this._factoryArg = arg;
+
+        // JavaScript naming convention
+        this['aggregate'] = this.Aggregate;
+        this['all'] = this.All;
+        this['any'] = this.Any;
+        this['average'] = this.Average;
+        this['contains'] = this.Contains;
+        this['count'] = this.Count;
+        this['max'] = this.Max;
+        this['min'] = this.Min;
+        this['elementAt'] = this.ElementAt;
+        this['elementAtOrDefault'] = this.ElementAtOrDefault;
+        this['first'] = this.First;
+        this['firstOrDefault'] = this.FirstOrDefault;
+        this['last'] = this.Last;
+        this['lastOrDefault'] = this.LastOrDefault;
+        this['sequenceEqual'] = this.SequenceEqual;
+        this['single'] = this.Single;
+        this['singleOrDefault'] = this.SingleOrDefault;
+        this['sum'] = this.Sum;
+        this['toArray'] = this.ToArray;
+        this['toMap'] = this.ToMap;
+        this['toDictionary'] = this.ToDictionary;
+        this['defaultIfEmpty'] = this.DefaultIfEmpty;
+        this['concat'] = this.Concat;
+        this['distinct'] = this.Distinct;
+        this['except'] = this.Except;
+        this['groupBy'] = this.GroupBy;
+        this['groupJoin'] = this.GroupJoin;
+        this['intersect'] = this.Intersect;
+        this['join'] = this.Join;
+        this['orderBy'] = this.OrderBy;
+        this['orderByDescend'] = this.OrderByDescending;
+        this['thenBy'] = this.ThenBy;
+        this['thenByDescendi'] = this.ThenByDescending;
+        this['range'] = this.Range;
+        this['repeat'] = this.Repeat;
+        this['reverse'] = this.Reverse;
+        this['select'] = this.Select;
+        this['selectMany'] = this.SelectMany;
+        this['skip'] = this.Skip;
+        this['skipWhile'] = this.SkipWhile;
+        this['take'] = this.Take;
+        this['takeWhile'] = this.TakeWhile;
+        this['union'] = this.Union;
+        this['where'] = this.Where;
+        this['zip'] = this.Zip;
     }
 
     ///////////////////////////////////////////////////////////////////////////
