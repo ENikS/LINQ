@@ -1,6 +1,6 @@
 {
   "name": "linq-es5",
-  "version": "1.8.44",
+  "version": "1.8.45",
   "description": "Complete implementation of Language-Integrated Query (LINQ)",
   "main": "src/linq.js",
   "typings": "dist/linq.d.ts",
