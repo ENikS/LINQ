@@ -72,7 +72,7 @@ export {
     getEnumerable as from,
     getRange as Range,
     getRange as range,
-    getRepeat as Repeat
+    getRepeat as Repeat,
     getRepeat as repeat
 };
 
