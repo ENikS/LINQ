@@ -28,7 +28,7 @@ For live example you could play with please follow these link https://jsfiddle.n
 Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
 ### Implementation details
-This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable.
+This library is implemented in TypeScript language. It is transpiled into JavaScript and distributed as native node module. The source is Browserified and distributed as standalone UMD module. Browser compatible file located in ./dist directory and could be used directly via Enumerable global variable. [Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
 
 This library uses Iterable interface T[System.iterator] natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
 
