@@ -64,6 +64,7 @@ function getRepeat<T>(value: T, count: number): Enumerable<T> {
 
 export {
     getEnumerable as default,
+    getEnumerable as AsEnumerable,
     getEnumerable as asEnumerable,
     getEnumerable as From,
     getEnumerable as from,
