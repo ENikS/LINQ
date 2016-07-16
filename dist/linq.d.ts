@@ -533,7 +533,7 @@ interface IEnumerator<T> {
 //-----------------------------------------------------------------------------
 
 
-declare module "linq-es2015" {
+declare module LINQ {
     export function AsEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
     export function asEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
     export function From<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
@@ -543,3 +543,6 @@ declare module "linq-es2015" {
     export function Repeat<V>(seed: V, count: number): Enumerable<V>;
     export function repeat<V>(seed: V, count: number): Enumerable<V>;
 }
+
+export = LINQ;
+
