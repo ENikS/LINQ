@@ -573,7 +573,7 @@ interface SymbolConstructor {
 
     /** 
       * A method that determines if a constructor object recognizes an object as one of the 
-      * constructor’s instances. Called by the semantics of the instanceof operator. 
+      * constructorÂ’s instances. Called by the semantics of the instanceof operator. 
       */
     hasInstance: symbol;
 
@@ -794,15 +794,6 @@ interface Array<T> {
       */
     copyWithin(target: number, start: number, end?: number): T[];
 }
-
-
-
-
-
-
-
-
-
 
 
 declare module "linq-es5" {
