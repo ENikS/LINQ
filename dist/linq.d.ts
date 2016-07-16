@@ -796,6 +796,12 @@ interface Array<T> {
 }
 
 
+
+//-----------------------------------------------------------------------------
+//  Declare module
+//-----------------------------------------------------------------------------
+
+
 declare module "linq-es5" {
     export function AsEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
     export function asEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
