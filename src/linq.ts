@@ -40,8 +40,8 @@ function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> = null): Enumera
 * @example
 *     var sum = Range(0, 7).Sum();
 */
-function getRange<T>(start: T, count: number): Enumerable<T> {
-    return new Implementaion.EnumerableImpl<T>(Generator.Range(start, count));
+function getRange(start: number, count: number): Enumerable<number> {
+    return new Implementaion.EnumerableImpl<number>(Generator.Range(start, count));
 }
 
 
