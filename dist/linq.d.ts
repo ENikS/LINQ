@@ -514,6 +514,7 @@ interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
 //  C# compatability interface
 //-----------------------------------------------------------------------------
 
+
 interface IEnumerable<T> {
     GetEnumerator(): IEnumerator<T>;
 }
@@ -802,3 +803,15 @@ interface Array<T> {
 
 
 
+
+
+declare module "linq-es5" {
+    export function AsEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
+    export function asEnumerable<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
+    export function From<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
+    export function from<T>(iterable: Iterable<T> | IEnumerable<T>): Enumerable<T>;
+    export function Range(start: number, count: number): Enumerable<number>;
+    export function range(start: number, count: number): Enumerable<number>;
+    export function Repeat<V>(seed: V, count: number): Enumerable<V>;
+    export function repeat<V>(seed: V, count: number): Enumerable<V>;
+}

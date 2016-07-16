@@ -25,8 +25,8 @@ describe('Module Interface -', function () {
         assert.isNotNull(Enumerable.from(simpleArray));
         assert.isNotNull(Enumerable.From(simpleArray));
         assert.isNotNull(Enumerable.asEnumerable(simpleArray));
-        assert.isNotNull(Enumerable.Range<Number>(0, 1));
-        assert.isNotNull(Enumerable.Repeat<Number>(0, 1));
+        assert.isNotNull(Enumerable.Range(0, 1));
+        assert.isNotNull(Enumerable.Repeat(0, 1));
     });
 
     it('Module\'s default', function () {
