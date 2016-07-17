@@ -4,8 +4,8 @@
     "module": "umd",
     "noImplicitAny": false,
     "noImplicitReturns": true,
-    "removeComments": true,
-    "declaration":  true,
+    "removeComments": false,
+    "moduleResolution": "node",
     "sourceMap": true
   },
   "exclude": [

@@ -1,0 +1,15 @@
+{
+  "name": "es2015-example",
+  "version": "1.0.0",
+  "description": "ES2015 Example",
+  "main": "app.js",
+  "author": "GenericUser",
+  "dependencies": {
+    "linq-es2015": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "app.js"
+  },
+  "license": "ISC"
+}
