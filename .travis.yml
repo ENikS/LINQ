@@ -24,7 +24,6 @@ deploy:
   file: 
   - ./dist/linq.js
   - ./dist/linq.min.js
-  - ./dist/linq.d.ts
   on:
     all_branches: true
     tags: true
