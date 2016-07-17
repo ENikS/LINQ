@@ -2,8 +2,8 @@
   "name": "linq-es5",
   "version": "1.8.46",
   "description": "Complete implementation of Language-Integrated Query (LINQ)",
-  "main": "src/linq.js",
-  "typings": "dist/linq.d.ts",
+  "main": "lib/linq.js",
+  "typings": "lib/linq.d.ts",
   "tonicExampleFilename": "dist/example.js",
   "homepage": "https://github.com/ENikS/LINQ/wiki",
   "author": {
@@ -83,7 +83,7 @@
   },
   "scripts": {
     "build:ts": "tsc",
-    "build:js": "browserify ./src/linq.js -o ./dist/linq.js -s Enumerable",
+    "build:js": "browserify ./lib/linq.js -o ./dist/linq.js -s Enumerable",
     "build:min": "jsmin ./dist/linq.js > ./dist/linq.min.js",
     "build": "npm run build:ts && npm run build:js &&  npm run build:min",
     "test": "mocha test/ --recursive"

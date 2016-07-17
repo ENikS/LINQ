@@ -14,8 +14,8 @@
 // under the License.
 
 import {assert} from "chai";
-import * as Enumerable from "../src/linq";
-import defaultmethod from "../src/linq";
+import * as Enumerable from "../lib/linq";
+import defaultmethod from "../lib/linq";
 
 var simpleArray = [0, 1, 2];
 

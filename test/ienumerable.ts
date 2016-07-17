@@ -15,7 +15,7 @@
 
 import {jsn} from "./data";
 import {assert} from "chai";
-import { asEnumerable, Range} from "../src/linq";
+import { asEnumerable, Range} from "../lib/linq";
 
 
 describe('Enumerable - ', function () {
