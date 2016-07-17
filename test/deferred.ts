@@ -15,7 +15,7 @@
 
 import {simpleArray, oddArray, jsn, un1, un2, people, pets} from "./data";
 import {assert} from "chai";
-import Linq from "../src/linq";
+import Linq from "../lib/linq";
 
 
 describe('Deferred Execution -', function () {

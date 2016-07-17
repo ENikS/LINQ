@@ -15,7 +15,7 @@
 
 import {simpleArray, oddArray, jsn} from "./data";
 import {assert} from "chai";
-import * as Linq from "../src/linq";
+import * as Linq from "../lib/linq";
 
 
 describe('Immediate Execution -', function () {

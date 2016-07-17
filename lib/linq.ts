@@ -14,9 +14,70 @@
 // under the License.
 
 
+import * as Generator from "./generators";
 import * as Constant from "./utilities";
 import * as Iterator from "./iterators";
-import * as Generator from "./generators";
+import {Enumerable, IEnumerable, IEnumerator} from "./enumerable";
+
+
+//-----------------------------------------------------------------------------
+//  Implementation of EnumerableConstructor interface
+//-----------------------------------------------------------------------------
+
+
+/**
+* Converts any Iterable<T> object into LINQ-able object
+* @param TSource An Array, Map, Set, String or other Iterable object.
+*/
+function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> = null): Enumerable<T> {
+    return new EnumerableImpl<T>(TSource);
+}
+
+
+/**
+* Generates <count> of <T> elements starting with <start>. T is any 
+* type which could be cast to number: number, enum, etc.
+* @param start First value in sequence.
+* @param count Number of elements to iteratel.
+* @example
+*     var sum = Range(0, 7).Sum();
+*/
+function getRange(start: number, count: number): Enumerable<number> {
+    return new EnumerableImpl<number>(Generator.Range(start, count));
+}
+
+
+/**
+* Repeat element <start> of type T <count> of times.
+* @param start First value in sequence.
+* @param count Number of elements to iteratel.
+* @example
+*     var sum = Repeat("v", 7);
+*/
+function getRepeat<T>(value: T, count: number): Enumerable<T> {
+    return new EnumerableImpl<T>(Generator.Repeat(value, count));
+}
+
+
+//-----------------------------------------------------------------------------
+//  Exoprts
+//-----------------------------------------------------------------------------
+
+export {
+    getEnumerable as default,
+    getEnumerable as AsEnumerable,
+    getEnumerable as asEnumerable,
+    getEnumerable as From,
+    getEnumerable as from,
+    getRange as range,
+    getRange as Range,
+    getRepeat as repeat,
+    getRepeat as Repeat,
+    Enumerable,
+    IEnumerable,
+    IEnumerator
+};
+
 
 
 //-----------------------------------------------------------------------------
@@ -24,8 +85,7 @@ import * as Generator from "./generators";
 //-----------------------------------------------------------------------------
 
 
-
-export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
+class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     //-------------------------------------------------------------------------
     //  Fields
@@ -94,7 +154,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
         return (null != this._factory) ? this._factory(this._factoryArg)
-                                       : this._target[Symbol.iterator]();
+            : this._target[Symbol.iterator]();
     }
 
     /** Returns C# style enumerator */
@@ -122,7 +182,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         }
         let result: A = zero;
         for (let value of this) {
-            if (!result) result = Constant.getDefaultVal(typeof(value));
+            if (!result) result = Constant.getDefaultVal(typeof (value));
             result = method(result, value);
         }
         return selector(result);
@@ -252,7 +312,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
             if (0 > index || length <= index) {
                 let value = this._target[0];
                 return 0 < length ? Constant.getDefaultVal(typeof (value), value)
-                                  : undefined;
+                    : undefined;
             }
             return this._target[index];
         }
@@ -430,7 +490,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
 
     public Distinct<V>(keySelector?: (T) => V): Enumerable<T> {
         this._target = keySelector ? Generator.Distinct(this._target, keySelector)
-                                   : Generator.DistinctFast(this._target)
+            : Generator.DistinctFast(this._target)
         return this;
     }
 
@@ -512,7 +572,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Range(start: number, count: number): Enumerable <number> {
+    public Range(start: number, count: number): Enumerable<number> {
         return new EnumerableImpl<number>(Generator.Range(start, count));
     }
 
@@ -566,10 +626,9 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
     }
 
 
-    public Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T>
-    {
+    public Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
         this._target = keySelector ? Generator.Union(this._target, second, keySelector)
-                                   : Generator.UnionFast(this._target, second)
+            : Generator.UnionFast(this._target, second)
         return this;
     }
 
@@ -602,4 +661,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> {
         return this._factory(this._factoryArg);
     }
 }
+
+
+
 

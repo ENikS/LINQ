@@ -2,8 +2,8 @@
   "name": "linq-es2015",
   "version": "2.1.6",
   "description": "Complete implementation of LINQ (ECMAScript 2015 Language Specification)",
-  "main": "src/linq.js",
-  "typings": "dist/linq.d.ts",
+  "main": "lib/linq.js",
+  "typings": "lib/linq.d.ts",
   "tonicExampleFilename": "dist/example.js",
   "homepage": "https://github.com/ENikS/LINQ/wiki",
   "author": {

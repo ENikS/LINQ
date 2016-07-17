@@ -38,11 +38,11 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <TypeScriptCompile Include="dist\linq.d.ts" />
-    <TypeScriptCompile Include="src\generators.ts" />
-    <TypeScriptCompile Include="src\utilities.ts" />
-    <TypeScriptCompile Include="src\enumerable.ts" />
-    <TypeScriptCompile Include="src\iterators.ts" />
+    <TypeScriptCompile Include="lib\linq.ts" />
+    <TypeScriptCompile Include="lib\generators.ts" />
+    <TypeScriptCompile Include="lib\utilities.ts" />
+    <TypeScriptCompile Include="lib\enumerable.ts" />
+    <TypeScriptCompile Include="lib\iterators.ts" />
     <TypeScriptCompile Include="test\deferred.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
@@ -62,16 +62,11 @@
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
-    <TypeScriptCompile Include="src\linq.ts">
-      <TestFramework>
-      </TestFramework>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="dist\" />
     <Folder Include="test\" />
-    <Folder Include="src\" />
+    <Folder Include="lib\" />
     <Folder Include="typings\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

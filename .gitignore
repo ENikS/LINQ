@@ -199,3 +199,4 @@ FakesAssemblies/
 /.vsnodetools.sln
 /lib/test
 /lib/src
+*.d.ts
