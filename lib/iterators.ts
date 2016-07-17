@@ -15,6 +15,7 @@
 
 
 import * as constant from "./utilities";
+import {IEnumerator} from "./enumerable";
 
 
 //-----------------------------------------------------------------------------
