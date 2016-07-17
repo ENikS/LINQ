@@ -4,7 +4,7 @@
     "module": "umd",
     "noImplicitAny": false,
     "noImplicitReturns": true,
-    "removeComments": false,
+    "removeComments": true,
     "declaration":  true,
     "sourceMap": true
   },

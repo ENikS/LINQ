@@ -36,7 +36,10 @@ test/*.ts
 
 # Exclude sources
 lib/enumerable.ts
+lib/generators.d.ts
 lib/generators.ts
+lib/iterators.d.ts
 lib/iterators.ts
 lib/linq.ts
+lib/utilities.d.ts
 lib/utilities.ts
