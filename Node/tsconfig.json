@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "umd",
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "removeComments": false,
+    "moduleResolution": "node",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

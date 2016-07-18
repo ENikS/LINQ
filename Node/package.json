@@ -1,17 +1,16 @@
 {
-  "name": "TypeScript-Example",
+  "name": "Node-Example",
   "version": "1.0.0",
-  "description": "This is an example of how to use linq-es2015 in TypeScript project",
+  "description": "This is an example of how to use linq-es2015 in Node project",
   "main": "app.js",
   "author": "GenericUser",
   "private": true,
-  "repository": "https://github.com/ENikS/LINQ/tree/examples/TypeScript",
+  "repository": "https://github.com/ENikS/LINQ/tree/examples/Node",
   "dependencies": {
     "linq-es2015": "latest"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "tsc",
     "test": "node app"
   },
   "license": "MIT"
