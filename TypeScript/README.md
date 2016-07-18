@@ -25,6 +25,10 @@ Build the project:
 ```
 tsc
 ```
+or
+```
+npm run build
+```
 Execute code:
 ```
 node app
