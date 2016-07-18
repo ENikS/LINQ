@@ -33,4 +33,8 @@ Execute code:
 ```
 node app
 ```
+or
+```
+npm test
+```
 
