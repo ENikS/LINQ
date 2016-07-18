@@ -23,7 +23,7 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
                        .Count()
 
 ```
-For live example you could play with please follow these link https://jsfiddle.net/ENikS/pyvjcfa0
+For live example you could play with please follow this link https://jsfiddle.net/ENikS/pyvjcfa0
 
 Original information about C# implementation available at https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx 
 
