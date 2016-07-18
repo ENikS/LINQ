@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// Copyright (c) ENikS.  All rights reserved.
+/** Copyright (c) ENikS.  All rights reserved.                               */
 //
 // Licensed under the Apache License, Version 2.0  ( the  "License" );  you may 
 // not use this file except in compliance with the License.  You may  obtain  a 
@@ -12,6 +12,9 @@
 // WARRANTIES OR CONDITIONS  OF  ANY  KIND, either express or implied.  See the 
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
+
+
+import {IEnumerator} from "./enumerable";
 
 
 //-----------------------------------------------------------------------------
@@ -70,7 +73,7 @@ export class ArrayIterator<T> implements Iterator<T> {
 }
 
 
-class IteratorBase<T> {
+export class IteratorBase<T> {
 
     protected _done: any = { value: undefined, done: true };
 
@@ -128,7 +131,7 @@ export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 }
 
 
-class MethodIteratror<T> extends IteratorBase<T> {
+export class MethodIteratror<T> extends IteratorBase<T> {
 
     constructor(iterator: Iterator<T>, protected _method: Function = null, protected _index = 0) {
         super(iterator);

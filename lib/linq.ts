@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// Copyright (c) ENikS.  All rights reserved.
+/** Copyright (c) ENikS.  All rights reserved.                               */
 //
 // Licensed under the Apache License, Version 2.0  ( the  "License" );  you may 
 // not use this file except in compliance with the License.  You may  obtain  a 
@@ -14,8 +14,70 @@
 // under the License.
 
 
-import * as Constant from "./utilities";
+import "es6-shim";
 import * as Iterator from "./iterators";
+import * as Constant from "./utilities";
+import {Enumerable, IEnumerable, IEnumerator} from "./enumerable";
+
+/**
+* Converts any Iterable<T> object into LINQ-able object
+* @param TSource An Array, Map, Set, String or other Iterable object.
+* @example
+*     import {asEnumerable} from "linq-ts";
+*
+*     var enumerable = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Take(3);
+*     var sum = enumerable.Sum();
+*
+*/
+function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> | string = null): Enumerable<T> {
+    return new EnumerableImpl<T>(TSource);
+}
+
+
+/**
+* Generates <count> of <T> elements starting with <start>. T is any 
+* type which could be cast to number: number, enum, etc.
+* @param start First value in sequence.
+* @param count Number of elements to iteratel.
+* @example
+*     var sum = Range(0, 7).Sum();
+*/
+function getRange<T>(start: T, count: number): Enumerable<T> {
+    return new EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(start, count, true));
+}
+
+
+/**
+* Repeat element <start> of type T <count> of times.
+* @param start First value in sequence.
+* @param count Number of elements to iteratel.
+* @example
+*     var sum = Repeat("v", 7);
+*/
+function getRepeat<T>(start: T, count: number): Enumerable<T> {
+    return new EnumerableImpl<T>(null, () => new Iterator.GeneratorIterator(start, count));
+}
+
+
+//-----------------------------------------------------------------------------
+//  Exoprts
+//-----------------------------------------------------------------------------
+
+
+export {
+    getEnumerable as default,
+    getEnumerable as AsEnumerable,
+    getEnumerable as asEnumerable,
+    getEnumerable as From,
+    getEnumerable as from,
+    getRange as Range,
+    getRange as range,
+    getRepeat as Repeat,
+    getRepeat as repeat
+};
+
+
+
 
 
 //-----------------------------------------------------------------------------
@@ -23,7 +85,7 @@ import * as Iterator from "./iterators";
 //-----------------------------------------------------------------------------
 
 
-export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
+class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     protected _target: Iterable<T> | IEnumerable<T> | string;
     protected _factory: Function;
@@ -36,7 +98,7 @@ export class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerabl
         this._target = target;
         this._factory = factory;
         this._factoryArg = arg;
-        
+
         // JavaScript naming convention
         this['aggregate'] = this.Aggregate;
         this['all'] = this.All;
@@ -621,6 +683,5 @@ class OrderedLinq<T> extends EnumerableImpl<T> {
     }
 
 }
-
 
 
