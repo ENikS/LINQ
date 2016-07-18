@@ -4,8 +4,9 @@
   "description": "ES2015 Example",
   "main": "app.js",
   "author": "GenericUser",
+  "repository": "https://github.com/ENikS/LINQ/tree/examples",
   "dependencies": {
-    "linq-es2015": "^2.2.0"
+    "linq-es2015": "latest"
   },
   "devDependencies": {},
   "scripts": {
