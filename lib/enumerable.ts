@@ -214,7 +214,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * Produces the intersection of two sequences. 
     * @param An Iterable<T> whose distinct elements that also appear in the first sequence will be returned.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([1, 3, 5, 11, 23, 44]);
+    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect(asEnumerable([1, 3, 5, 11, 23, 44]));
     */
     Intersect(other: Iterable<T>): Enumerable<T>;
 
