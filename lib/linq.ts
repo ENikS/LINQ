@@ -487,13 +487,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.DistinctIteratror(this[Symbol.iterator](), keySelector));
     }
 
-    public Except(other: Iterable<T>): Enumerable<T> {
-        var _set: Set<T> = new Set<T>();
-        var result, otherIterator = other[Symbol.iterator]();
-        while (!(result = otherIterator.next()).done) {
-            _set.add(result.value);
-        }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this[Symbol.iterator](), _set, true));
+    public Except<K>(other: Iterable<T>, kesSelector?: (T) => K): Enumerable<T> {
+        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror<T, K>(this[Symbol.iterator](), Constant.getKeys(other, kesSelector), true, kesSelector));
     }
 
 
@@ -540,13 +535,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Intersect(other: Iterable<T>): Enumerable<T> {
-        var _set: Set<T> = new Set<T>();
-        var result, otherIterator = other[Symbol.iterator]();
-        while (!(result = otherIterator.next()).done) {
-            _set.add(result.value);
-        }
-        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror(this[Symbol.iterator](), _set));
+    public Intersect<K>(other: Iterable<T>, kesSelector?: (T) => K): Enumerable<T> {
+        return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror<T, K>(this[Symbol.iterator](), Constant.getKeys(other, kesSelector), false, kesSelector));
     }
 
 

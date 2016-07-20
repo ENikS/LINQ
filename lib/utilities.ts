@@ -50,13 +50,15 @@ export function getDefaultVal(type, value = undefined) : any {
 
 export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (T) => K): Set<K> {
     let set = new Set<any>();
+    var result, otherIterator = iterable[Symbol.iterator]();
+
     if (keySelector) {
-        for (let value of iterable) {
-            set.add(keySelector(value));
+        while (!(result = otherIterator.next()).done) {
+            set.add(keySelector(result.value));
         }
     } else {
-        for (let value of iterable) {
-            set.add(value);
+        while (!(result = otherIterator.next()).done) {
+            set.add(result.value);
         }
     }
     return set;

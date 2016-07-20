@@ -81,16 +81,17 @@ export class IteratorBase<T> {
 }
 
 
-export class IntersectIteratror<T> extends IteratorBase<T> {
+export class IntersectIteratror<T, K> extends IteratorBase<T> {
 
-    constructor(iterator: Iterator<T>, private _set: Set<T>, private _switch: boolean = false) {
+    constructor(iterator: Iterator<T>, private _set: Set<K>, private _switch: boolean, private _keySelector: (T) => K = (o) => o) {
         super(iterator);
     }
 
     public next(value?: any): IteratorResult<T> {
+        debugger
         var result;
-        while (!(result = this._iterator.next()).done && (this._switch == this._set.has(result.value))) { }
-        if (!this._switch) this._set.add(result.value);
+        while (!(result = this._iterator.next()).done && (this._switch == this._set.has(this._keySelector(result.value)))) { }
+        if (!result.done && !this._switch) this._set.add(this._keySelector(result.value));
         return result;
     }
 }

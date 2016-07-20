@@ -2,6 +2,7 @@
   "name": "linq-es5",
   "version": "1.9.0",
   "description": "Complete implementation of Language-Integrated Query (LINQ)",
+  "readme": "linq-es5.md",
   "main": "lib/linq.js",
   "typings": "lib/linq.d.ts",
   "tonicExampleFilename": "dist/example.js",
