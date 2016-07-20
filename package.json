@@ -1,6 +1,6 @@
 {
   "name": "linq-es5",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Complete implementation of Language-Integrated Query (LINQ)",
   "readme": "linq-es5.md",
   "main": "lib/linq.js",
