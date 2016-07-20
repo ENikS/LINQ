@@ -102,10 +102,17 @@ export function* TakeWhile<T>(target: Iterable<T>, predicate: (T, number) => Boo
 }
 
 
-export function* Intersect<T>(target: Iterable<T>, exceptions: Set<T>, condition: boolean) {
-    for (let value of target) {
-        if (condition == exceptions.has(value)) continue;
-        yield value;
+export function* Intersect<T, K>(target: Iterable<T>, exceptions: Set<T> | Set<K>, condition: boolean, keySelect?: (T) => K) {
+    if (keySelect) {
+        for (let value of target) {
+            if (condition == (exceptions as Set<K>).has(keySelect(value))) continue;
+            yield value;
+        }
+    } else {
+        for (let value of target) {
+            if (condition == (exceptions as Set<T>).has(value)) continue;
+            yield value;
+        }
     }
 }
 

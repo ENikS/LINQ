@@ -157,11 +157,12 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * It does not also return those elements in second that do not appear in first.
     * @param other An Iterable<T> whose elements that also occur in the first sequence
     * will cause those elements to be removed from the returned sequence.
+    * @param keySelector A function to extract a key from an element.
     * @example
     *     asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([2,3,5]);
     *   // Will return 0, 1, 4, 6, 7
     */
-    Except(other: Iterable<T>): Enumerable<T>;
+    Except<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T>;
 
     /**
     * Returns the first element in a sequence that satisfies a specified condition. 
@@ -213,10 +214,11 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Produces the intersection of two sequences. 
     * @param An Iterable<T> whose distinct elements that also appear in the first sequence will be returned.
+    * @param keySelector A function to extract a key from an element.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect(asEnumerable([1, 3, 5, 11, 23, 44]));
     */
-    Intersect(other: Iterable<T>): Enumerable<T>;
+    Intersect<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T>;
 
     /** 
     * Correlates the elements of two sequences based on matching keys. A specified IEqualityComparer<T> is used to compare keys. 

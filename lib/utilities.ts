@@ -79,6 +79,20 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
     return map;
 }
 
+export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (T) => K): Set<K> {
+    let set = new Set<any>();
+    if (keySelector) {
+        for (let value of iterable) {
+            set.add(keySelector(value));
+        }
+    } else {
+        for (let value of iterable) {
+            set.add(value);
+        }
+    }
+    return set;
+}
+
 
 //-----------------------------------------------------------------------------
 //  Constants

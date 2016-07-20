@@ -495,12 +495,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Except(other: Iterable<T>): Enumerable<T> {
-        let set: Set<T> = new Set<T>();
-        for (let value of other) {
-            set.add(value);
-        }
-        this._target = Generator.Intersect(this._target, set, true);
+    public Except<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
+        this._target = Generator.Intersect(this._target, Constant.getKeys(other, keySelector), true, keySelector);
         return this;
     }
 
@@ -516,12 +512,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Intersect(other: Iterable<T>): Enumerable<T> {
-        let set: Set<T> = new Set<T>();
-        for (let value of other) {
-            set.add(value);
-        }
-        this._target = Generator.Intersect(this._target, set, false)
+
+    public Intersect<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
+        this._target = Generator.Intersect(this._target, Constant.getKeys(other, keySelector), false, keySelector)
         return this;
     }
 
