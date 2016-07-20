@@ -10,8 +10,8 @@ Methods that are used in a query that returns a sequence of values do not consum
 All relevant methods are implemented with [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/) so no unnecessary iterations are performed. 
 
 ## Compatibility
-linq-es5 is compatible with [Ecma-262 Edition 5.1](http://www.ecma-international.org/ecma-262/5.1/) specification and will run on any browser or Node engine down to Node 0.12.
-[See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
+**LINQ-ES5** is compatible with [Ecma-262 Edition 5.1](http://www.ecma-international.org/ecma-262/5.1/) specification and will run on any browser or Node engine down to Node 0.12. <br/>
+[[See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)]
 
 This library uses Iterable interface T[System.iterator] natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
 
