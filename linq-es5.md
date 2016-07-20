@@ -7,7 +7,7 @@ This library is implemented in TypeScript and transpiled into native [Ecma-262 E
 This library uses Iterable interface ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)) natively implemented by most Javascript engines for collection types (Array, Map, Set, String). As result iterations are done much faster compared to IEnumerable implementation. The code is also backwards compatible with IEnumerable implementation. 
 
 All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
-### Installation
+## Installation
 ```
 npm install linq-es5
 ```
@@ -23,14 +23,15 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 ```
 For example you could play with please follow this [link](https://tonicdev.com/npm/linq-es5)
 
+### Naming Convention
+When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
+If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org/wiki/CamelCase) notation.
+
+### Using in browser
+[Browserified](http://browserify.org/) [standalone](https://github.com/substack/node-browserify#usage) [UMD](https://github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](https://npmcdn.com). [See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
+
 ## Documentation
 *  [Library Reference](https://github.com/ENikS/LINQ/wiki)
 *  [LINQ (Language-Integrated Query)](https://msdn.microsoft.com/en-us/library/bb397926.aspx)
 *  [Original Documentation (C#)](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
 *  [Example Projects](https://github.com/ENikS/LINQ/tree/examples)
-
-### Naming Convention
-Method names follow original C# convention (Name starts with capital letter) for compatibility reasons. It is done so that code could be cut/pasted from C# to JavaScritp with just minor reformatting.
-
-## Using in browser
-[Browserified](http://browserify.org/) [standalone](https://github.com/substack/node-browserify#usage) [UMD](https://github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](https://npmcdn.com). [See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
