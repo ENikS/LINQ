@@ -11,13 +11,13 @@ install:
 - npm install mocha-lcov-reporter
 - npm install
 
-before_script:
-- rm  ./README.md
-- mv  ./NPM.md  ./README.md
-
 script: 
 - npm run build
 - npm test
+
+after_success:
+- rm  ./README.md
+- mv  ./NPM.md  ./README.md
 
 deploy:
 - provider: releases
