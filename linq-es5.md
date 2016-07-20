@@ -23,12 +23,12 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 ```
 For example you could play with please follow this [link](https://tonicdev.com/npm/linq-es5)
 
+### Using in browser
+[Browserified](http://browserify.org/) [standalone](https://github.com/substack/node-browserify#usage) [UMD](https://github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](https://npmcdn.com). [See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
+
 ### Naming Convention
 When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
 If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org/wiki/CamelCase) notation.
-
-### Using in browser
-[Browserified](http://browserify.org/) [standalone](https://github.com/substack/node-browserify#usage) [UMD](https://github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](https://npmcdn.com). [See Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
 
 ## Documentation
 *  [Library Reference](https://github.com/ENikS/LINQ/wiki)
