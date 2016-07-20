@@ -12,7 +12,7 @@ script:
 - npm run build
 - npm test
 
-after_success:
+before_deploy:
 - rm README.md
 - mv README.npm README.md
 
