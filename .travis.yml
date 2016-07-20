@@ -15,9 +15,9 @@ script:
 - npm run build
 - npm test
 
-before_deploy:
-- rm README.md
-- mv NPM.md README.md
+after_success:
+- rm ./README.md
+- rename ./NPM.md ./README.md
 
 deploy:
 - provider: releases
