@@ -50,5 +50,7 @@ If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org
 *  [LINQ (Language-Integrated Query)](https://msdn.microsoft.com/en-us/library/bb397926.aspx)
 *  [Original Documentation (C#)](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
 *  [Example Projects](https://github.com/ENikS/LINQ/tree/examples)
+*  [Browser Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
+*  [Node Example](https://tonicdev.com/npm/linq-es2015)
 
 
