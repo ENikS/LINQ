@@ -24,7 +24,7 @@ export function* Reverse<T>(target: Array<T>) {
 }
 
 
-export function* Select<T, V>(target: Iterable<T>, transform: (T, number) => V) {
+export function* Select<T, V>(target: Iterable<T>, transform: (x: T, i: number) => V) {
     let index = 0;
     for (let value of target) {
         yield transform(value, index++);
@@ -44,7 +44,7 @@ export function* DefaultIfEmpty<T>(target: Iterable<T>, defaultValue: T) {
 }
 
 
-export function* Distinct<T, V>(target: Iterable<T>, keySelector: (T) => V) {
+export function* Distinct<T, V>(target: Iterable<T>, keySelector: (x: T) => V) {
     let set: Set<V> = new Set<V>();
     for (let value of target) {
         let key: V = keySelector(value);
@@ -65,7 +65,7 @@ export function* DistinctFast<T>(target: Iterable<T>) {
 }
 
 
-export function* Where<T>(target: Iterable<T>, predicate: (T, number) => Boolean) {
+export function* Where<T>(target: Iterable<T>, predicate: (x: T, i: number) => Boolean) {
     let index = 0;
     for (let value of target) {
         if (!predicate(value, index++)) continue;
@@ -83,7 +83,7 @@ export function* Skip<T, V>(target: Iterable<T>, skip: number) {
 }
 
 
-export function* SkipWhile<T>(target: Iterable<T>, predicate: (T, number) => Boolean) {
+export function* SkipWhile<T>(target: Iterable<T>, predicate: (x: T, i: number) => Boolean) {
     let index = 0, skipped = false;
     for (let value of target) {
         if (!skipped && !(skipped = !predicate(value, index++))) continue;
@@ -92,7 +92,7 @@ export function* SkipWhile<T>(target: Iterable<T>, predicate: (T, number) => Boo
 }
 
 
-export function* TakeWhile<T>(target: Iterable<T>, predicate: (T, number) => Boolean) {
+export function* TakeWhile<T>(target: Iterable<T>, predicate: (x: T, i: number) => Boolean) {
     let index = 0;
     for (let value of target) {
         if (!predicate(value, index++)) return;
@@ -101,7 +101,7 @@ export function* TakeWhile<T>(target: Iterable<T>, predicate: (T, number) => Boo
 }
 
 
-export function* Intersect<T, K>(target: Iterable<T>, exceptions: Set<T> | Set<K>, condition: boolean, keySelect?: (T) => K) {
+export function* Intersect<T, K>(target: Iterable<T>, exceptions: Set<T> | Set<K>, condition: boolean, keySelect?: (x: T) => K) {
     if (keySelect) {
         for (let value of target) {
             if (condition == (exceptions as Set<K>).has(keySelect(value))) continue;
@@ -132,7 +132,7 @@ export function* Range<T>(value: any, count: number) {
 }
 
 
-export function* Union<T, K>(first: Iterable<T>, second: Iterable<T>, keySelector: (T) => K) {
+export function* Union<T, K>(first: Iterable<T>, second: Iterable<T>, keySelector: (x: T) => K) {
     let set = new Set<K>();
     for (let value of first) {
         let key = keySelector(value)
@@ -164,7 +164,7 @@ export function* UnionFast<T>(first: Iterable<T>, second: Iterable<T>) {
 }
 
 
-export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (T) => K, transform: (T, any) => R, map: Map<K, Array<I>>) {
+export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, transform: (x: T, a: any) => R, map: Map<K, Array<I>>) {
     for (let value of target) {
         let key = oKeySelect(value);
         let innerSet = map.get(key);
@@ -176,7 +176,7 @@ export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (T) => K, tra
 }
 
 
-export function* GroupJoin<T, K, R, I>(target: Iterable<T>, oKeySelect: (T) => K, transform: (a: T, b: Iterable<I>) => R, map: Map<K, Array<I>>) {
+export function* GroupJoin<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, transform: (a: T, b: Iterable<I>) => R, map: Map<K, Array<I>>) {
     for (let value of target) {
         let key = oKeySelect(value);
         let innerSet = map.get(key);
@@ -193,7 +193,7 @@ export function* GroupBy<T, K, V>(map: Map<K, Array<T>>, resultSelect: (a: K, b:
 }
 
 
-export function* SelectMany<T, C, R>(target: Iterable<T>, selector: (T, number) => Iterable<C>, transform: (T, V) => R) {
+export function* SelectMany<T, V, R>(target: Iterable<T>, selector: (x: T, i: number) => Iterable<V>, transform: (x: T, y: V) => R) {
     let index = 0;
     for (let item of target) {
         for (let collectionItem of selector(item, index++)) {
@@ -210,10 +210,10 @@ export function* SelectManyFast<T, C>(target: Iterable<Iterable<C>>) {
 }
 
 
-export function* Zip<T, V, Z>(first: Iterable<T>, second: Iterable<V>, transform: (T, V) => Z, _index = 0) {
+export function* Zip<T, V, Z>(first: Iterable<T>, second: Iterable<V>, transform: (x: T, a: V) => Z, _index = 0) {
     let iteratorOne = first[Symbol.iterator]();
     let iteratorTwo = second[Symbol.iterator]();
-    let retOne, retTwo;
+    let retOne: IteratorResult<T>, retTwo: IteratorResult<V>;
 
     while (!(retOne = iteratorOne.next()).done && !(retTwo = iteratorTwo.next()).done) {
         yield transform(retOne.value, retTwo.value)

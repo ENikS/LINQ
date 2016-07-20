@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2015",
     "module": "umd",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "removeComments": false,
     "declaration":  true,

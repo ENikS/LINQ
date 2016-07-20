@@ -23,17 +23,17 @@
 export var trueFn = () => true;
 
 /** Default transformer, returns self */
-export var selfFn = o => o;
+export var selfFn = (o: any) => o;
 
 /** Default Grouping */
-export var defGrouping = (a, b) => {
+export var defGrouping = (a: any, b: any) => {
     if (CONST_UNDEFINED != typeof b[CONST_KEY]) throw CONST_DUPLICATE;
     b[CONST_KEY] = a;
     return b;
 };
 
 /** Returns default value for the type */
-export function getDefaultVal(type, value = undefined) : any {
+export function getDefaultVal(type: any, value: any = undefined): any {
     if (typeof type !== CONST_STRING) throw new TypeError(CONST_NO_STRING);
 
     // Handle simple types (primitives and plain function/object)
@@ -48,7 +48,7 @@ export function getDefaultVal(type, value = undefined) : any {
 }
 
 /** Returns a map of element bsed on extracted keys  **/
-export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (I) => K, selElement?: (T) => E): Map<K, Array<E>> {
+export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement?: (x: T) => E): Map<K, Array<E>> {
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
@@ -63,7 +63,7 @@ export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (I) => 
     return map;
 }
 
-export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) => K): Map<K, Array<T>> {
+export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Map<K, Array<T>> {
     let map = new Map<K, Array<T>>();
     for (let value of iterable) {
         let key = keySelector(value);
@@ -78,7 +78,7 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (I) =>
     return map;
 }
 
-export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (T) => K): Set<K> {
+export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Set<K> {
     let set = new Set<any>();
     if (keySelector) {
         for (let value of iterable) {

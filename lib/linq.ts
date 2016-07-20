@@ -103,51 +103,51 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         this._factoryArg = arg;
 
         // JavaScript naming convention
-        this['aggregate'] = this.Aggregate;
-        this['all'] = this.All;
-        this['any'] = this.Any;
-        this['average'] = this.Average;
-        this['contains'] = this.Contains;
-        this['count'] = this.Count;
-        this['max'] = this.Max;
-        this['min'] = this.Min;
-        this['elementAt'] = this.ElementAt;
-        this['elementAtOrDefault'] = this.ElementAtOrDefault;
-        this['first'] = this.First;
-        this['firstOrDefault'] = this.FirstOrDefault;
-        this['last'] = this.Last;
-        this['lastOrDefault'] = this.LastOrDefault;
-        this['sequenceEqual'] = this.SequenceEqual;
-        this['single'] = this.Single;
-        this['singleOrDefault'] = this.SingleOrDefault;
-        this['sum'] = this.Sum;
-        this['toArray'] = this.ToArray;
-        this['toMap'] = this.ToMap;
-        this['toDictionary'] = this.ToDictionary;
-        this['defaultIfEmpty'] = this.DefaultIfEmpty;
-        this['concat'] = this.Concat;
-        this['distinct'] = this.Distinct;
-        this['except'] = this.Except;
-        this['groupBy'] = this.GroupBy;
-        this['groupJoin'] = this.GroupJoin;
-        this['intersect'] = this.Intersect;
-        this['join'] = this.Join;
-        this['orderBy'] = this.OrderBy;
-        this['orderByDescend'] = this.OrderByDescending;
-        this['thenBy'] = this.ThenBy;
-        this['thenByDescendi'] = this.ThenByDescending;
-        this['range'] = this.Range;
-        this['repeat'] = this.Repeat;
-        this['reverse'] = this.Reverse;
-        this['select'] = this.Select;
-        this['selectMany'] = this.SelectMany;
-        this['skip'] = this.Skip;
-        this['skipWhile'] = this.SkipWhile;
-        this['take'] = this.Take;
-        this['takeWhile'] = this.TakeWhile;
-        this['union'] = this.Union;
-        this['where'] = this.Where;
-        this['zip'] = this.Zip;
+        (this as any)['aggregate'] = this.Aggregate;
+        (this as any)['all'] = this.All;
+        (this as any)['any'] = this.Any;
+        (this as any)['average'] = this.Average;
+        (this as any)['contains'] = this.Contains;
+        (this as any)['count'] = this.Count;
+        (this as any)['max'] = this.Max;
+        (this as any)['min'] = this.Min;
+        (this as any)['elementAt'] = this.ElementAt;
+        (this as any)['elementAtOrDefault'] = this.ElementAtOrDefault;
+        (this as any)['first'] = this.First;
+        (this as any)['firstOrDefault'] = this.FirstOrDefault;
+        (this as any)['last'] = this.Last;
+        (this as any)['lastOrDefault'] = this.LastOrDefault;
+        (this as any)['sequenceEqual'] = this.SequenceEqual;
+        (this as any)['single'] = this.Single;
+        (this as any)['singleOrDefault'] = this.SingleOrDefault;
+        (this as any)['sum'] = this.Sum;
+        (this as any)['toArray'] = this.ToArray;
+        (this as any)['toMap'] = this.ToMap;
+        (this as any)['toDictionary'] = this.ToDictionary;
+        (this as any)['defaultIfEmpty'] = this.DefaultIfEmpty;
+        (this as any)['concat'] = this.Concat;
+        (this as any)['distinct'] = this.Distinct;
+        (this as any)['except'] = this.Except;
+        (this as any)['groupBy'] = this.GroupBy;
+        (this as any)['groupJoin'] = this.GroupJoin;
+        (this as any)['intersect'] = this.Intersect;
+        (this as any)['join'] = this.Join;
+        (this as any)['orderBy'] = this.OrderBy;
+        (this as any)['orderByDescend'] = this.OrderByDescending;
+        (this as any)['thenBy'] = this.ThenBy;
+        (this as any)['thenByDescendi'] = this.ThenByDescending;
+        (this as any)['range'] = this.Range;
+        (this as any)['repeat'] = this.Repeat;
+        (this as any)['reverse'] = this.Reverse;
+        (this as any)['select'] = this.Select;
+        (this as any)['selectMany'] = this.SelectMany;
+        (this as any)['skip'] = this.Skip;
+        (this as any)['skipWhile'] = this.SkipWhile;
+        (this as any)['take'] = this.Take;
+        (this as any)['takeWhile'] = this.TakeWhile;
+        (this as any)['union'] = this.Union;
+        (this as any)['where'] = this.Where;
+        (this as any)['zip'] = this.Zip;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -175,11 +175,13 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     public Aggregate<A, B>(seed: A, 
                            func: (aggr: A, x: T) => A = Constant.selfFn, 
                            resultSelector: (aggr: A) => B = Constant.selfFn): 
-           B {
-        let zero, method, selector;
+        B {
+        let zero: A;
+        let method: (aggr: A, x: T) => A;
+        let selector: (aggr: A) => B;
         if (Constant.CONST_FUNCTION === typeof seed) {
-            method = seed;
-            selector = func;
+            method = seed as any;
+            selector = func as any;
         } else {
             zero = seed;
             method = func;
@@ -221,7 +223,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Average(func: (x: T) => number = Constant.selfFn): number {
-        let result, sum = 0, count = 0;
+        let sum = 0, count = 0;
         for (let value of this) {
             sum += func(value);
             count++;
@@ -250,8 +252,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
                     count++;
                 }
             }
-        } else if (undefined != this._target[Constant.CONST_LENGTH]) {
-            count = this._target[Constant.CONST_LENGTH];
+        } else if (undefined != (this._target as any)[Constant.CONST_LENGTH]) {
+            count = (this._target as any)[Constant.CONST_LENGTH];
         } else {
             for (let value of this) {
                 count++;
@@ -262,7 +264,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Max(transform: (x: T) => number = Constant.selfFn): number {
-        let value, max, hasValue = false;
+        let value: number, max: number, hasValue = false;
         for (let item of this) {
             value = transform(item);
             if (hasValue) {
@@ -279,7 +281,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Min(transform: (x: T) => number = Constant.selfFn): number {
-        let value, min, hasValue = false;
+        let value: number, min: number, hasValue = false;
         for (let item of this) {
             value = transform(item);
             if (hasValue) {
@@ -297,10 +299,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     public ElementAt(index: number): T {
         if (Array.isArray(this._target)) {
-            if (0 > index || this._target[Constant.CONST_LENGTH] <= index) {
+            if (0 > index || (this._target as any)[Constant.CONST_LENGTH] <= index) {
                 throw Constant.CONST_OUTOFRANGE;
             }
-            return this._target[index];
+            return (this._target as any)[index];
         }
         let count = 0;
         for (let value of this) {
@@ -315,16 +317,16 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     public ElementAtOrDefault(index: number): T {
         if (Array.isArray(this._target)) {
-            let length = this._target[Constant.CONST_LENGTH];
+            let length = (this._target as any)[Constant.CONST_LENGTH];
             if (0 > index || length <= index) {
-                let value = this._target[0];
+                let value = (this._target as any)[0];
                 return 0 < length 
                     ? Constant.getDefaultVal(typeof (value), value)
                     : undefined;
             }
-            return this._target[index];
+            return (this._target as any)[index];
         }
-        let value, count = 0;
+        let value: T, count = 0;
         for (let item of this) {
             if (index === count++) {
                 return item;
@@ -346,7 +348,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public FirstOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
-        let value;
+        let value: T;
         for (let item of this) {
             value = item;
             if (predicate(item)) {
@@ -358,7 +360,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Last(predicate: (x: T) => boolean = Constant.trueFn): T {
-        let value, found = false;
+        let value: T, found = false;
         for (let item of this) {
             if (predicate(item)) {
                 value = item;
@@ -373,7 +375,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public LastOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
-        let value, lastKnown, found = false;
+        let value: T, lastKnown: T, found = false;
         for (let item of this) {
             if (predicate(item)) {
                 value = item;
@@ -388,7 +390,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     public SequenceEqual(other: Iterable<T>, 
                          equal: (a: T, b: T) => boolean = (a, b) => a === b): 
            boolean {
-        let res1, res2;
+        let res1: IteratorResult<T>, res2: IteratorResult<T>;
         let it1 = this[Symbol.iterator]();
         let it2 = other[Symbol.iterator]();
         do {
@@ -402,7 +404,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Single(predicate: (x: T) => boolean = Constant.trueFn): T {
-        let value, hasValue = false;
+        let value: T, hasValue = false;
         for (let item of this) {
             if (predicate(item)) {
                 if (!hasValue) {
@@ -420,8 +422,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public SingleOrDefault<TSource>(predicate: (x: T) => boolean = 
-                                                Constant.trueFn): T {
-        let value, lastKnown, hasValue = false;
+        Constant.trueFn): T {
+        let value: T, lastKnown: T, hasValue = false;
         for (let item of this) {
             if (predicate(item)) {
                 if (!hasValue) {
@@ -448,7 +450,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public ToArray(): Array<T> {
-        let array = [];
+        let array: Array<T> = [];
         for (let value of this) {
             array.push(value);
         }
@@ -572,8 +574,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     public OrderBy<K>(keySelect: (x: T) => K = Constant.selfFn, 
                      equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): 
-           Enumerable<T> {
-        return new OrderedLinq<T>(this, (array) => Generator.Forward(array), 
+        Enumerable<T> {
+        return new OrderedLinq<T>(this, (array: Array<T>) => Generator.Forward(array), 
                                  (a: T, b: T) => equal(keySelect(a), 
                                  keySelect(b)));
     }
@@ -583,7 +585,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
                                 equal: (a: K, b: K) => number = (a, b) => 
                                     <any>a - <any>b): 
            Enumerable<T> {
-        return new OrderedLinq<T>(this, (array) => Generator.Reverse(array), 
+        return new OrderedLinq<T>(this, (array: Array<T>) => Generator.Reverse(array), 
                                   (a: T, b: T) => equal(keySelect(a), 
                                   keySelect(b)));
     }
@@ -602,7 +604,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => Generator.Forward(array), (a: T, b: T) => 
+                (array: Array<T>) => Generator.Forward(array), (a: T, b: T) => 
                                              equal(keySelect(a), keySelect(b)));
         }
     }
@@ -622,7 +624,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => Generator.Reverse(array), (a: T, b: T) => 
+                (array: Array<T>) => Generator.Reverse(array), (a: T, b: T) => 
                                             equal(keySelect(a), keySelect(b)));
         }
     }
