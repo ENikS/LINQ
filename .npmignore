@@ -1,5 +1,6 @@
 ## Project specific files
 
+README.md
 .gitattributes
 .npmignore
 .gitconfig
