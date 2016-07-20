@@ -17,7 +17,7 @@ script:
 
 before_deploy:
 - rm README.md
-- mv README.npm README.md
+- mv linq-es2015.md README.md
 
 deploy:
 - provider: releases
