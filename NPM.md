@@ -2,7 +2,7 @@
 [![Dependency Status](https://dependencyci.com/github/ENikS/LINQ/badge)](https://dependencyci.com/github/ENikS/LINQ)
 ## Language-Integrated Query (LINQ) 
 
-**LINQ-ES2015** provides a set of features that extends powerful query capabilities to JavaScript and is a complete implementation of [LINQ (Language-Integrated Query)](https://en.wikipedia.org/wiki/Language_Integrated_Query) pattern.
+**linq-es2015** provides a set of features that extends powerful query capabilities to JavaScript and is a complete implementation of [LINQ (Language-Integrated Query)](https://en.wikipedia.org/wiki/Language_Integrated_Query) pattern.
 
 The library is a continuous effort to implement LINQ using latest features of TypeScript and JavaScript languages (For [ES5](http://www.ecma-international.org/ecma-262/5.1/) compatible library look at [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) branch). The library is implemented in TypeScript and transpiled into JavaScript. It is distributed as a native node module. 
 Browserified and minified standalone UMD modules are located in ./dist directory and could be used directly in compatible browsers.
