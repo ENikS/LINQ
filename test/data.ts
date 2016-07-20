@@ -1,5 +1,4 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Copyright (c) ENikS.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0  ( the  "License" );  you may 
 // not use this file except in compliance with the License.  You may  obtain  a 
@@ -57,3 +56,5 @@ var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
 
 export var people = [magnus, terry, charlotte];
 export var pets = [barley, boots, whiskers, daisy];
+
+/** Copyright (c) ENikS.  All rights reserved. */

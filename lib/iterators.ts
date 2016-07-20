@@ -1,5 +1,4 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// Copyright (c) ENikS.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0  ( the  "License" );  you may 
 // not use this file except in compliance with the License.  You may  obtain  a 
@@ -51,3 +50,5 @@ export class CSharpEnumerator<T> implements IEnumerator<T> {
         throw "JavaScript iterators could not be Reset";
     }
 }
+
+/** Copyright (c) ENikS.  All rights reserved. */
