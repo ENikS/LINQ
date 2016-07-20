@@ -9,6 +9,9 @@
     "sourceMap": true
   },
   "exclude": [
+    ".c9",
+    ".git",
+    "dist",
     "node_modules"
   ]
 }

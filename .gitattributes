@@ -1,12 +1,7 @@
 ./.travis.yml			merge=ours
 ./.vsnodetools.njsproj	merge=ours
-./package.json			merge=ours
-./README.md				merge=ours
-./tsconfig.json			merge=ours
+./*.md			        merge=ours
+./*.json			    merge=ours
 
-./dist/linq.d.ts		merge=ours
-./src/enumerable.ts		merge=ours
-./src/generators.ts		merge=ours
-./src/iterators.ts		merge=ours
-./src/linq.ts			merge=ours
-./src/utilities.ts		merge=ours
+./lib/*.ts		        merge=ours
+./src/*.ts		        merge=ours
