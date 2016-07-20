@@ -24,11 +24,13 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * is used as the initial accumulator value, and the specified function is 
     * used to select the result value. 
     * @param func An accumulator function to be invoked on each element.
-    * @param resultSelector A function to transform the final accumulator value into the result value.
+    * @param resultSelector A function to transform the final accumulator value
+    * into the result value.
     * @example
     * var fruits = [ "apple", "mango", "orange", "passionfruit", "grape" ]; 
     * var longestName = asEnumerable(fruits)
-    *                  .Aggregate("banana", (longest, next) => next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
+    *                  .Aggregate("banana", (longest, next) => 
+    * next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
     */
     Aggregate<B>(func: (aggr: T, x: T) => T, resultSelector?: (aggr: T) => B): B;
 
@@ -38,20 +40,23 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * used to select the result value. 
     * @param seed The initial accumulator value.
     * @param func An accumulator function to be invoked on each element.
-    * @param resultSelector A function to transform the final accumulator value into the result value.
+    * @param resultSelector A function to transform the final accumulator value 
+    * into the result value.
     * @example
     * var fruits = [ "apple", "mango", "orange", "passionfruit", "grape" ]; 
     * var longestName = asEnumerable(fruits)
-    *                  .Aggregate("banana", (longest, next) => next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
+    *                  .Aggregate("banana", (longest, next) => 
+    * next.Length > longest.Length ? next : longest, fruit => fruit.ToUpper());    
     */
-    Aggregate<A, B>(seed: A, func: (aggr: A, x: T) => A, resultSelector?: (aggr: A) => B): B;
+    Aggregate<A, B>(seed: A, func: (aggr: A, x: T) => A, 
+                    resultSelector?: (aggr: A) => B): B;
 
     /**
     * Determines whether all elements of a sequence satisfy a condition.
     * @returns True is all elements satisfy criteria. 
     * @param predicate A function to test each element for a condition.
     * @example
-    *     var e:boolean = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).All((a) => a > 0);
+    *     var e:boolean = asEnumerable([1, 2, 3, 4, 5, 6, 7]).All((a) => a > 0);
     */
     All(predicate: (x: T) => Boolean): boolean;
 
@@ -93,7 +98,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @param value The value to locate in the sequence.
     * @param equal An equality comparer to compare values.    
     * @example
-    *     var e: boolean = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Contains(0, (a) => a);
+    *     var e: boolean = asEnumerable([3, 4, 5, 6, 7]).Contains(0, (a) => a);
     */
     Contains(value: T, equal?: (a: T, b: T) => boolean): boolean;
 
@@ -103,7 +108,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * specified sequence satisfy a condition.
     * @param predicate A function to test each element for a condition.
     * @example
-    *     var e:number = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Count((a) => a > 3)
+    *     var e:number = asEnumerable(1, 2, 3, 4, 5, 6, 7]).Count((a) => a > 3)
     */
     Count(predicate?: (x: T) => Boolean): number;
 
@@ -112,22 +117,25 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * a singleton collection if the sequence is empty. 
     * @param defaultValue The value to return if the sequence is empty 
     * @example
-    *     var e:number = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).DefaultIfEmpty(0);
+    *     var e:number = asEnumerable([1, 2, 3, 4, 5, 6, 7]).DefaultIfEmpty(0);
     */
     DefaultIfEmpty(defaultValue?: T): Enumerable<T>;
 
     /**
-    * Distinct(equal?: (a: T, b: T) => boolean): Enumerable<T> - is not implemented
+    * Distinct(equal?: (a: T, b: T) => boolean): Enumerable<T> - is not 
+    * implemented
     * 
-    * Implementing this method would require iterating through all prior elements of
-    * the sequence and would degrade performance considerably. Instead Map is used to
-    * guarantee uniqueness and key selector function to allow more flexiblity.
+    * Implementing this method would require iterating through all prior 
+    * elements of the sequence and would degrade performance considerably. 
+    * Instead Map is used to guarantee uniqueness and key selector function to 
+    * allow more flexiblity.
     */
 
     /**
     * Returns distinct elements from a sequence by using object itself or key
     * comparer to determine uniqueness.
-    * @param keySelector A function to extract the join key from each element of the second sequence
+    * @param keySelector A function to extract the join key from each element of 
+    * the second sequence
     * @example
     *     enumerable(arrayOfObjects).Distinct(o => o.id);
     */
@@ -146,17 +154,19 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * value if the index is out of range. 
     * @param index The zero-based index of the element to retrieve.
     * @example
-    *     var e:number = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).ElementAtOrDefault(31);
+    *     var e:number = asEnumerable([2, 3, 4, 5, 6]).ElementAtOrDefault(3);
     */
     ElementAtOrDefault(index: number): T;
 
     /** 
-    * Produces the set difference of two sequences by using the default equality comparer
-    * to compare values.
+    * Produces the set difference of two sequences by using the default equality 
+    * comparer to compare values.
     * This method returns those elements in first that do not appear in second. 
-    * It does not also return those elements in second that do not appear in first.
-    * @param other An Iterable<T> whose elements that also occur in the first sequence
-    * will cause those elements to be removed from the returned sequence.
+    * It does not also return those elements in second that do not appear in 
+    * first.
+    * @param other An Iterable<T> whose elements that also occur in the first 
+    * sequence will cause those elements to be removed from the returned 
+    * sequence.
     * @param keySelector A function to extract a key from an element.
     * @example
     *     asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([2,3,5]);
@@ -165,8 +175,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T>;
 
     /**
-    * Returns the first element in a sequence that satisfies a specified condition. 
-    * Throws an exception if no matching element is found in source.
+    * Returns the first element in a sequence that satisfies a specified 
+    * condition. Throws an exception if no matching element is found in source.
     * @param predicate A function to test each element for a condition.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).First(a => a > 2);
@@ -178,7 +188,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * default value if no such element is found. 
     * @param predicate A function to test each element for a condition.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).FirstOrDefault(a => a > 2);
+    *     var e = asEnumerable([2, 3, 4, 5, 6, 7]).FirstOrDefault(a => a > 2);
     */
     FirstOrDefault(predicate?: (x: T) => boolean): T;
 
@@ -187,45 +197,63 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * function and creates a result value from each group and its key. Elements
     * of each group are projected by using a specified function. 
     * @param selKey A function to extract the key for each element.
-    * @param selElement A function to map each source element to an element in an Grouping<TKey, TElement>.
+    * @param selElement A function to map each source element to an element in 
+    * an Grouping<TKey, TElement>.
     * @param selResult A function to create a result value from each group.    
     * @example
     *   var e = asEnumerable(pets).GroupBy(pet => pet.Age, pet => pet)
     */
-    GroupBy<K, E, R>(selKey: (x: T) => K, selElement?: (x: T) => E, selResult?: (a: K, b: Iterable<E>) => R): Enumerable<R>;
+    GroupBy<K, E, R>(selKey: (x: T) => K, selElement?: (x: T) => E, 
+                     selResult?: (a: K, b: Iterable<E>) => R): Enumerable<R>;
 
     /** 
-    * Correlates the elements of two sequences based on equality of keys and groups the results. The default equality comparer is used to compare keys. 
+    * Correlates the elements of two sequences based on equality of keys and 
+    * groups the results. The default equality comparer is used to compare keys. 
     * @param inner The sequence to join to the first sequence.
-    * @param outerKeySelector A function to extract the join key from each element of the first sequence.
-    * @param innerKeySelector A function to extract the join key from each element of the second sequence.
-    * @param resultSelector A function to create a result element from an element from the first sequence and a collection of matching elements from the second sequence.
+    * @param outerKeySelector A function to extract the join key from each 
+    * element of the first sequence.
+    * @param innerKeySelector A function to extract the join key from each 
+    * element of the second sequence.
+    * @param resultSelector A function to create a result element from an 
+    * element from the first sequence and a collection of matching elements from 
+    * the second sequence.
     * @example
     *   var iterable = asEnumerable(people)
     *       .GroupJoin(pets, person => person, pet => pet.Owner,
     *                  (person, petCollection) => { return { 
     *                       Owner: person.Name, 
-    *                       Pets: asEnumerable(petCollection) .Select(pet=> pet.Name); 
+    *                       Pets: asEnumerable(petCollection)
+    *                                 .Select(pet=> pet.Name); 
     *               };
     *       });
     */
-    GroupJoin<I, K, R>(inner: Iterable<I>, outerKeySelector: (a: T) => K, innerKeySelector: (b: I) => K, resultSelector: (a: T, b: Iterable<I>) => R): Enumerable<R>;
+    GroupJoin<I, K, R>(inner: Iterable<I>, 
+                       outerKeySelector: (a: T) => K, 
+                       innerKeySelector: (b: I) => K, 
+                       resultSelector: (a: T, b: Iterable<I>) => R): 
+        Enumerable<R>;
 
     /** 
     * Produces the intersection of two sequences. 
-    * @param An Iterable<T> whose distinct elements that also appear in the first sequence will be returned.
+    * @param An Iterable<T> whose distinct elements that also appear in the 
+    * first sequence will be returned.
     * @param keySelector A function to extract a key from an element.
     * @example
-    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect(asEnumerable([1, 3, 5, 11, 23, 44]));
+    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7])
+    *                 .Intersect(asEnumerable([1, 3, 5, 11, 23, 44]));
     */
     Intersect<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T>;
 
     /** 
-    * Correlates the elements of two sequences based on matching keys. A specified IEqualityComparer<T> is used to compare keys. 
+    * Correlates the elements of two sequences based on matching keys. A 
+    * specified IEqualityComparer<T> is used to compare keys. 
     * @param inner The sequence to join to the first sequence.
-    * @param oSelector A function to extract the join key from each element of the first sequence.
-    * @param iSelector A function to extract the join key from each element of the second sequence.
-    * @param transform A function to create a result element from two matching elements.
+    * @param oSelector A function to extract the join key from each element of 
+    * the first sequence.
+    * @param iSelector A function to extract the join key from each element of 
+    * the second sequence.
+    * @param transform A function to create a result element from two matching 
+    * elements.
     * @example
     *   var iterable =
     *       asEnumerable(people).Join(pets,
@@ -235,10 +263,14 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *               return person.Name + " - " + pet.Name;
     *           });
     */
-    Join<I, K, R>(inner: Iterable<I>, oSelector: (o: T) => K, iSelector: (i: I) => K, transform: (o: T, i: I) => R): Enumerable<R>;
+    Join<I, K, R>(inner: Iterable<I>, 
+                  oSelector: (o: T) => K, 
+                  iSelector: (i: I) => K, 
+                  transform: (o: T, i: I) => R): Enumerable<R>;
 
     /**	
-    * Returns the last element of a sequence that satisfies a specified condition. 
+    * Returns the last element of a sequence that satisfies a specified 
+    * condition. 
     * Throws an exception if no matching element is found in source.
     * @param predicate A function to test each element for a condition.
     * @example
@@ -247,7 +279,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Last(predicate?: (x: T) => boolean): T;
 
     /** 
-    * Returns the last element of a sequence that satisfies a condition or a default value if no such element is found. 
+    * Returns the last element of a sequence that satisfies a condition or a 
+    * default value if no such element is found. 
     * @param predicate A function to test each element for a condition.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).LastOrDefault();
@@ -264,7 +297,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Max(transform?: (x: T) => number): number;
 
     /** 
-    * Invokes a transform function on each element of a sequence and returns the minimum Decimal value. 
+    * Invokes a transform function on each element of a sequence and returns the
+    * minimum Decimal value. 
     * @param transform A transform function to apply to each element.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Min()
@@ -272,25 +306,30 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Min(transform?: (x: T) => number): number;
 
     /** 
-    * Sorts the elements of a sequence in ascending order by using a specified  comparer. 
+    * Sorts the elements of a sequence in ascending order by using a specified  
+    * comparer. 
     * @param keySelect A function to extract a key from an element.
     * @param equal An IComparer<T> to compare keys.
     * @example
     *     var e = asEnumerable(jsn).OrderBy(a=> a.name);
     */
-    OrderBy<K>(keySelect?: (x: T) => K, equal?: (a: K, b: K) => number): Enumerable<T>;
+    OrderBy<K>(keySelect?: (x: T) => K, 
+               equal?: (a: K, b: K) => number): Enumerable<T>;
 
     /** 
-    * Sorts the elements of a sequence in descending order by using a specified comparer. 
+    * Sorts the elements of a sequence in descending order by using a specified
+    * comparer. 
     * @param keySelect A function to extract a key from an element.
     * @param equal An IComparer<T> to compare keys.
     * @example
     *     var e = asEnumerable(jsn).OrderByDescending(a=> a.name);
     */
-    OrderByDescending<K>(keySelect?: (x: T) => K, equal?: (a: K, b: K) => number): Enumerable<T>;
+    OrderByDescending<K>(keySelect?: (x: T) => K, 
+                         equal?: (a: K, b: K) => number): Enumerable<T>;
 
     /** 
-    * Performs a subsequent ordering of the elements in a sequence in ascending order by using a specified comparer. 
+    * Performs a subsequent ordering of the elements in a sequence in ascending 
+    * order by using a specified comparer. 
     * @param keySelect A function to extract a key from an element.
     * @param equal An IComparer<T> to compare keys.
     * @example
@@ -299,10 +338,12 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *                       .ThenBy(fruit=> fruit.charCodeAt(0))
     *                       .ThenBy(fruit=> fruit.charCodeAt(4));
     */
-    ThenBy<K>(keySelect?: (x: T) => K, equal?: (a: K, b: K) => number): Enumerable<T>;
+    ThenBy<K>(keySelect?: (x: T) => K, 
+              equal?: (a: K, b: K) => number): Enumerable<T>;
 
     /** 
-    * Performs a subsequent ordering of the elements in a sequence in descending order by using a specified comparer. 
+    * Performs a subsequent ordering of the elements in a sequence in descending 
+    * order by using a specified comparer. 
     * @param keySelect A function to extract a key from an element.
     * @param equal An IComparer<T> to compare keys.
     * @example
@@ -311,7 +352,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *                       .ThenByDescending(fruit=> fruit.charCodeAt(0))
     *                       .ThenByDescending(fruit=> fruit.charCodeAt(4));
     */
-    ThenByDescending<K>(keySelect?: (x: T) => K, equal?: (a: K, b: K) => number): Enumerable<T>;
+    ThenByDescending<K>(keySelect?: (x: T) => K, 
+                        equal?: (a: K, b: K) => number): Enumerable<T>;
 
     /** 
     * Returns count of numbers beginning from start  
@@ -339,30 +381,39 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Reverse(): Enumerable<T>;
 
     /**	
-    * Projects each element of a sequence into a new form by incorporating the element's index. 
+    * Projects each element of a sequence into a new form by incorporating the 
+    * element's index. 
     * @param transform A transform function to apply to each source element
     * @example
-        var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
+        var array = asEnumerable([2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
     */
     Select<V>(transform: (x: T) => V): Enumerable<V>;
 
     /**	
-    * Projects each element of a sequence into a new form by incorporating the element's index. 
-    * @param transform A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
+    * Projects each element of a sequence into a new form by incorporating the 
+    * element's index. 
+    * @param transform A transform function to apply to each source element; the 
+    * second parameter of the function represents the index of the source element.
     * @example
-        var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
+        var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7])
+                        .Select((a, idx) => a * idx);
     */
     Select<V>(transform: (x: T, index: number) => V): Enumerable<V>;
 
     /**
-    * Projects each element of a sequence to an Iterable<T>, flattens the resulting sequences into one sequence, and invokes a result selector 
-    * function on each element therein. The index of each source element is used in the intermediate projected form of that element. 
-    * @param selector A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
-    * @param result A transform function to apply to each element of the intermediate sequence.
+    * Projects each element of a sequence to an Iterable<T>, flattens the
+    * resulting sequences into one sequence, and invokes a result selector 
+    * function on each element therein. The index of each source element is used 
+    * in the intermediate projected form of that element. 
+    * @param selector A transform function to apply to each source element; the 
+    * second parameter of the function represents the index of the source element.
+    * @param result A transform function to apply to each element of the 
+    * intermediate sequence.
     * @example
     *     var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
     */
-    SelectMany<S, V>(selector?: (x: T, index: number) => Iterable<S>, result?: (x: T, s: S) => V): Enumerable<V>;
+    SelectMany<S, V>(selector?: (x: T, index: number) => Iterable<S>, 
+                     result?: (x: T, s: S) => V): Enumerable<V>;
 
     /**
     * Determines whether two sequences are equal by comparing their elements
@@ -375,7 +426,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     SequenceEqual(other: Iterable<T>, equal?: (a: T, b: T) => boolean): boolean;
 
     /**
-    * Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists. 
+    * Returns the only element of a sequence that satisfies a specified 
+    * condition, and throws an exception if more than one such element exists. 
     * @param predicate A function to test an element for a condition.
     * @example
     *     var e = asEnumerable([4]).Single();
@@ -383,7 +435,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     Single(predicate?: (x: T) => boolean): T;
 
     /** 
-    * Returns the only element of a sequence that satisfies a specified condition or a default value if no such element exists; this method 
+    * Returns the only element of a sequence that satisfies a specified 
+    * condition or a default value if no such element exists; this method 
     * Throws an exception if more than one element satisfies the condition. 
     * @param predicate A function to test an element for a condition.
     * @example
@@ -394,7 +447,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /** 
     * Bypasses a specified number of elements in a sequence and then returns 
     * the remaining elements. 
-    * @param skip The number of elements to skip before returning the remaining elements.
+    * @param skip The number of elements to skip before returning the remaining 
+    * elements.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Skip(3);
     */
@@ -405,7 +459,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * and then returns the remaining elements. The element's index is used in 
     * the logic of the predicate function. 
     * @param predicate A function to test each source element for a condition;
-    * the second parameter of the function represents the index of the source element.
+    * the second parameter of the function represents the index of the source 
+    * element.
     * @example
     *     enumerable.SkipWhile((amount, index) => amount > index * 1000);
     */
@@ -433,7 +488,8 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * Returns elements from a sequence as long as a specified condition is true.
     * The element's index is used in the logic of the predicate function. 
     * @param predicate A function to test each source element for a condition;
-    * the second parameter of the function represents the index of the source element.
+    * the second parameter of the function represents the index of the source 
+    * element.
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).TakeWhile(a=> a < 4);
     */
@@ -451,33 +507,44 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * to a specified key selector function, a comparer, and an element selector
     * function. 
     * @param keySelector A function to extract a key from each element.
-    * @param elementSelector A transform function to produce a result element value from each element.
+    * @param elementSelector A transform function to produce a result element 
+    * value from each element.
     */
-    ToMap<TKey, TElement>(keySelector: (x: T) => TKey, elementSelector?: (x: T) => TElement): Map<TKey, TElement>;
+    ToMap<TKey, TElement>(keySelector: (x: T) => TKey, 
+                          elementSelector?: (x: T) => TElement):
+        Map<TKey, TElement>;
 
     /** 
     * Creates a Map< TKey, TValue > from an IEnumerable< T > according
     * to a specified key selector function, a comparer, and an element selector
     * function. 
     * @param keySelector A function to extract a key from each element.
-    * @param elementSelector A transform function to produce a result element value from each element.
+    * @param elementSelector A transform function to produce a result element 
+    * value from each element.
     */
-    ToDictionary<TKey, TElement>(keySelector: (x: T) => TKey, elementSelector?: (x: T) => TElement): Map<TKey, TElement>;
+    ToDictionary<TKey, TElement>(keySelector: (x: T) => TKey, 
+                                 elementSelector?: (x: T) => TElement): 
+        Map<TKey, TElement>;
 
     /**
     * Creates a Map< TKey, TValue > from an IEnumerable< T > according
     * to a specified key selector function, a comparer, and an element selector
     * function. 
     * @param keySelector A function to extract a key from each element.
-    * @param elementSelector A transform function to produce a result element value from each element.
+    * @param elementSelector A transform function to produce a result element 
+    * value from each element.
     */
-    //ToDictionary<TKey, TElement>(keySelector: (T) => TKey, elementSelector?: (T) => TElement): Map<TKey, TElement>;	
+    //ToDictionary<TKey, TElement>(keySelector: (T) => TKey, 
+    //                             elementSelector?: (T) => TElement): 
+    //    Map<TKey, TElement>;	
 
     /** 
     * Produces the set union of two sequences. Union returns only unique values.
     * This method excludes duplicates from the return set.
-    * @param second An IEnumerable<T> whose distinct elements form the second set for the union.
-    * @param keySelector A function to extract the key which used to check for equality
+    * @param second An IEnumerable<T> whose distinct elements form the second 
+    * set for the union.
+    * @param keySelector A function to extract the key which used to check for 
+    * equality
     * @example
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Union([5,6,7,8,9]);
     */
@@ -494,18 +561,22 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /**
     * Filters a sequence of values based on a predicate. 
     * @param predicate A function to test each source element for a condition; 
-    * the second parameter of the function represents the index of the source element.
+    * the second parameter of the function represents the index of the source 
+    * element.
     * @example
     *     enumerable([0, 1, 2, 3, 4, 5, 6, 7]).Where((a,i) => a * i % 2 == 1)
     */
     Where(predicate: (x: T, i: number) => Boolean): Enumerable<T>;
 
     /** 
-    * Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results. 
+    * Applies a specified function to the corresponding elements of two 
+    * sequences, producing a sequence of the results. 
     * @param second The second input sequence.
-    * @param func A function that specifies how to combine the corresponding elements of the two sequences.
+    * @param func A function that specifies how to combine the corresponding
+    * elements of the two sequences.
     * @example
-    *     var e = asEnumerable(numbers).Zip(words, (first, second) => first + " " + second);
+    *     var e = asEnumerable(numbers)
+    *                 .Zip(words, (first, second) => first + " " + second);
     */
     Zip<V, Z>(second: Iterable<V>, func: (a: T, b: V) => Z): Enumerable<Z>;
 }

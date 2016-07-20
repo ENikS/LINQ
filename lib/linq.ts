@@ -29,7 +29,8 @@ import {Enumerable, IEnumerable, IEnumerator} from "./enumerable";
 * Converts any Iterable<T> object into LINQ-able object
 * @param TSource An Array, Map, Set, String or other Iterable object.
 */
-function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> = null): Enumerable<T> {
+function getEnumerable<T>(TSource: Iterable<T> | IEnumerable<T> = null): 
+        Enumerable<T> {
     return new EnumerableImpl<T>(TSource);
 }
 
@@ -96,7 +97,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     protected _factoryArg: any;
 
 
-    constructor(target: Iterable<any> | IEnumerable<any>, factory?: Function, arg?: any) {
+    constructor(target: Iterable<any> | IEnumerable<any>, 
+                factory?: Function, arg?: any) {
         this._target = <Iterable<any>>target;
         this._factory = factory;
         this._factoryArg = arg;
@@ -169,8 +171,12 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     //-------------------------------------------------------------------------
 
 
-    public Aggregate<A, B>(func: (A, T) => A, resultSelector: (A) => B): B;
-    public Aggregate<A, B>(seed: A, func: (A, T) => A = Constant.selfFn, resultSelector: (A) => B = Constant.selfFn): B {
+    public Aggregate<B>(func: (aggr: T, x: T) => T, 
+                        resultSelector: (aggr: T) => B): B;
+    public Aggregate<A, B>(seed: A, 
+                           func: (aggr: A, x: T) => A = Constant.selfFn, 
+                           resultSelector: (aggr: A) => B = Constant.selfFn): 
+           B {
         let zero, method, selector;
         if (Constant.CONST_FUNCTION === typeof seed) {
             method = seed;
@@ -189,7 +195,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public All(predicate: (T) => boolean = Constant.trueFn) {
+    public All(predicate: (x: T) => boolean = Constant.trueFn) {
         for (let value of this) {
             if (!predicate(value)) {
                 return false;
@@ -199,7 +205,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Any(predicate?: (T) => boolean) {
+    public Any(predicate?: (x: T) => boolean) {
         let iterator: Iterator<T>;
         // Check if at least one exist
         if (!predicate && (iterator = this._target[Symbol.iterator]())) {
@@ -215,7 +221,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Average(func: (T) => number = Constant.selfFn): number {
+    public Average(func: (x: T) => number = Constant.selfFn): number {
         let result, sum = 0, count = 0;
         for (let value of this) {
             sum += func(value);
@@ -225,7 +231,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Contains(value: T, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
+    public Contains(value: T, 
+                    equal: (a: T, b: T) => boolean = (a, b) => a === b): 
+           boolean {
         for (let item of this) {
             if (equal(item, value)) {
                 return true;
@@ -235,7 +243,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Count(predicate: (T) => boolean): number {
+    public Count(predicate: (x: T) => boolean): number {
         let count = 0;
         if (predicate) {
             for (let value of this) {
@@ -254,7 +262,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Max(transform: (T) => number = Constant.selfFn): number {
+    public Max(transform: (x: T) => number = Constant.selfFn): number {
         let value, max, hasValue = false;
         for (let item of this) {
             value = transform(item);
@@ -271,7 +279,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Min(transform: (T) => number = Constant.selfFn): number {
+    public Min(transform: (x: T) => number = Constant.selfFn): number {
         let value, min, hasValue = false;
         for (let item of this) {
             value = transform(item);
@@ -311,7 +319,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             let length = this._target[Constant.CONST_LENGTH];
             if (0 > index || length <= index) {
                 let value = this._target[0];
-                return 0 < length ? Constant.getDefaultVal(typeof (value), value)
+                return 0 < length 
+                    ? Constant.getDefaultVal(typeof (value), value)
                     : undefined;
             }
             return this._target[index];
@@ -327,7 +336,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public First(predicate: (T) => boolean = Constant.trueFn): T {
+    public First(predicate: (x: T) => boolean = Constant.trueFn): T {
         for (let value of this) {
             if (predicate(value)) {
                 return value;
@@ -337,7 +346,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public FirstOrDefault(predicate: (T) => boolean = Constant.trueFn): T {
+    public FirstOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
         let value;
         for (let item of this) {
             value = item;
@@ -349,7 +358,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Last(predicate: (T) => boolean = Constant.trueFn): T {
+    public Last(predicate: (x: T) => boolean = Constant.trueFn): T {
         let value, found = false;
         for (let item of this) {
             if (predicate(item)) {
@@ -364,7 +373,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public LastOrDefault(predicate: (T) => boolean = Constant.trueFn): T {
+    public LastOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
         let value, lastKnown, found = false;
         for (let item of this) {
             if (predicate(item)) {
@@ -377,7 +386,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SequenceEqual(other: Iterable<T>, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
+    public SequenceEqual(other: Iterable<T>, 
+                         equal: (a: T, b: T) => boolean = (a, b) => a === b): 
+           boolean {
         let res1, res2;
         let it1 = this[Symbol.iterator]();
         let it2 = other[Symbol.iterator]();
@@ -391,7 +402,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Single(predicate: (T) => boolean = Constant.trueFn): T {
+    public Single(predicate: (x: T) => boolean = Constant.trueFn): T {
         let value, hasValue = false;
         for (let item of this) {
             if (predicate(item)) {
@@ -409,7 +420,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SingleOrDefault<TSource>(predicate: (T) => boolean = Constant.trueFn): T {
+    public SingleOrDefault<TSource>(predicate: (x: T) => boolean = 
+                                                Constant.trueFn): T {
         let value, lastKnown, hasValue = false;
         for (let item of this) {
             if (predicate(item)) {
@@ -427,7 +439,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Sum(transform: (T) => number = Constant.selfFn): number {
+    public Sum(transform: (x: T) => number = Constant.selfFn): number {
         let sum: number = 0;
         for (let value of this) {
             sum += transform(value);
@@ -445,8 +457,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public ToMap<TKey, TElement>(keySelector: (T) => TKey,
-        elementSelector: (T) => TElement = Constant.selfFn): Map<TKey, TElement> {
+    public ToMap<TKey, TElement>(keySelector: (x: T) => TKey,
+                                 elementSelector: (x: T) => 
+                                    TElement = Constant.selfFn): 
+           Map<TKey, TElement> {
         let dictionary = new Map<TKey, TElement>();
         for (let value of this) {
             dictionary.set(keySelector(value), elementSelector(value));
@@ -455,8 +469,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public ToDictionary<TKey, TElement>(keySelector: (T) => TKey,
-        elementSelector: (T) => TElement = Constant.selfFn): Map<TKey, TElement> {
+    public ToDictionary<TKey, TElement>(keySelector: (x: T) => TKey,
+                                        elementSelector: (x: T) => 
+                                            TElement = Constant.selfFn): 
+           Map<TKey, TElement> {
         let dictionary = new Map<TKey, TElement>();
         for (let value of this) {
             dictionary.set(keySelector(value), elementSelector(value));
@@ -467,7 +483,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Cast<V>(): Enumerable<V> {
-        return this as any as Enumerable<V>;    // TODO: Remove any once TypeScript 2.0 out
+        // TODO: Remove any once TypeScript 2.0 out
+        return this as any as Enumerable<V>;    
     }
 
 
@@ -478,7 +495,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public DefaultIfEmpty(defaultValue: T = undefined): Enumerable<T> {
-        return new EnumerableImpl<T>(Generator.DefaultIfEmpty(this, defaultValue));
+        return new EnumerableImpl<T>(Generator.DefaultIfEmpty(this, 
+                                                              defaultValue));
     }
 
 
@@ -488,79 +506,125 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Distinct<V>(keySelector?: (T) => V): Enumerable<T> {
-        this._target = keySelector ? Generator.Distinct(this._target, keySelector)
+    public Distinct<V>(keySelector?: (x: T) => V): Enumerable<T> {
+        this._target = keySelector ? Generator.Distinct(this._target, 
+                                                        keySelector)
             : Generator.DistinctFast(this._target)
         return this;
     }
 
 
-    public Except<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
-        this._target = Generator.Intersect(this._target, Constant.getKeys(other, keySelector), true, keySelector);
+    public Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): 
+           Enumerable<T> {
+        this._target = Generator.Intersect(this._target, 
+                                           Constant.getKeys(other, keySelector), 
+                                           true, keySelector);
         return this;
     }
 
 
-    public GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E = Constant.selfFn, selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
-        let map: Map<K, Array<E>> = Constant.getKeyedMap(this._target, selKey, selElement);
+    public GroupBy<K, E, R>(selKey: (x: T) => K, 
+                            selElement: (x: T) => E = Constant.selfFn, 
+                            selResult: (a: K, b: Iterable<E>) => 
+                                        R = Constant.defGrouping): 
+           Enumerable<R> {
+        let map: Map<K, Array<E>> = Constant.getKeyedMap(this._target, 
+                                                         selKey, selElement);
         return new EnumerableImpl<R>(Generator.GroupBy(map, selResult));
     }
 
 
-    public GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K, iKeySelect: (I) => K, resultSelector: (a: T, b: Iterable<I>) => R = Constant.defGrouping): Enumerable<R> {
-        return new EnumerableImpl<R>(Generator.GroupJoin(this._target, oKeySelect, resultSelector, Constant.getKeyedMapFast(inner, iKeySelect)));
+    public GroupJoin<I, K, R>(inner: Iterable<I>, 
+                              oKeySelect: (a: T) => K, 
+                              iKeySelect: (b: I) => K, 
+                              resultSelector: (a: T, b: Iterable<I>) => 
+                                               R = Constant.defGrouping): 
+           Enumerable<R> {
+        return new EnumerableImpl<R>(Generator.GroupJoin(this._target, 
+                                        oKeySelect, 
+                                        resultSelector, 
+                                        Constant.getKeyedMapFast(inner, 
+                                                                 iKeySelect)));
     }
 
 
 
-    public Intersect<K>(other: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
-        this._target = Generator.Intersect(this._target, Constant.getKeys(other, keySelector), false, keySelector)
+    public Intersect<K>(other: Iterable<T>, 
+                        keySelector?: (x: T) => K): Enumerable<T> {
+        this._target = Generator.Intersect(this._target, 
+                                           Constant.getKeys(other, keySelector), 
+                                           false, keySelector)
         return this;
     }
 
 
-    public Join<I, K, R>(inner: Iterable<I>, oSelector: (T) => K, iSelector: (I) => K, transform: (T, I) => R): Enumerable<R> {
-        this._target = Generator.Join<T, K, R, I>(this._target, oSelector, transform, Constant.getKeyedMapFast(inner, iSelector));
+    public Join<I, K, R>(inner: Iterable<I>, 
+                         oSelector: (o: T) => K, 
+                         iSelector: (i: I) => K, 
+                         transform: (o: T, i: I) => R): Enumerable<R> {
+        this._target = Generator.Join<T, K, R, I>(this._target, 
+                                              oSelector, 
+                                              transform, 
+                                              Constant.getKeyedMapFast(inner, 
+                                                                    iSelector));
         return this as any as Enumerable<R>;
     }
 
 
-    public OrderBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
-        return new OrderedLinq<T>(this, (array) => Generator.Forward(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+    public OrderBy<K>(keySelect: (x: T) => K = Constant.selfFn, 
+                     equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): 
+           Enumerable<T> {
+        return new OrderedLinq<T>(this, (array) => Generator.Forward(array), 
+                                 (a: T, b: T) => equal(keySelect(a), 
+                                 keySelect(b)));
     }
 
 
-    public OrderByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
-        return new OrderedLinq<T>(this, (array) => Generator.Reverse(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+    public OrderByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, 
+                                equal: (a: K, b: K) => number = (a, b) => 
+                                    <any>a - <any>b): 
+           Enumerable<T> {
+        return new OrderedLinq<T>(this, (array) => Generator.Reverse(array), 
+                                  (a: T, b: T) => equal(keySelect(a), 
+                                  keySelect(b)));
     }
 
 
-    public ThenBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public ThenBy<K>(keySelect: (x: T) => K = Constant.selfFn, 
+                     equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): 
+           Enumerable<T> {
         if (this instanceof OrderedLinq) {
             let superEqual = (<OrderedLinq<T>><any>this).equal;
             (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                 let result: number = superEqual(a, b);
-                return (0 != result) ? result : equal(keySelect(a), keySelect(b));
+                return (0 != result) ? result : equal(keySelect(a), 
+                                                      keySelect(b));
             }
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => Generator.Forward(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+                (array) => Generator.Forward(array), (a: T, b: T) => 
+                                             equal(keySelect(a), keySelect(b)));
         }
     }
 
 
-    public ThenByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public ThenByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, 
+                               equal: (a: K, b: K) => number = (a, b) => 
+                                    <any>a - <any>b): 
+           Enumerable<T> {
         if (this instanceof OrderedLinq) {
             let superEqual = (<OrderedLinq<T>><any>this).equal;
             (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                 let result: number = superEqual(a, b);
-                return (0 != result) ? result : equal(keySelect(a), keySelect(b));
+                return (0 != result) ? result : equal(keySelect(a), 
+                                                      keySelect(b));
             }
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => Generator.Reverse(array), (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+                (array) => Generator.Reverse(array), (a: T, b: T) => 
+                                            equal(keySelect(a), keySelect(b)));
         }
     }
 
@@ -576,19 +640,24 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Reverse(): Enumerable<T> {
-        let array: Array<T> = Array.isArray(this._target) ? <Array<T>>this._target : this.ToArray();
+        let array: Array<T> = Array.isArray(this._target) 
+                            ? <Array<T>>this._target : this.ToArray();
         return new EnumerableImpl<T>(null, () => Generator.Reverse(array));
     }
 
 
-    public Select<V>(transform: (T) => V): Enumerable<V>;
-    public Select<V>(transform: (T, number) => V): Enumerable<V> {
+    public Select<V>(transform: (x: T) => V): Enumerable<V>;
+    public Select<V>(transform: (x: T, index: number) => V): Enumerable<V> {
         this._target = Generator.Select(this._target, transform)
         return this as any as Enumerable<V>;
     }
 
 
-    public SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = (t, s) => s): Enumerable<V> {
+    public SelectMany<S, V>(selector: (x: T, index: number) => 
+                                            Iterable<S> = Constant.selfFn, 
+                                            result: (x: T, s: S) => 
+                                                V = (x, s) => s as any as V): 
+           Enumerable<V> {
         this._target = Generator.SelectMany(this._target, selector, result);
         return this as any as Enumerable<V>;
     }
@@ -600,8 +669,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SkipWhile(predicate: (T) => boolean): Enumerable<T>;
-    public SkipWhile(predicate: (T, number) => boolean): Enumerable<T> {
+    public SkipWhile(predicate: (x: T) => boolean): Enumerable<T>;
+    public SkipWhile(predicate: (x: T, i: number) => boolean): Enumerable<T> {
         this._target = Generator.SkipWhile(this._target, predicate);
         return this;
     }
@@ -613,27 +682,31 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public TakeWhile(predicate: (T, number) => boolean): Enumerable<T> {
+    public TakeWhile(predicate: (x: T, i: number) => boolean): Enumerable<T> {
         this._target = Generator.TakeWhile(this._target, predicate);
         return this;
     }
 
 
-    public Union<K>(second: Iterable<T>, keySelector?: (T) => K): Enumerable<T> {
-        this._target = keySelector ? Generator.Union(this._target, second, keySelector)
+    public Union<K>(second: Iterable<T>, keySelector?: (x: T) => K): 
+           Enumerable<T> {
+        this._target = keySelector 
+                     ? Generator.Union(this._target, second, keySelector)
             : Generator.UnionFast(this._target, second)
         return this;
     }
 
 
-    public Where(predicate: (T) => Boolean): Enumerable<T>;
-    public Where(predicate: (T, number) => Boolean = Constant.trueFn): Enumerable<T> {
+    public Where(predicate: (x: T) => Boolean): Enumerable<T>;
+    public Where(predicate: (x: T, i: number) => Boolean = Constant.trueFn): 
+           Enumerable<T> {
         this._target = Generator.Where(this._target, predicate);
         return this;
     }
 
 
-    public Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z> {
+    public Zip<V, Z>(second: Iterable<V>, func: (a: T, b: V) => Z): 
+           Enumerable<Z> {
         this._target = Generator.Zip(this._target, second, func);
         return this as any as Enumerable<Z>
     }
@@ -642,7 +715,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 class OrderedLinq<T> extends EnumerableImpl<T> {
 
-    constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: (a: T, b: T) => number) {
+    constructor(target: Iterable<any> | IEnumerable<any>, 
+                factory: Function, public equal: (a: T, b: T) => number) {
         super(target, factory);
     }
 
