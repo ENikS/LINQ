@@ -3,8 +3,8 @@ This library is a complete implementation of [LINQ (Language-Integrated Query)](
 The methods in this class provide an implementation of the standard query operators for querying any data source that implements Iterable<T>. Methods that are used in a query that return a sequence of values do not consume the target data until the query object is enumerated. This is known as [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/). Methods that are used in a query that returns a singleton value execute and consume the target data immediately.
 
 ### Implementation
-This library is implemented in TypeScript and transpiled into native [Ecma-262 Edition 5.1](http://www.ecma-international.org/ecma-262/5.1/) JavaScript. It will run on any compatible browser or Node engine. It will even run on Node 0.12. For [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) compatible library see [linq-es2015 module](https://www.npmjs.com/package/linq-es2015)<br/>
-This library uses Iterable interface ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)) natively implemented by most Javascript engines for collection types (Array, Map, Set, String). 
+This library is implemented in TypeScript and transpiled into native [Ecma-262 Edition 5.1](http://www.ecma-international.org/ecma-262/5.1/) JavaScript. It will run on any compatible browser or Node engine. It will even run on Node 0.12. For [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) compatible library see [linq-es2015 module](https://www.npmjs.com/package/linq-es2015).<br/>
+Iterations over data are done using Iterable interface ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)) (where available) natively implemented by most Javascript engines for collection types (Array, Map, Set, String). 
 
 All relevant methods are implemented with deferred  execution so no unnecessary iterations are performed. 
 ## Installation
