@@ -12,31 +12,26 @@ Browserified and minified standalone UMD modules are located in ./dist directory
 This library uses latest [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) language specification and utilizes [Iterables](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface): ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)), JavaScript generators ([function*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)), and [for of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loops. All relevant methods are implemented with [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/) so no unnecessary iterations are performed. 
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
-## Installation
-```
-npm install linq-es2015
-```
-
 ## Using 
 ```javascript
-import {asEnumerable, Range} from "linq-es2015";
+import * as Enumerable from "linq-es2015";
 
+var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
+                       .Where(a => a % 2 == 1)
+                       .Count()
 
-var count =  asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ).Where(a => a % 2 == 1)
-                                                            .Count()
-
-var iterable = asEnumerable(people)
-               .GroupJoin(pets,
-                          person => person, 
-                          pet => pet.Owner,
-                          (person, petCollection) => {
-                              return {
-                                  Owner: person.Name,
-                                  Pets: asEnumerable(petCollection)
-                                       .Select(pet=> pet.Name)
-                                       .ToArray()
-                              };
-                          });
+var iterable = Enumerable.asEnumerable(people)
+                         .GroupJoin(pets,
+                                    person => person, 
+                                    pet => pet.Owner,
+                                    (person, petCollection) => {
+                                        return {
+                                            Owner: person.Name,
+                                            Pets: asEnumerable(petCollection)
+                                                 .Select(pet=> pet.Name)
+                                                 .ToArray()
+                                        };
+                                    });
 
 ```
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
