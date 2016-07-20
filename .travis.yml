@@ -16,8 +16,10 @@ script:
 - npm test
 
 after_success:
+- ls
 - rm ./README.md
-- rename ./NPM.md ./README.md
+- mv ./NPM.md ./README.md
+- ls
 
 deploy:
 - provider: releases
