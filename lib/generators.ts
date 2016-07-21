@@ -13,8 +13,6 @@
 // under the License.
 
 
-import * as Constant from "./utilities";
-
 
 export function* Forward<T>(target: Array<T>) {
     yield* target;
