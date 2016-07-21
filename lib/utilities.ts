@@ -24,17 +24,17 @@
 export var trueFn = () => true;
 
 /** Default transformer, returns self */
-export var selfFn = o => o;
+export var selfFn = (o: any) => o;
 
 /** Default Grouping */
-export var defGrouping = (a, b) => {
+export var defGrouping = (a: any, b: any) => {
     if ('undefined' != typeof b['key']) throw duplicateKey;
     b['key'] = a;
     return b;
 };
 
 /** Returns default value for the type */
-export function getDefaultVal(type, value = undefined) : any {
+export function getDefaultVal(type: any, value: any = undefined): any {
     if (typeof type !== 'string') throw new TypeError(noString);
 
     // Handle simple types (primitives and plain function/object)
@@ -48,10 +48,10 @@ export function getDefaultVal(type, value = undefined) : any {
     return void 0;
 }
 
-export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (T) => K): Set<K> {
-    let set = new Set<any>();
-    var result, otherIterator = iterable[Symbol.iterator]();
-
+export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Set<K> {
+    var set = new Set<any>();
+    var otherIterator = iterable[Symbol.iterator]();
+    var result: any;
     if (keySelector) {
         while (!(result = otherIterator.next()).done) {
             set.add(keySelector(result.value));

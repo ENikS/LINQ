@@ -83,13 +83,13 @@ export class IteratorBase<T> {
 
 export class IntersectIteratror<T, K> extends IteratorBase<T> {
 
-    constructor(iterator: Iterator<T>, private _set: Set<K>, private _switch: boolean, private _keySelector: (T) => K = (o) => o) {
+    constructor(iterator: Iterator<T>, private _set: Set<K>, private _switch: boolean, private _keySelector: (x: T) => K = (o: any) => o) {
         super(iterator);
     }
 
     public next(value?: any): IteratorResult<T> {
         debugger
-        var result;
+        var result: any;
         while (!(result = this._iterator.next()).done && (this._switch == this._set.has(this._keySelector(result.value)))) { }
         if (!result.done && !this._switch) this._set.add(this._keySelector(result.value));
         return result;
@@ -145,7 +145,7 @@ export class DistinctIteratror<T> extends MethodIteratror<T> implements Iterator
     private _set: Set<T> = new Set<T>();
 
     public next(value?: any): IteratorResult<T> {
-        var result, key;
+        var result: any, key: any;
         while (!(result = this._iterator.next()).done) {
             key = this._method(result.value);
             if (!this._set.has(key)) break;
@@ -159,7 +159,7 @@ export class DistinctIteratror<T> extends MethodIteratror<T> implements Iterator
 export class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        var result: any;
         do {
             result = this._iterator.next();
         } while (!result.done && !this._method(result.value, this._index++));
@@ -173,7 +173,7 @@ export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
     private _hasSkipped = false;
 
     public next(value?: any): IteratorResult<T> {
-        var result;
+        var result: any;
         if (this._hasSkipped) return this._iterator.next();
         while (!(result = this._iterator.next()).done && this._method(result.value, this._index++)) { }
         this._hasSkipped = true;
@@ -196,7 +196,7 @@ export class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 
 export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
 
-    constructor(first: Iterator<T>, private _second: Iterator<V>, func: (T, V) => Z) {
+    constructor(first: Iterator<T>, private _second: Iterator<V>, func: (x: T, y: V) => Z) {
         super(first, func);
     }
 
@@ -224,12 +224,12 @@ export class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterato
 
 export class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
 
-    protected _resultSelector;
+    protected _resultSelector: (x: T, y: V) => Z;
     protected _collection: Iterator<V>;
     protected _collectionState: IteratorResult<T> = this._done;
     protected _resultState: IteratorResult<any> = this._done;
 
-    constructor(sourceIterator: Iterator<T>, selector: (T, number) => Iterable<V>, transform: (T, V) => Z = (t, s) => s) {
+    constructor(sourceIterator: Iterator<T>, selector: (x: T, i: number) => Iterable<V>, transform: (x: T, y: V) => Z = (t, s) => s as any as Z) {
         super(sourceIterator, selector);
         this._resultSelector = transform;
     }
@@ -256,7 +256,7 @@ export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
 
     private _map: Map<K, Array<I>>;
 
-    constructor(outer: Iterator<T>, inner: Iterator<I>, oKeySelect: (T) => K, iKeySelect: (I) => K, transform: (T, any) => R) {
+    constructor(outer: Iterator<T>, inner: Iterator<I>, oKeySelect: (x: T) => K, iKeySelect: (i: I) => K, transform: (x: T, o: any) => R) {
         super(outer, null);
         this._method = oKeySelect;
 
@@ -300,12 +300,12 @@ export class UnionIteratror<T, K> extends SelectManyIteratror<T, T, T> implement
 
     private _set = new Set<T>();
 
-    constructor(sourceIterator: Iterator<T>, private _keySelector: (T) => K) {
-        super(sourceIterator, o => o);
+    constructor(sourceIterator: Iterator<T>, private _keySelector: (x: T) => K) {
+        super(sourceIterator, (o: any) => o);
     }
 
     public next(value?: any): IteratorResult<T> {
-        var result, key;
+        var result: any, key: any;
         while (!(result = super.next()).done) {
             key = this._keySelector(result.value);
             if (!this._set.has(key)) break;
@@ -334,7 +334,7 @@ export class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Ite
 
 export class GroupJoinIteratror<T, I, K, R> extends MethodIteratror<T> implements Iterator<R> {
 
-    constructor(iterator: Iterator<T>, oKeySelect: (T) => K,
+    constructor(iterator: Iterator<T>, oKeySelect: (x: T) => K,
         private _transform: (a: T, b: Iterable<I>) => R,
         private _map: Map<K, Array<I>>) {
         super(iterator, oKeySelect);

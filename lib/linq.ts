@@ -100,51 +100,51 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         this._factoryArg = arg;
 
         // JavaScript naming convention
-        this['aggregate'] = this.Aggregate;
-        this['all'] = this.All;
-        this['any'] = this.Any;
-        this['average'] = this.Average;
-        this['contains'] = this.Contains;
-        this['count'] = this.Count;
-        this['max'] = this.Max;
-        this['min'] = this.Min;
-        this['elementAt'] = this.ElementAt;
-        this['elementAtOrDefault'] = this.ElementAtOrDefault;
-        this['first'] = this.First;
-        this['firstOrDefault'] = this.FirstOrDefault;
-        this['last'] = this.Last;
-        this['lastOrDefault'] = this.LastOrDefault;
-        this['sequenceEqual'] = this.SequenceEqual;
-        this['single'] = this.Single;
-        this['singleOrDefault'] = this.SingleOrDefault;
-        this['sum'] = this.Sum;
-        this['toArray'] = this.ToArray;
-        this['toMap'] = this.ToMap;
-        this['toDictionary'] = this.ToDictionary;
-        this['defaultIfEmpty'] = this.DefaultIfEmpty;
-        this['concat'] = this.Concat;
-        this['distinct'] = this.Distinct;
-        this['except'] = this.Except;
-        this['groupBy'] = this.GroupBy;
-        this['groupJoin'] = this.GroupJoin;
-        this['intersect'] = this.Intersect;
-        this['join'] = this.Join;
-        this['orderBy'] = this.OrderBy;
-        this['orderByDescend'] = this.OrderByDescending;
-        this['thenBy'] = this.ThenBy;
-        this['thenByDescendi'] = this.ThenByDescending;
-        this['range'] = this.Range;
-        this['repeat'] = this.Repeat;
-        this['reverse'] = this.Reverse;
-        this['select'] = this.Select;
-        this['selectMany'] = this.SelectMany;
-        this['skip'] = this.Skip;
-        this['skipWhile'] = this.SkipWhile;
-        this['take'] = this.Take;
-        this['takeWhile'] = this.TakeWhile;
-        this['union'] = this.Union;
-        this['where'] = this.Where;
-        this['zip'] = this.Zip;
+        (this as any)['aggregate'] = this.Aggregate;
+        (this as any)['all'] = this.All;
+        (this as any)['any'] = this.Any;
+        (this as any)['average'] = this.Average;
+        (this as any)['contains'] = this.Contains;
+        (this as any)['count'] = this.Count;
+        (this as any)['max'] = this.Max;
+        (this as any)['min'] = this.Min;
+        (this as any)['elementAt'] = this.ElementAt;
+        (this as any)['elementAtOrDefault'] = this.ElementAtOrDefault;
+        (this as any)['first'] = this.First;
+        (this as any)['firstOrDefault'] = this.FirstOrDefault;
+        (this as any)['last'] = this.Last;
+        (this as any)['lastOrDefault'] = this.LastOrDefault;
+        (this as any)['sequenceEqual'] = this.SequenceEqual;
+        (this as any)['single'] = this.Single;
+        (this as any)['singleOrDefault'] = this.SingleOrDefault;
+        (this as any)['sum'] = this.Sum;
+        (this as any)['toArray'] = this.ToArray;
+        (this as any)['toMap'] = this.ToMap;
+        (this as any)['toDictionary'] = this.ToDictionary;
+        (this as any)['defaultIfEmpty'] = this.DefaultIfEmpty;
+        (this as any)['concat'] = this.Concat;
+        (this as any)['distinct'] = this.Distinct;
+        (this as any)['except'] = this.Except;
+        (this as any)['groupBy'] = this.GroupBy;
+        (this as any)['groupJoin'] = this.GroupJoin;
+        (this as any)['intersect'] = this.Intersect;
+        (this as any)['join'] = this.Join;
+        (this as any)['orderBy'] = this.OrderBy;
+        (this as any)['orderByDescend'] = this.OrderByDescending;
+        (this as any)['thenBy'] = this.ThenBy;
+        (this as any)['thenByDescendi'] = this.ThenByDescending;
+        (this as any)['range'] = this.Range;
+        (this as any)['repeat'] = this.Repeat;
+        (this as any)['reverse'] = this.Reverse;
+        (this as any)['select'] = this.Select;
+        (this as any)['selectMany'] = this.SelectMany;
+        (this as any)['skip'] = this.Skip;
+        (this as any)['skipWhile'] = this.SkipWhile;
+        (this as any)['take'] = this.Take;
+        (this as any)['takeWhile'] = this.TakeWhile;
+        (this as any)['union'] = this.Union;
+        (this as any)['where'] = this.Where;
+        (this as any)['zip'] = this.Zip;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     /** Returns JavaScript iterator */
     public [Symbol.iterator](): Iterator<T> {
         return (this._factory) ? this._factory(this._factoryArg)
-            : (null != this._target) ? this._target[Symbol.iterator]()
+            : (null != this._target) ? (this._target as any)[Symbol.iterator]()
                 : { next: () => { return { done: true, value: undefined }; } };
     }
 
@@ -168,19 +168,21 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     //-------------------------------------------------------------------------
 
 
-    public Aggregate<A, B>(func: (A, T) => A, resultSelector: (A) => B): B;
-    public Aggregate<A, B>(seed: A, func: (A, T) => A = Constant.selfFn, resultSelector: (A) => B = Constant.selfFn): B {
-        let zero, method, selector;
+    public Aggregate<A, B>(func: (aggr: T, x: T) => A, resultSelector: (aggr: T) => B): B;
+    public Aggregate<A, B>(seed: A, func: (aggr: A, x: T) => A = Constant.selfFn, resultSelector: (aggr: A) => B = Constant.selfFn): B {
+        let zero: A;
+        let method: (aggr: A, x: T) => A;
+        let selector: (aggr: A) => B;
         if ("function" === typeof seed) {
-            method = seed;
-            selector = func;
+            method = seed as any;
+            selector = func as any;
         } else {
             zero = seed;
             method = func;
             selector = resultSelector;
         }
         var result: A = zero;
-        var res, iterator: Iterator<T> = this[Symbol.iterator]();
+        var res: any, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(res = iterator.next()).done) {
             if (!result) result = Constant.getDefaultVal(typeof (res.value));
             result = method(result, res.value);
@@ -189,8 +191,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public All(predicate: (T) => boolean = Constant.trueFn) {
-        var result, iterator: Iterator<T> = this[Symbol.iterator]();
+    public All(predicate: (x: T) => boolean = Constant.trueFn) {
+        var result: any, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (!predicate(result.value)) {
                 return false;
@@ -200,8 +202,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Any(predicate?: (T) => boolean) {
-        var result, iterator: Iterator<T> = this[Symbol.iterator]();
+    public Any(predicate?: (x: T) => boolean) {
+        var result: any, iterator: Iterator<T> = this[Symbol.iterator]();
         // Check if at least one exist
         if (null == predicate) {
             return !iterator.next().done;
@@ -216,8 +218,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Average(func: (T) => number = Constant.selfFn): number {
-        var result, sum = 0, count = 0;
+    public Average(func: (x: T) => number = Constant.selfFn): number {
+        var result: any, sum = 0, count = 0;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             sum += func(result.value);
@@ -228,7 +230,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Contains(value: T, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
-        var result, iterator: Iterator<T> = this[Symbol.iterator]();
+        var result: any, iterator: Iterator<T> = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (equal(value, result.value)) {
                 return true;
@@ -238,8 +240,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Count(predicate: (T) => boolean = Constant.trueFn): number {
-        var result, count = 0;
+    public Count(predicate: (x: T) => boolean = Constant.trueFn): number {
+        var result: any, count = 0;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
@@ -250,8 +252,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Max(transform: (T) => number = Constant.selfFn): number {
-        var result, value, max, hasValue = false;
+    public Max(transform: (x: T) => number = Constant.selfFn): number {
+        var result: any, value: number, max: number, hasValue = false;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             value = transform(result.value);
@@ -268,8 +270,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Min(transform: (T) => number = Constant.selfFn): number {
-        var result, value, min, hasValue = false;
+    public Min(transform: (x: T) => number = Constant.selfFn): number {
+        var result: any, value: number, min: number, hasValue = false;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             value = transform(result.value);
@@ -287,7 +289,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public ElementAt(index: number): T {
-        var result, count = 0;
+        var result: any, count = 0;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (index === count++) {
@@ -299,7 +301,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public ElementAtOrDefault(index: number): T {
-        var result, value, count = 0;
+        var result: any, value: T, count = 0;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (index === count++) {
@@ -311,8 +313,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public First(predicate: (T) => boolean = Constant.trueFn): T {
-        var result;
+    public First(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var result: any;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
@@ -323,8 +325,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public FirstOrDefault(predicate: (T) => boolean = Constant.trueFn): T {
-        var result, value;
+    public FirstOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var result: any, value: T;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             value = result.value;
@@ -336,8 +338,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Last(predicate: (T) => boolean = Constant.trueFn): T {
-        var result, value, found = false;
+    public Last(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var result: any, value: T, found = false;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
@@ -352,8 +354,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public LastOrDefault(predicate: (T) => boolean = Constant.trueFn): T {
-        var result, value, lastKnown, found = false;
+    public LastOrDefault(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var result: any, value: T, lastKnown: T, found = false;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
@@ -367,7 +369,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public SequenceEqual(other: Iterable<T>, equal: (a: T, b: T) => boolean = (a, b) => a === b): boolean {
-        var res1, res2;
+        var res1: any, res2: any;
         var it1 = this[Symbol.iterator]();
         var it2 = other[Symbol.iterator]();
         do {
@@ -380,9 +382,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Single(predicate: (T) => boolean = Constant.trueFn): T {
-        var value, hasValue = false;
-        var result, iterator = this[Symbol.iterator]();
+    public Single(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var value: T, hasValue = false;
+        var result: any, iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
                 if (!hasValue) {
@@ -399,9 +401,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SingleOrDefault<TSource>(predicate: (T) => boolean = Constant.trueFn): T {
-        var value, lastKnown, hasValue = false;
-        var result, iterator = this[Symbol.iterator]();
+    public SingleOrDefault<TSource>(predicate: (x: T) => boolean = Constant.trueFn): T {
+        var value: T, lastKnown: T, hasValue = false;
+        var result: any, iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             if (predicate(result.value)) {
                 if (!hasValue) {
@@ -418,8 +420,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Sum(transform: (T) => number = Constant.selfFn): number {
-        var result, sum: number = 0;
+    public Sum(transform: (x: T) => number = Constant.selfFn): number {
+        var result: any, sum: number = 0;
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             sum += transform(result.value);
@@ -429,7 +431,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public ToArray(): Array<T> {
-        var result, array = [];
+        var result: any, array: Array<T> = [];
         var iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             array.push(result.value);
@@ -438,10 +440,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public ToMap<TKey, TElement>(keySelector: (T) => TKey,
-        elementSelector: (T) => TElement = Constant.selfFn): Map<TKey, TElement> {
+    public ToMap<TKey, TElement>(keySelector: (x: T) => TKey,
+        elementSelector: (x: T) => TElement = Constant.selfFn): Map<TKey, TElement> {
         var dictionary = new Map<TKey, TElement>();
-        var result, iterator = this[Symbol.iterator]();
+        var result: any, iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             dictionary.set(keySelector(result.value), elementSelector(result.value));
         }
@@ -449,10 +451,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public ToDictionary<TKey, TElement>(keySelector: (T) => TKey,
-        elementSelector: (T) => TElement = Constant.selfFn): Map<TKey, TElement> {
+    public ToDictionary<TKey, TElement>(keySelector: (x: T) => TKey,
+        elementSelector: (x: T) => TElement = Constant.selfFn): Map<TKey, TElement> {
         var dictionary = new Map<TKey, TElement>();
-        var result, iterator = this[Symbol.iterator]();
+        var result: any, iterator = this[Symbol.iterator]();
         while (!(result = iterator.next()).done) {
             dictionary.set(keySelector(result.value), elementSelector(result.value));
         }
@@ -483,16 +485,16 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Distinct<V>(keySelector: (T) => V = Constant.selfFn): Enumerable<T> {
+    public Distinct<V>(keySelector: (x: T) => V = Constant.selfFn): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.DistinctIteratror(this[Symbol.iterator](), keySelector));
     }
 
-    public Except<K>(other: Iterable<T>, kesSelector?: (T) => K): Enumerable<T> {
+    public Except<K>(other: Iterable<T>, kesSelector?: (x: T) => K): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror<T, K>(this[Symbol.iterator](), Constant.getKeys(other, kesSelector), true, kesSelector));
     }
 
 
-    public GroupBy<K, E, R>(selKey: (T) => K, selElement: (T) => E = Constant.selfFn,
+    public GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E = Constant.selfFn,
         selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
         var result: IteratorResult<T>;
         var iterator: Iterator<T> = this[Symbol.iterator]();
@@ -513,8 +515,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (T) => K,
-        iKeySelect: (I) => K,
+    public GroupJoin<I, K, R>(inner: Iterable<I>, oKeySelect: (x: T) => K,
+        iKeySelect: (x: I) => K,
         resultSelector: (a: T, b: Iterable<I>) => R
             = Constant.defGrouping): Enumerable<R> {
         var _map = new Map<K, Array<I>>();
@@ -535,33 +537,33 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Intersect<K>(other: Iterable<T>, kesSelector?: (T) => K): Enumerable<T> {
+    public Intersect<K>(other: Iterable<T>, kesSelector?: (x: T) => K): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.IntersectIteratror<T, K>(this[Symbol.iterator](), Constant.getKeys(other, kesSelector), false, kesSelector));
     }
 
 
-    public Join<I, TKey, R>(inner: Iterable<I>, oSelector: (T) => TKey,
-        iSelector: (I) => TKey, transform: (T, I) => R): Enumerable<R> {
+    public Join<I, TKey, R>(inner: Iterable<I>, oSelector: (x: T) => TKey,
+        iSelector: (i: I) => TKey, transform: (x: T, i: I) => R): Enumerable<R> {
         return new EnumerableImpl<R>(this, () => new Iterator.JoinIteratror<T, I, TKey, R>(
             this[Symbol.iterator](), inner[Symbol.iterator](),
             oSelector, iSelector, transform));
     }
 
 
-    public OrderBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public OrderBy<K>(keySelect: (x: T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         return new OrderedLinq<T>(this,
-            (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
+            (array: Array<T>) => new Iterator.ArrayIterator(array, 0, (i: number) => i >= array.length),
             (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
-    public OrderByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public OrderByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         return new OrderedLinq<T>(this,
-            (array) => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
+            (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1),
             (a: T, b: T) => equal(keySelect(a), keySelect(b)));
     }
 
 
-    public ThenBy<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public ThenBy<K>(keySelect: (x: T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         if (this instanceof OrderedLinq) {
             var superEqual = (<OrderedLinq<T>><any>this).equal;
             (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
@@ -571,13 +573,13 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => new Iterator.ArrayIterator(array, 0, (i) => i >= array.length),
+                (array: Array<T>) => new Iterator.ArrayIterator(array, 0, (i: number) => i >= array.length),
                 (a: T, b: T) => equal(keySelect(a), keySelect(b)));
         }
     }
 
 
-    public ThenByDescending<K>(keySelect: (T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
+    public ThenByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): Enumerable<T> {
         if (this instanceof OrderedLinq) {
             var superEqual = (<OrderedLinq<T>><any>this).equal;
             (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
@@ -587,7 +589,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array) => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1),
+                (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1),
                 (a: T, b: T) => equal(keySelect(a), keySelect(b)));
         }
     }
@@ -605,16 +607,16 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     public Reverse(): Enumerable<T> {
         var array: Array<T> = Array.isArray(this._target) ? <Array<T>>this._target : this.ToArray();
-        return new EnumerableImpl<T>(null, () => new Iterator.ArrayIterator(array, array.length - 1, (i) => 0 > i, -1));
+        return new EnumerableImpl<T>(null, () => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1));
     }
 
 
-    public Select<V>(transform: (T, number?) => V): Enumerable<V> {
+    public Select<V>(transform: (x: T, i?: number) => V): Enumerable<V> {
         return new EnumerableImpl<V>(this, () => new Iterator.SelectIteratror(this[Symbol.iterator](), transform));
     }
 
 
-    public SelectMany<S, V>(selector: (T, number) => Iterable<S> = Constant.selfFn, result: (T, S) => V = (t, s) => s): Enumerable<V> {
+    public SelectMany<S, V>(selector: (x: T, i: number) => Iterable<S> = Constant.selfFn, result: (x: T, s: S) => V = (x, s) => s as any as V): Enumerable<V> {
         return new EnumerableImpl<V>(this, () => new Iterator.SelectManyIteratror(this[Symbol.iterator](), selector, result));
     }
 
@@ -626,33 +628,33 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SkipWhile(predicate: (T, number) => boolean = (a, n) => false): Enumerable<T> {
+    public SkipWhile(predicate: (x: T, i: number) => boolean = (a, n) => false): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.SkipIterator(this[Symbol.iterator](), predicate));
     }
 
 
     public Take(take: number): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this[Symbol.iterator](), (a, n) => take > n));
+        return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this[Symbol.iterator](), (a: T, n: number) => take > n));
     }
 
 
-    public TakeWhile(predicate: (T, number) => boolean): Enumerable<T> {
+    public TakeWhile(predicate: (x: T, i: number) => boolean): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.TakeIterator(this[Symbol.iterator](), predicate));
     }
 
 
-    public Union<K>(second: Iterable<T>, keySelector: (T) => K = Constant.selfFn): Enumerable<T> {
+    public Union<K>(second: Iterable<T>, keySelector: (x: T) => K = Constant.selfFn): Enumerable<T> {
         var aggregate = [this._target, second];
-        return new EnumerableImpl<T>(this, () => new Iterator.UnionIteratror(aggregate[Symbol.iterator](), keySelector));
+        return new EnumerableImpl<T>(this, () => new Iterator.UnionIteratror<T,K>((aggregate as any)[Symbol.iterator](), keySelector));
     }
 
 
-    public Where(predicate: (T, number?) => Boolean = Constant.trueFn): Enumerable<T> {
+    public Where(predicate: (x: T, i?: number) => Boolean = Constant.trueFn): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.WhereIteratror(this[Symbol.iterator](), predicate));
     }
 
 
-    public Zip<V, Z>(second: Iterable<V>, func: (T, V) => Z): Enumerable<Z> {
+    public Zip<V, Z>(second: Iterable<V>, func: (x: T, y: V) => Z): Enumerable<Z> {
         return new EnumerableImpl<Z>(this, () => new Iterator.ZipIteratror(this[Symbol.iterator](), second[Symbol.iterator](), func));
     }
 }
