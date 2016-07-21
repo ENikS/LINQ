@@ -76,6 +76,10 @@ export const nothingFound = "No element satisfies the condition in predicate";
 export const noElements = "The source sequence is empty.";
 export const tooMany = "More than one element satisfies the condition in predicate.";
 export const outOfRange = "Argument Out Of Range";
-
-
+export const CONST_FUNCTION     = "function";
+export const CONST_BOOLEAN      = "boolean";
+export const CONST_NUMBER       = "number";
+export const CONST_OBJECT       = "object";
+export const CONST_STRING       = "string";
+export const CONST_SYMBOL       = "symbol";
 

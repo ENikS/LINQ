@@ -132,6 +132,40 @@ export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 }
 
 
+export class OfTypeIteratror<T> extends IteratorBase<T> {
+
+    constructor(target: Iterator<T>, protected obj: any) {
+        super(target);
+    }
+
+    public next(value?: any): IteratorResult<T> {
+        var result: any;
+        do {
+            result = this._iterator.next();
+        } while (!result.done && !(result.value instanceof this.obj));
+        return result;
+    }
+}
+
+
+export class OfValueTypeIteratror<T> extends OfTypeIteratror<T> {
+
+    constructor(target: Iterator<T>, obj: any, protected typeName: string) {
+        super(target, obj);
+    }
+
+    public next(value?: any): IteratorResult<T> {
+        var result: any;
+        do {
+            result = this._iterator.next();
+        } while (!result.done && 
+                  this.typeName !== typeof(result.value) && 
+                 !(result.value instanceof this.obj));
+        return result;
+    }
+}
+
+
 export class MethodIteratror<T> extends IteratorBase<T> {
 
     constructor(iterator: Iterator<T>, protected _method: Function = null, protected _index = 0) {

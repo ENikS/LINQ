@@ -128,6 +128,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         (this as any)['groupBy'] = this.GroupBy;
         (this as any)['groupJoin'] = this.GroupJoin;
         (this as any)['intersect'] = this.Intersect;
+        (this as any)['ofType'] = this.OfType;
         (this as any)['join'] = this.Join;
         (this as any)['orderBy'] = this.OrderBy;
         (this as any)['orderByDescend'] = this.OrderByDescending;
@@ -547,6 +548,37 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new EnumerableImpl<R>(this, () => new Iterator.JoinIteratror<T, I, TKey, R>(
             this[Symbol.iterator](), inner[Symbol.iterator](),
             oSelector, iSelector, transform));
+    }
+
+
+    public OfType(obj: any): Enumerable<T> {
+        let typeName: string;
+        switch (obj) {
+            case Number:
+                return new EnumerableImpl<T>(this,
+                    () => new Iterator.OfValueTypeIteratror(this[Symbol.iterator](), 
+                                                            obj,
+                                                            Constant.CONST_NUMBER));
+            case Boolean:
+                return new EnumerableImpl<T>(this,
+                   () => new Iterator.OfValueTypeIteratror(this[Symbol.iterator](), 
+                                                        obj,
+                                                        Constant.CONST_BOOLEAN));
+            case String:
+                return new EnumerableImpl<T>(this,
+                   () => new Iterator.OfValueTypeIteratror(this[Symbol.iterator](), 
+                                                        obj,
+                                                        Constant.CONST_STRING));
+            case Symbol:
+                return new EnumerableImpl<T>(this,
+                   () => new Iterator.OfValueTypeIteratror(this[Symbol.iterator](), 
+                                                        obj,
+                                                        Constant.CONST_SYMBOL));
+        }
+            
+        return new EnumerableImpl<T>(this,
+                   () => new Iterator.OfTypeIteratror(this[Symbol.iterator](), 
+                                                    obj));
     }
 
 
