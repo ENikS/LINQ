@@ -40,7 +40,17 @@ For live examples please follow links to ([Node](https://tonicdev.com/eniks/usin
 
 
 ### Using in browser
-[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPM CDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available.
+[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPM CDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. 
+Module is liaded with ```<script>``` element:
+```javascript
+<script type="text/javascript" src="//npmcdn.com/linq-es2015/dist/linq.min.js"></script>
+```
+Loading this script creates ```Enumerable``` global variable. You can use it to perform LINQ queries:
+```javascript
+var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
+                       .Where(a => a % 2 == 1)
+                       .Count()
+```
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
 
