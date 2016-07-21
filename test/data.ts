@@ -57,4 +57,26 @@ var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
 export var people = [magnus, terry, charlotte];
 export var pets = [barley, boots, whiskers, daisy];
 
+export var mix = [
+            0, 
+            new Number(1),
+            "This is a simple string", 
+            new String(), 
+            new String("String created with constructor"), 
+            new Date(), 
+            true,
+            Symbol.iterator,
+            2,
+            false,
+            { Name: "asd"}, 
+            simpleArray, 
+            un1, 
+            new Boolean(true),
+            pets,
+            new Boolean(false),
+            3,
+            function(){}
+            ];
+
+
 /** Copyright (c) ENikS.  All rights reserved. */
