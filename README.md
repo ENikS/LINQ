@@ -9,7 +9,12 @@ Browserified and minified standalone UMD modules are located in ./dist directory
 This library uses latest [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) language specification and utilizes [Iterables](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface): ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)), JavaScript generators ([function*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)), and [for of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loops. All relevant methods are implemented with [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/) so no unnecessary iterations are performed. 
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
-## Using 
+### Using in Node
+Module could be installed by this command:
+```
+npm install linq-es2015
+```
+Once installed it could be loaded and used like this:
 ```javascript
 import * as Enumerable from "linq-es2015";
 
@@ -32,6 +37,13 @@ var iterable = Enumerable.asEnumerable(people)
 
 ```
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
+
+
+### Using in browser
+[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. <br/>
+[[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
+
+
 
 ## Naming Convention
 When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
