@@ -40,7 +40,7 @@ For live examples please follow links to ([Node](https://tonicdev.com/eniks/usin
 
 
 ### Using in browser
-[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. <br/>
+[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPM CDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available.
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
 
