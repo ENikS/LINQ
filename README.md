@@ -36,7 +36,7 @@ var iterable = Enumerable.asEnumerable(people)
                                     });
 
 ```
-[See Example](https://tonicdev.com/eniks/using-linq).  
+[[See Example](https://tonicdev.com/eniks/using-linq)]  
 
 
 ### Using in browser
