@@ -12,7 +12,7 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {simpleArray, oddArray, jsn, un1, un2, people, pets} from "./data";
+import {simpleArray, oddArray, jsn, un1, un2, people, pets, mix} from "./data";
 import {assert} from "chai";
 import Linq from "../lib/linq";
 
@@ -239,24 +239,103 @@ describe('Deferred Execution -', function () {
 
 
 
-    // Union
+    // Except
 
-    it('Union()', function () {
-        var iterable = Linq([0, 1, 2, 3, 4, 5, 6, 7]).Union([5, 6, 7, 8, 9]);
+    it('Except()', function () {
+        var iterable = Linq(simpleArray).Except([0, 2, 4, 6, 11]);
         var iterator = iterable[Symbol.iterator]()
-        assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
-        assert.equal(2, iterator.next().value);
         assert.equal(3, iterator.next().value);
-        assert.equal(4, iterator.next().value);
         assert.equal(5, iterator.next().value);
-        assert.equal(6, iterator.next().value);
         assert.equal(7, iterator.next().value);
         assert.equal(8, iterator.next().value);
         assert.equal(9, iterator.next().value);
+        assert.equal(10, iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 
+
+
+    // OfType
+    
+    it('OfType() - Number', function () {
+
+        var iterable = Linq(mix).OfType(Number);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, 0);
+        assert.equal(iterator.next().value, 1);
+        assert.equal(iterator.next().value, 2);
+        assert.equal(iterator.next().value, 3);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - Boolean', function () {
+
+        var iterable = Linq(mix).OfType(Boolean);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, true);
+        assert.equal(iterator.next().value, false);
+        assert.equal(iterator.next().value, true);
+        assert.equal(iterator.next().value, false);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - String', function () {
+
+        var iterable = Linq(mix).OfType(String);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, mix[2]);
+        assert.equal(iterator.next().value, mix[3]);
+        assert.equal(iterator.next().value, mix[4]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - Date', function () {
+
+        var iterable = Linq(mix).OfType(Date);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, mix[5]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - Symbol', function () {
+
+        var iterable = Linq(mix).OfType(Symbol);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, mix[7]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - Function', function () {
+
+        var iterable = Linq(mix).OfType(Function);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, mix[17]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('OfType() - Object', function () {
+
+        var iterable = Linq(mix).OfType(Object);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(iterator.next().value, 1);
+        assert.equal(iterator.next().value, mix[3]);
+        assert.equal(iterator.next().value, mix[4]);
+        assert.equal(iterator.next().value, mix[5]);
+        assert.equal(iterator.next().value, mix[10]);
+        assert.equal(iterator.next().value, mix[11]);
+        assert.equal(iterator.next().value, mix[12]);
+        assert.equal(iterator.next().value, mix[13]);
+        assert.equal(iterator.next().value, mix[14]);
+        assert.equal(iterator.next().value, mix[15]);
+        assert.equal(iterator.next().value, mix[17]);
+        assert.isTrue(iterator.next().done);
+    });
+
+
+
+
+    // Union
 
     it('Union() - Keyed', function () {
         var iterable = Linq(un1).Union(un2, (o) => o.id);

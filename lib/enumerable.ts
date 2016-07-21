@@ -303,6 +303,14 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Min()
     */
     Min(transform?: (x: T) => number): number;
+    
+    /** 
+    * Filters the elements of an IEnumerable based on a specified type. 
+    * @param Object to check InstanceOf against.
+    * @example
+    *     var e = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).OfType(myObject)
+    */
+    OfType(type: any): Enumerable<T>;
 
     /** 
     * Sorts the elements of a sequence in ascending order by using a specified  

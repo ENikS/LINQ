@@ -13,6 +13,9 @@
 // under the License.
 
 
+import * as Constant from "./utilities";
+
+
 export function* Forward<T>(target: Array<T>) {
     yield* target;
 }
@@ -61,6 +64,49 @@ export function* DistinctFast<T>(target: Iterable<T>) {
         if (set.has(value)) continue;
         set.add(value);
         yield value;
+    }
+}
+
+
+export function* OfType<T>(target: Iterable<T>, obj: any) {
+    if (Number === obj) {
+        for (let value of target) {
+            if (Constant.CONST_NUMBER == typeof(value)) {
+                yield value;
+            } else if (value instanceof obj) {
+                yield value;
+            }
+        }
+    } else if (Boolean === obj) {
+        for (let value of target) {
+            if (Constant.CONST_BOOLEAN == typeof(value)) {
+                yield value;
+            } else if (value instanceof obj) {
+                yield value;
+            }
+        }
+    } else if (String === obj) {
+        for (let value of target) {
+            if (Constant.CONST_STRING == typeof(value)) {
+                yield value;
+            } else if (value instanceof obj) {
+                yield value;
+            }
+        }
+    } else if (Symbol === obj) {
+        for (let value of target) {
+            if (Constant.CONST_SYMBOL == typeof(value)) {
+                yield value;
+            } else if (value instanceof obj) {
+                yield value;
+            }
+        }
+    } else {
+        for (let value of target) {
+            if (value instanceof obj) {
+                yield value;
+            }
+        }
     }
 }
 

@@ -132,6 +132,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         (this as any)['groupJoin'] = this.GroupJoin;
         (this as any)['intersect'] = this.Intersect;
         (this as any)['join'] = this.Join;
+        (this as any)['ofType'] = this.OfType;
         (this as any)['orderBy'] = this.OrderBy;
         (this as any)['orderByDescend'] = this.OrderByDescending;
         (this as any)['thenBy'] = this.ThenBy;
@@ -569,6 +570,12 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
                                               Constant.getKeyedMapFast(inner, 
                                                                     iSelector));
         return this as any as Enumerable<R>;
+    }
+
+    
+    public OfType(obj: any): Enumerable<T> {
+        this._target = Generator.OfType(this._target, obj);
+        return this;
     }
 
 
