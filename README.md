@@ -9,7 +9,7 @@ Browserified and minified standalone UMD modules are located in ./dist directory
 This library uses latest [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/) language specification and utilizes [Iterables](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface): ([ [System.iterator] ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)), JavaScript generators ([function*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)), and [for of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loops. All relevant methods are implemented with [deferred execution](https://blogs.msdn.microsoft.com/charlie/2007/12/10/linq-and-deferred-execution/) so no unnecessary iterations are performed. 
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
-### Using in Node
+## Using in Node
 Module could be installed with this command:
 ```
 npm install linq-es2015
@@ -39,7 +39,7 @@ var iterable = Enumerable.asEnumerable(people)
 [[See Example](https://tonicdev.com/eniks/using-linq)]  
 
 
-### Using in browser
+## Using in browser
 [Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPM CDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. 
 Module is liaded with ```<script>``` element:
 ```javascript
@@ -52,12 +52,6 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
                        .Count()
 ```
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
-
-
-
-## Naming Convention
-When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
-If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org/wiki/CamelCase) notation.
 
 ## Documentation
 *  [Library Reference](https://github.com/ENikS/LINQ/wiki)
