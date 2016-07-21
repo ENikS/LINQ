@@ -68,34 +68,10 @@ export function* DistinctFast<T>(target: Iterable<T>) {
 }
 
 
-export function* OfType<T>(target: Iterable<T>, obj: any) {
-    if (Number === obj) {
+export function* OfType<T>(target: Iterable<T>, obj: any, typeName: string) {
+    if (typeName){
         for (let value of target) {
-            if (Constant.CONST_NUMBER == typeof(value)) {
-                yield value;
-            } else if (value instanceof obj) {
-                yield value;
-            }
-        }
-    } else if (Boolean === obj) {
-        for (let value of target) {
-            if (Constant.CONST_BOOLEAN == typeof(value)) {
-                yield value;
-            } else if (value instanceof obj) {
-                yield value;
-            }
-        }
-    } else if (String === obj) {
-        for (let value of target) {
-            if (Constant.CONST_STRING == typeof(value)) {
-                yield value;
-            } else if (value instanceof obj) {
-                yield value;
-            }
-        }
-    } else if (Symbol === obj) {
-        for (let value of target) {
-            if (Constant.CONST_SYMBOL == typeof(value)) {
+            if (typeName == typeof(value)) {
                 yield value;
             } else if (value instanceof obj) {
                 yield value;
@@ -111,7 +87,8 @@ export function* OfType<T>(target: Iterable<T>, obj: any) {
 }
 
 
-export function* Where<T>(target: Iterable<T>, predicate: (x: T, i: number) => Boolean) {
+export function* Where<T>(target: Iterable<T>, 
+                          predicate: (x: T, i: number) => Boolean) {
     let index = 0;
     for (let value of target) {
         if (!predicate(value, index++)) continue;

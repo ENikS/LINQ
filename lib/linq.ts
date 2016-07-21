@@ -574,7 +574,29 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     
     public OfType(obj: any): Enumerable<T> {
-        this._target = Generator.OfType(this._target, obj);
+        let typeName: string;
+        switch (obj) {
+            case Number:
+                typeName = Constant.CONST_NUMBER;
+                break;
+                
+            case Boolean:
+                typeName = Constant.CONST_BOOLEAN;
+                break;
+                
+            case String:
+                typeName = Constant.CONST_STRING;
+                break;
+                
+            case Symbol:
+                typeName = Constant.CONST_SYMBOL;
+                break;
+                
+            default:
+                typeName = undefined;
+        }
+            
+        this._target = Generator.OfType(this._target, obj, typeName);
         return this;
     }
 
