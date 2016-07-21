@@ -10,7 +10,7 @@ This library uses latest [ECMAScript 2015](http://www.ecma-international.org/ecm
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
 ### Using in Node
-Module could be installed by this command:
+Module could be installed with this command:
 ```
 npm install linq-es2015
 ```
