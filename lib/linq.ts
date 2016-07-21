@@ -678,7 +678,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Take(take: number): Enumerable<T> {
-        this._target = Generator.TakeWhile(this._target, (a, n) => take > n);
+        this._target = Generator.TakeWhile(this._target, (a: T, n: number) => take > n);
         return this;
     }
 
