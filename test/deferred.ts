@@ -337,6 +337,22 @@ describe('Deferred Execution -', function () {
 
     // Union
 
+    it('Union()', function () {
+        var iterable = Linq([0, 1, 2, 3, 4, 5, 6, 7]).Union([5, 6, 7, 8, 9]);
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(0, iterator.next().value);
+        assert.equal(1, iterator.next().value);
+        assert.equal(2, iterator.next().value);
+        assert.equal(3, iterator.next().value);
+        assert.equal(4, iterator.next().value);
+        assert.equal(5, iterator.next().value);
+        assert.equal(6, iterator.next().value);
+        assert.equal(7, iterator.next().value);
+        assert.equal(8, iterator.next().value);
+        assert.equal(9, iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
     it('Union() - Keyed', function () {
         var iterable = Linq(un1).Union(un2, (o) => o.id);
         var iterator = iterable[Symbol.iterator]()
