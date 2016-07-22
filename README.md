@@ -8,13 +8,13 @@ The library is a continuous effort to implement LINQ using latest features of Ty
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
 ## Using in Node
-Module could be installed with this command:
+Install module with this command:
 ```
 npm install linq-es2015
 ```
 Once installed it could be loaded and used like this:
 ```javascript
-import * as Enumerable from "linq-es2015";
+import * as Enumerable from "linq-es2015"; 
 
 var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
                        .Where(a => a % 2 == 1)
