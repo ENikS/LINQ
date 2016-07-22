@@ -54,6 +54,25 @@ describe('Deferred Execution -', function () {
 
 
 
+
+    // Iterable
+    
+    it('Iterable', function () {
+        let Iterable = Linq(simpleArray).Where(a => a % 2 == 1);
+console.log("----------");            
+        for (let value of Iterable) {
+            console.log(value);            
+        }
+console.log("----------");            
+        for (let value of Iterable) {
+            console.log(value);            
+        }
+console.log("----------");            
+    });
+
+
+
+
     // Distinct
 
     it('Distinct() - Number', function () {
