@@ -32,6 +32,22 @@ describe('Deferred Execution -', function () {
 
 
 
+    // Concat
+
+    it('Concat()', function () {
+        var iterable = Linq([0, 1, 2]).Concat([3, 4]);
+        var iterator = iterable[Symbol.iterator]()
+
+        assert.equal(0, iterator.next().value);
+        assert.equal(1, iterator.next().value);
+        assert.equal(2, iterator.next().value);
+        assert.equal(3, iterator.next().value);
+        assert.equal(4, iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
+
+
     // Select
 
     it('Select()', function () {
@@ -50,24 +66,6 @@ describe('Deferred Execution -', function () {
         assert.equal(1, array[1]);
         assert.equal(2, array[2]);
         assert.equal(3, array[3]);
-    });
-
-
-
-
-    // Iterable
-    
-    it('Iterable', function () {
-        let Iterable = Linq(simpleArray).Where(a => a % 2 == 1);
-console.log("----------");            
-        for (let value of Iterable) {
-            console.log(value);            
-        }
-console.log("----------");            
-        for (let value of Iterable) {
-            console.log(value);            
-        }
-console.log("----------");            
     });
 
 
@@ -519,22 +517,6 @@ console.log("----------");
         assert.equal(14, iterator.next().value);
         assert.equal(24, iterator.next().value);
         assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-    });
-
-
-
-    // Concat
-
-    it('Concat()', function () {
-        var iterable = Linq([0, 1, 2]).Concat([3, 4]);
-        var iterator = iterable[Symbol.iterator]()
-
-        assert.equal(0, iterator.next().value);
-        assert.equal(1, iterator.next().value);
-        assert.equal(2, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.equal(4, iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 

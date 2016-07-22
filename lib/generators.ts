@@ -18,6 +18,7 @@ export function* Forward<T>(target: Array<T>) {
     yield* target;
 }
 
+
 export function* Reverse<T>(target: Array<T>) {
     for (let i = target.length - 1; i >= 0; i--) {
         yield target[i];
@@ -39,7 +40,6 @@ export function* DefaultIfEmpty<T>(target: Iterable<T>, defaultValue: T) {
     if (result.done) {
         yield defaultValue;
     } else {
-        yield result.value;
         yield* target;
     }
 }
@@ -224,10 +224,9 @@ export function* SelectMany<T, V, R>(target: Iterable<T>, selector: (x: T, i: nu
 }
 
 
-export function* SelectManyFast<T, C>(target: Iterable<Iterable<C>>) {
-    for (let subIterable of target) {
-        yield* subIterable;
-    }
+export function* Concat<T>(target: Iterable<T>, second: Iterable<T>) {
+    yield* target;
+    yield* second;
 }
 
 

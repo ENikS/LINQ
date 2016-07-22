@@ -42,8 +42,8 @@ describe('Module Interface -', function () {
 
     it('Range() - Source', function () {
         var array = Enumerable.Range(1, 100)
-            .Where(o => o % 2 == 1)
-            .ToArray();
+                              .Where(o => o % 2 == 1)
+                              .ToArray();
         assert.equal(array.length, 50);
         assert.equal(Enumerable.Range(0, 15).Where(o => o % 2 == 1).Count(), 7);
     });
