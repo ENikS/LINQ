@@ -539,7 +539,6 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
                             selElement: (x: T) => E = Constant.selfFn, 
                             selResult: (a: K, b: Iterable<E>) =>
                                 R = Constant.defGrouping): Enumerable<R> {
-debugger
         let map: Map<K, Array<E>> = Constant.getKeyedMap(this, selKey, selElement);
         return new EnumerableImpl<R>(undefined, Generator.GroupBy, [map, selResult]);
     }
