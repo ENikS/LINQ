@@ -41,11 +41,11 @@ export function getDefaultVal(type: any, value: any = undefined): any {
 
     // Handle simple types (primitives and plain function/object)
     switch (type) {
-        case CONST_BOOLEAN:     return false;
-        case CONST_NUMBER:      return 0;
-        case CONST_OBJECT:      return null === value ? null : undefined;
-        case CONST_STRING:      return CONST_EMPTY_STRING;
-        case CONST_SYMBOL:      return Symbol();
+        case CONST_BOOLEAN:  return false;
+        case CONST_NUMBER:   return 0;
+        case CONST_OBJECT:   return null === value ? null : undefined;
+        case CONST_STRING:   return CONST_EMPTY_STRING;
+        case CONST_FUNCTION: return ("Symbol" === value['name']) ? Symbol() : void 0;
     }
     return undefined;
 }
@@ -53,30 +53,32 @@ export function getDefaultVal(type: any, value: any = undefined): any {
 /** Returns a map of element bsed on extracted keys  **/
 export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement?: (x: T) => E): Map<K, Array<E>> {
     let map = new Map<K, Array<E>>();
-    for (let value of iterable) {
-        let key = keySelector(value);
+    var result: any, iterator = iterable[Symbol.iterator]();
+    while (!(result = iterator.next()).done) {
+        let key = keySelector(result.value);
         if (!key) throw CONST_INVALID_KEY;
         let group: Array<E> = map.get(key);
         if (!group) {
             group = [];
             map.set(key, group);
         }
-        group.push(selElement(value));
+        group.push(selElement(result.value));
     }
     return map;
 }
 
 export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Map<K, Array<T>> {
     let map = new Map<K, Array<T>>();
-    for (let value of iterable) {
-        let key = keySelector(value);
+    var result: any, iterator = iterable[Symbol.iterator]();
+    while (!(result = iterator.next()).done) {
+        let key = keySelector(result.value);
         if (!key) throw CONST_INVALID_KEY;
         let group: Array<T> = map.get(key);
         if (!group) {
             group = [];
             map.set(key, group);
         }
-        group.push(value);
+        group.push(result.value);
     }
     return map;
 }
@@ -102,21 +104,21 @@ export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): 
 //  Constants
 //-----------------------------------------------------------------------------
 
-export const CONST_INVALID_KEY  = "Key selector returned undefined Key";
-export const CONST_NO_STRING    = "Type must be a string.";
-export const CONST_DUPLICATE    = "Object already has property [key]";
+export const CONST_INVALID_KEY   = "Key selector returned undefined Key";
+export const CONST_NO_STRING     = "Type must be a string.";
+export const CONST_DUPLICATE     = "Object already has property [key]";
 export const CONST_NOTHING_FOUND = "No element satisfies the condition in predicate";
-export const CONST_NO_ELEMENTS  = "The source sequence is empty.";
-export const CONST_TOO_MANY     = "More than one element satisfies the condition in predicate.";
-export const CONST_OUTOFRANGE   = "Argument Out Of Range";
-export const CONST_KEY          = "key";
-export const CONST_UNDEFINED    = "undefined";
-export const CONST_LENGTH       = "length";
-export const CONST_FUNCTION     = "function";
-export const CONST_BOOLEAN      = "boolean";
-export const CONST_NUMBER       = "number";
-export const CONST_OBJECT       = "object";
-export const CONST_STRING       = "string";
-export const CONST_SYMBOL       = "symbol";
-export const CONST_EMPTY_STRING = "";
+export const CONST_NO_ELEMENTS   = "The source sequence is empty.";
+export const CONST_TOO_MANY      = "More than one element satisfies the condition in predicate.";
+export const CONST_OUTOFRANGE    = "Argument Out Of Range";
+export const CONST_KEY           = "key";
+export const CONST_UNDEFINED     = "undefined";
+export const CONST_LENGTH        = "length";
+export const CONST_FUNCTION      = "function";
+export const CONST_BOOLEAN       = "boolean";
+export const CONST_NUMBER        = "number";
+export const CONST_OBJECT        = "object";
+export const CONST_STRING        = "string";
+export const CONST_SYMBOL        = "symbol";
+export const CONST_EMPTY_STRING  = "";
 

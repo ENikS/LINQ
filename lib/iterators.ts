@@ -81,14 +81,13 @@ export class IteratorBase<T> {
 }
 
 
-export class IntersectIteratror<T, K> extends IteratorBase<T> {
+export class Intersect<T, K> extends IteratorBase<T> {
 
     constructor(iterator: Iterator<T>, private _set: Set<K>, private _switch: boolean, private _keySelector: (x: T) => K = (o: any) => o) {
         super(iterator);
     }
 
     public next(value?: any): IteratorResult<T> {
-        debugger
         var result: any;
         while (!(result = this._iterator.next()).done && (this._switch == this._set.has(this._keySelector(result.value)))) { }
         if (!result.done && !this._switch) this._set.add(this._keySelector(result.value));
@@ -97,7 +96,7 @@ export class IntersectIteratror<T, K> extends IteratorBase<T> {
 }
 
 
-export class GeneratorIterator<T> extends IteratorBase<T> implements Iterator<T> {
+export class Generator<T> extends IteratorBase<T> implements Iterator<T> {
 
     constructor(private _current: any, private _count: number, private _increment: boolean = false) {
         super(null);
@@ -111,7 +110,7 @@ export class GeneratorIterator<T> extends IteratorBase<T> implements Iterator<T>
 }
 
 
-export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
+export class DefaultIfEmpty<T> extends IteratorBase<T> {
 
     constructor(sourceIterator: Iterator<T>, private _default: T) {
         super(sourceIterator);
@@ -132,7 +131,51 @@ export class DefaultIfEmptyIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class OfTypeIteratror<T> extends IteratorBase<T> {
+export class ChunkBy<T, K, E, V> extends IteratorBase<T> {
+
+    private key: K;
+    private box: Array<E>;;
+
+    constructor(target: Iterator<T>,
+                private keySelect: (x: T) => K,
+                private elementSelector: (x: T) => E, 
+                private resultSelector: (a: K, b: Iterable<E>) => V) {
+        super(target);
+    }
+
+    public next(value?: any): IteratorResult<V> {
+        var result: any;
+        do {
+            result = this._iterator.next();
+            if (result.done) {
+                if (this.box) {
+                    result.done = false;
+                    result.value = this.box;
+                    this.box = undefined;
+                    return result;
+                } else return this._done;
+            }
+            let newKey = this.keySelect(result.value);
+            if (this.key !== newKey && this.box) {
+                let ret = { done: false, value: this.resultSelector(this.key, this.box) };
+                this.key = newKey;
+                this.box = new Array<E>();
+                this.box.push(this.elementSelector(result.value));
+                return ret;
+            }
+            if (!this.box) {
+                this.box = new Array<E>();
+            }
+            this.key = newKey;
+            this.box.push(this.elementSelector(result.value));
+        } while (!result.done);
+        return this._done;
+    }
+}
+
+
+
+export class OfType<T> extends IteratorBase<T> {
 
     constructor(target: Iterator<T>, protected obj: any) {
         super(target);
@@ -148,7 +191,7 @@ export class OfTypeIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class OfValueTypeIteratror<T> extends OfTypeIteratror<T> {
+export class OfValueType<T> extends OfType<T> {
 
     constructor(target: Iterator<T>, obj: any, protected typeName: string) {
         super(target, obj);
@@ -174,7 +217,7 @@ export class MethodIteratror<T> extends IteratorBase<T> {
 }
 
 
-export class DistinctIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
+export class Distinct<T> extends MethodIteratror<T> implements Iterator<T> {
 
     private _set: Set<T> = new Set<T>();
 
@@ -190,7 +233,7 @@ export class DistinctIteratror<T> extends MethodIteratror<T> implements Iterator
 }
 
 
-export class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T> {
+export class Where<T> extends MethodIteratror<T> implements Iterator<T> {
 
     public next(value?: any): IteratorResult<T> {
         var result: any;
@@ -202,7 +245,7 @@ export class WhereIteratror<T> extends MethodIteratror<T> implements Iterator<T>
 }
 
 
-export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
+export class Skip<T> extends MethodIteratror<T> implements Iterator<T> {
 
     private _hasSkipped = false;
 
@@ -216,7 +259,7 @@ export class SkipIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 }
 
 
-export class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
+export class Take<T> extends MethodIteratror<T> implements Iterator<T> {
 
     public next(value?: any): IteratorResult<T> {
         var result = this._iterator.next();
@@ -228,7 +271,7 @@ export class TakeIterator<T> extends MethodIteratror<T> implements Iterator<T> {
 }
 
 
-export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
+export class Zip<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
 
     constructor(first: Iterator<T>, private _second: Iterator<V>, func: (x: T, y: V) => Z) {
         super(first, func);
@@ -245,7 +288,7 @@ export class ZipIteratror<T, V, Z> extends MethodIteratror<T> implements Iterato
 }
 
 
-export class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterator<V> {
+export class Select<T, V> extends MethodIteratror<T> implements Iterator<V> {
 
     public next(value?: any): IteratorResult<V> {
         var result: any = this._iterator.next();
@@ -256,7 +299,7 @@ export class SelectIteratror<T, V> extends MethodIteratror<T> implements Iterato
 }
 
 
-export class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
+export class SelectMany<T, V, Z> extends MethodIteratror<T> implements Iterator<Z> {
 
     protected _resultSelector: (x: T, y: V) => Z;
     protected _collection: Iterator<V>;
@@ -286,7 +329,7 @@ export class SelectManyIteratror<T, V, Z> extends MethodIteratror<T> implements 
 }
 
 
-export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
+export class Join<T, I, K, R> extends SelectMany<T, I, R> {
 
     private _map: Map<K, Array<I>>;
 
@@ -308,7 +351,6 @@ export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
         this._resultSelector = transform;
     }
 
-    /** Gets the next element in the collection. */
     public next(value?: any): IteratorResult<R> {
         do {
             if (this._resultState.done) {
@@ -330,7 +372,7 @@ export class JoinIteratror<T, I, K, R> extends SelectManyIteratror<T, I, R> {
 }
 
 
-export class UnionIteratror<T, K> extends SelectManyIteratror<T, T, T> implements Iterator<T> {
+export class Union<T, K> extends SelectMany<T, T, T> implements Iterator<T> {
 
     private _set = new Set<T>();
 
@@ -350,7 +392,7 @@ export class UnionIteratror<T, K> extends SelectManyIteratror<T, T, T> implement
 }
 
 
-export class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Iterator<R> {
+export class GroupBy<K, E, R> extends MethodIteratror<K> implements Iterator<R> {
 
     constructor(iterator: Iterator<K>, resultSelect: (a: K, b: Iterable<E>) => R,
         private _map: Map<K, Array<E>>) {
@@ -366,7 +408,7 @@ export class GroupByIteratror<K, E, R> extends MethodIteratror<K> implements Ite
 }
 
 
-export class GroupJoinIteratror<T, I, K, R> extends MethodIteratror<T> implements Iterator<R> {
+export class GroupJoin<T, I, K, R> extends MethodIteratror<T> implements Iterator<R> {
 
     constructor(iterator: Iterator<T>, oKeySelect: (x: T) => K,
         private _transform: (a: T, b: Iterable<I>) => R,
