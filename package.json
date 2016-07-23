@@ -1,7 +1,7 @@
 {
   "name": "linq-es5",
   "version": "1.11.0",
-  "description": "Complete implementation of Language-Integrated Query (LINQ)",
+  "description": "Complete implementation of Language-Integrated Query (LINQ) (ECMAScript 5.1 Language Specification)",
   "main": "lib/linq.js",
   "typings": "lib/linq.d.ts",
   "tonicExampleFilename": "dist/example.js",
