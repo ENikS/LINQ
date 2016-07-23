@@ -109,6 +109,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         (this as any)['all'] = this.All;
         (this as any)['any'] = this.Any;
         (this as any)['average'] = this.Average;
+        (this as any)['chunkBy'] = this.ChunkBy;
         (this as any)['contains'] = this.Contains;
         (this as any)['count'] = this.Count;
         (this as any)['max'] = this.Max;
