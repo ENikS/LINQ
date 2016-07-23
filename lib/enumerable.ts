@@ -78,11 +78,24 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     */
     Average(func?: (x: T) => number): number;
 
-
     /**
     * Casts the elements of an Iterable to the specified type.
     */
     Cast<V>(): Enumerable<V>;
+
+    /** 
+    * Group results by contiguous keys.
+    * @param keySelect A function to extract a key from an element.
+    * @param elementSelector A transform function to produce a result element
+    * value from each element.
+    * @param resultSelector A function to transform the final accumulator value
+    * into the result value.
+    * @example
+    *     ChunkBy(a=> a.name);
+    */
+    ChunkBy<K, E, V>(keySelect: (x: T) => K,
+                     elementSelector?: (y: T) => E, 
+                     resultSelector?: (a: K, b: Iterable<E>) => V): Enumerable<V>;
 
     /** Concatenates two sequences.
     * @param second The sequence to concatenate to the first sequence.

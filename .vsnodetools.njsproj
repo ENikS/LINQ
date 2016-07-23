@@ -60,6 +60,9 @@
     <TypeScriptCompile Include="test\nogen.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="test\reentrancy.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="typings\chai-3.2.0.d.ts" />
     <TypeScriptCompile Include="typings\es2015-shim.d.ts" />
     <TypeScriptCompile Include="typings\mocha.2.2.5.d.ts" />

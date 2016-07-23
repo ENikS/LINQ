@@ -28,24 +28,57 @@ export var selfFn = (o: any) => o;
 
 /** Default Grouping */
 export var defGrouping = (a: any, b: any) => {
-    if ('undefined' != typeof b['key']) throw duplicateKey;
-    b['key'] = a;
+    if (!b[CONST_KEY]) {
+        b[CONST_KEY] = a;
+    }
     return b;
 };
 
+
 /** Returns default value for the type */
 export function getDefaultVal(type: any, value: any = undefined): any {
-    if (typeof type !== 'string') throw new TypeError(noString);
+    if (typeof type !== CONST_STRING) throw new TypeError(CONST_NO_STRING);
 
     // Handle simple types (primitives and plain function/object)
     switch (type) {
-        case 'boolean': return false;
-        case 'number': return 0;
-        case 'object': return (null === value) ? null : void 0;
-        case 'string': return "";
-        case 'function': return ("Symbol" === value['name']) ? Symbol() : void 0;
+        case CONST_BOOLEAN:     return false;
+        case CONST_NUMBER:      return 0;
+        case CONST_OBJECT:      return null === value ? null : undefined;
+        case CONST_STRING:      return CONST_EMPTY_STRING;
+        case CONST_SYMBOL:      return Symbol();
     }
-    return void 0;
+    return undefined;
+}
+
+/** Returns a map of element bsed on extracted keys  **/
+export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement?: (x: T) => E): Map<K, Array<E>> {
+    let map = new Map<K, Array<E>>();
+    for (let value of iterable) {
+        let key = keySelector(value);
+        if (!key) throw CONST_INVALID_KEY;
+        let group: Array<E> = map.get(key);
+        if (!group) {
+            group = [];
+            map.set(key, group);
+        }
+        group.push(selElement(value));
+    }
+    return map;
+}
+
+export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Map<K, Array<T>> {
+    let map = new Map<K, Array<T>>();
+    for (let value of iterable) {
+        let key = keySelector(value);
+        if (!key) throw CONST_INVALID_KEY;
+        let group: Array<T> = map.get(key);
+        if (!group) {
+            group = [];
+            map.set(key, group);
+        }
+        group.push(value);
+    }
+    return map;
 }
 
 export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): Set<K> {
@@ -69,17 +102,21 @@ export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): 
 //  Constants
 //-----------------------------------------------------------------------------
 
-const invalidKey = "Key selector returned undefined Key";
-const noString = "Type must be a string.";
-const duplicateKey = "Object already has property [key]";
-export const nothingFound = "No element satisfies the condition in predicate";
-export const noElements = "The source sequence is empty.";
-export const tooMany = "More than one element satisfies the condition in predicate.";
-export const outOfRange = "Argument Out Of Range";
+export const CONST_INVALID_KEY  = "Key selector returned undefined Key";
+export const CONST_NO_STRING    = "Type must be a string.";
+export const CONST_DUPLICATE    = "Object already has property [key]";
+export const CONST_NOTHING_FOUND = "No element satisfies the condition in predicate";
+export const CONST_NO_ELEMENTS  = "The source sequence is empty.";
+export const CONST_TOO_MANY     = "More than one element satisfies the condition in predicate.";
+export const CONST_OUTOFRANGE   = "Argument Out Of Range";
+export const CONST_KEY          = "key";
+export const CONST_UNDEFINED    = "undefined";
+export const CONST_LENGTH       = "length";
 export const CONST_FUNCTION     = "function";
 export const CONST_BOOLEAN      = "boolean";
 export const CONST_NUMBER       = "number";
 export const CONST_OBJECT       = "object";
 export const CONST_STRING       = "string";
 export const CONST_SYMBOL       = "symbol";
+export const CONST_EMPTY_STRING = "";
 
