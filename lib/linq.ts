@@ -248,7 +248,6 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
     public Count(predicate: (x: T) => boolean): number {
         let count = 0;
-        let countConst = 'count';
         if (predicate) {
             for (let value of this) {
                 if (predicate(value)) {
@@ -257,8 +256,6 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
             }
         } else if (this._target && (this._target as any)[Constant.CONST_LENGTH]) {
             count = (this._target as any)[Constant.CONST_LENGTH];
-        } else if (this._target && (this._target as any)[countConst]) {
-            count = (this._target as any)[countConst];
         } else {
             for (let value of this) {
                 count++;
