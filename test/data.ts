@@ -78,5 +78,17 @@ export var mix = [
             function(){}
             ];
 
+export var phrase = [
+    { key: "A", value: "We" },
+    { key: "A", value: "think" },
+    { key: "A", value: "that" },
+    { key: "B", value: "Linq" },
+    { key: "C", value: "is" },
+    { key: "A", value: "really" },
+    { key: "B", value: "cool" },
+    { key: "B", value: "!" }
+]
+
+
 
 /** Copyright (c) ENikS.  All rights reserved. */

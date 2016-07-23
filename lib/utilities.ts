@@ -27,10 +27,12 @@ export var selfFn = (o: any) => o;
 
 /** Default Grouping */
 export var defGrouping = (a: any, b: any) => {
-    if (CONST_UNDEFINED != typeof b[CONST_KEY]) throw CONST_DUPLICATE;
-    b[CONST_KEY] = a;
+    if (!b[CONST_KEY]) {
+        b[CONST_KEY] = a;
+    }
     return b;
 };
+
 
 /** Returns default value for the type */
 export function getDefaultVal(type: any, value: any = undefined): any {
@@ -52,9 +54,9 @@ export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) 
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (CONST_UNDEFINED === typeof key) throw CONST_INVALID_KEY;
+        if (!key) throw CONST_INVALID_KEY;
         let group: Array<E> = map.get(key);
-        if (CONST_UNDEFINED === typeof group) {
+        if (!group) {
             group = [];
             map.set(key, group);
         }
@@ -67,9 +69,9 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T)
     let map = new Map<K, Array<T>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (CONST_UNDEFINED === typeof key) throw CONST_INVALID_KEY;
+        if (!key) throw CONST_INVALID_KEY;
         let group: Array<T> = map.get(key);
-        if (CONST_UNDEFINED === typeof group) {
+        if (!group) {
             group = [];
             map.set(key, group);
         }

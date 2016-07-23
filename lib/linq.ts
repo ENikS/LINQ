@@ -511,6 +511,16 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
+    public ChunkBy<K, E, V>(keySelect: (x: T) => K,
+                            elementSelector: (x: T) => E = Constant.selfFn,
+                            resultSelector: (a: K, b: Iterable<E>) => V = (a, b) => b as any):
+                Enumerable<V> {
+        return new EnumerableImpl<V>(undefined, Generator.ChunkBy,
+            [this, keySelect, elementSelector, resultSelector]);
+    }
+
+
+
     public Distinct<V>(keySelector?: (x: T) => V): Enumerable<T> {
         if (keySelector) 
             return new EnumerableImpl<T>(undefined, Generator.Distinct, [this, keySelector]);
@@ -518,22 +528,19 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): 
-           Enumerable<T> {
+    public Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T> {
         return new EnumerableImpl<T>(undefined, Generator.Intersect, [ this, 
                                            Constant.getKeys(other, keySelector), 
                                            true, keySelector ]);
     }
 
 
-    public GroupBy<K, E, R>(selKey: (x: T) => K, 
+    public GroupBy<K, E, R>(selKey: (x: T) => K,
                             selElement: (x: T) => E = Constant.selfFn, 
-                            selResult: (a: K, b: Iterable<E>) => 
-                                        R = Constant.defGrouping): 
-           Enumerable<R> {
-        let map: Map<K, Array<E>> = Constant.getKeyedMap(this, 
-                                                         selKey, 
-                                                         selElement);
+                            selResult: (a: K, b: Iterable<E>) =>
+                                R = Constant.defGrouping): Enumerable<R> {
+debugger
+        let map: Map<K, Array<E>> = Constant.getKeyedMap(this, selKey, selElement);
         return new EnumerableImpl<R>(undefined, Generator.GroupBy, [map, selResult]);
     }
 

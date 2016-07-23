@@ -12,7 +12,9 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {simpleArray, oddArray, jsn, un1, un2, people, pets, mix} from "./data";
+import {
+    simpleArray, oddArray, jsn, un1, un2, people, pets, mix, phrase
+} from "./data";
 import {assert} from "chai";
 import Linq from "../lib/linq";
 
@@ -28,6 +30,36 @@ describe('Deferred Execution -', function () {
 
         let iterable = Linq<b>([]);
         assert.equal(iterable.Cast<a>(), iterable);
+    });
+
+
+
+    // ChunkBy
+
+    it('ChunkBy()', function () {
+
+        let iterable = Linq(phrase).ChunkBy(o => o.key, o => o.value);
+
+        var iterator = iterable[Symbol.iterator]()
+        var arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 3);
+        assert.equal(arr[0], "We");
+        assert.equal(arr[1], "think");
+        assert.equal(arr[2], "that");
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        assert.equal(arr[0], "Linq");
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        assert.equal(arr[0], "is");
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        assert.equal(arr[0], "really");
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 2);
+        assert.equal(arr[0], "cool");
+        assert.equal(arr[1], "!");
+        assert.isTrue(iterator.next().done);
     });
 
 
