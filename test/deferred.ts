@@ -63,6 +63,24 @@ describe('Deferred Execution -', function () {
     });
 
 
+    it('ChunkBy() - Index', function () {
+
+        let iterable = Linq(phrase).ChunkBy((o, i) => Math.max(3, i), 
+                                             o => o.value);
+        var iterator = iterable[Symbol.iterator]()
+        var arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 4);
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 1);
+        assert.isTrue(iterator.next().done);
+    });
+
 
     // Concat
 

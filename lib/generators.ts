@@ -45,12 +45,13 @@ export function* DefaultIfEmpty<T>(target: Iterable<T>, defaultValue: T) {
 }
 
 
-export function* ChunkBy<T, K, E, V>(target: Iterable<T>, keySelect: (x: T) => K,
-                                  elementSelector: (x: T) => E,
-                                  resultSelector: (a: K, b: Iterable<E>) => V) {
-    let key: K, box: Array<E>;
+export function* ChunkBy<T, K, E, V>(target: Iterable<T>, 
+                                    keySelect: (x: T, i: number) => K,
+                                    elementSelector: (x: T) => E,
+                                    resultSelector: (a: K, b: Iterable<E>) => V) {
+    let key: K, box: Array<E>, i = 0;
     for (let value of target) {
-        let newKey = keySelect(value);
+        let newKey = keySelect(value, i++);
         if (key !== newKey && box) {
             yield resultSelector(key, box);
             box = undefined;
