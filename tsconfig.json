@@ -10,6 +10,7 @@
   },
   "exclude": [
     ".c9",
+    ".vscode",
     ".git",
     "dist",
     "node_modules"
