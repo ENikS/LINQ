@@ -1,5 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/ENikS/LINQ/badge.svg?branch=master)](https://coveralls.io/github/ENikS/LINQ?branch=master)
 [![Dependency Status](https://dependencyci.com/github/ENikS/LINQ/badge)](https://dependencyci.com/github/ENikS/LINQ)
+[![License](https://img.shields.io/badge/license-apache%202.0-60C060.svg)](https://github.com/ENikS/LINQ/blob/master/LICENSE)
 ## Language-Integrated Query (LINQ) 
 
 **linq-es2015** is a complete implementation of [LINQ (Language-Integrated Query)](https://en.wikipedia.org/wiki/Language_Integrated_Query) pattern and enables you to express traversal, filter, and projection operations over data in JavaScript or any related programming languages (TypeScript, CoffeeScript, etc). <br/>
