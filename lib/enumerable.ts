@@ -93,7 +93,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     ChunkBy(a=> a.name);
     */
-    ChunkBy<K, E, V>(keySelect: (x: T) => K,
+    ChunkBy<K, E, V>(keySelect: (x: T, i: number) => K,
                      elementSelector?: (y: T) => E, 
                      resultSelector?: (a: K, b: Iterable<E>) => V): Enumerable<V>;
 
