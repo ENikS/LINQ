@@ -133,11 +133,12 @@ export class DefaultIfEmpty<T> extends IteratorBase<T> {
 
 export class ChunkBy<T, K, E, V> extends IteratorBase<T> {
 
+    private index = 0;
     private key: K;
     private box: Array<E>;;
 
     constructor(target: Iterator<T>,
-                private keySelect: (x: T) => K,
+                private keySelect: (x: T, i: number) => K,
                 private elementSelector: (x: T) => E, 
                 private resultSelector: (a: K, b: Iterable<E>) => V) {
         super(target);
@@ -155,7 +156,7 @@ export class ChunkBy<T, K, E, V> extends IteratorBase<T> {
                     return result;
                 } else return this._done;
             }
-            let newKey = this.keySelect(result.value);
+            let newKey = this.keySelect(result.value, this.index++);
             if (this.key !== newKey && this.box) {
                 let ret = { done: false, value: this.resultSelector(this.key, this.box) };
                 this.key = newKey;

@@ -486,7 +486,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public ChunkBy<K, E, V>(keySelect: (x: T) => K,
+    public ChunkBy<K, E, V>(keySelect: (x: T, i: number) => K,
         elementSelector: (x: T) => E = Constant.selfFn,
         resultSelector: (a: K, b: Iterable<E>) => V = (a, b) => b as any):
         Enumerable<V> {

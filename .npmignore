@@ -28,7 +28,6 @@ x64/
 x86/
 build/
 bld/
-typings/
 bin/
 obj/
 .vs/
@@ -44,3 +43,5 @@ lib/iterators.ts
 lib/linq.ts
 lib/utilities.d.ts
 lib/utilities.ts
+typings/chai-3.2.0.d.ts
+typings/mocha.2.2.5.d.ts
