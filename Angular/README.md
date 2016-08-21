@@ -14,7 +14,7 @@ Get it now</a> if it's not already installed on your machine.
 by running `node -v` and `npm -v` in a terminal/console window.
 Older versions produce errors. If you need to run it with older version of node substitute LINQ-ES2015 with LINQ-ES5 package.
 
-## Steps to extend original package with LINQ
+## Steps to extend original QuickStart project with LINQ
 
 
 ### Install npm packages
