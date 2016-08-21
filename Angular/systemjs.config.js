@@ -10,6 +10,7 @@
 
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+    'linq-es2015':                'node_modules/linq-es2015',
     'rxjs':                       'node_modules/rxjs'
   };
 
@@ -17,6 +18,7 @@
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
+    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
   };
 
