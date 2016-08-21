@@ -1,16 +1,7 @@
 # Angular 2 QuickStart Source
-[![Build Status][travis-badge]][travis-badge-url]
 
-This repository holds the TypeScript source code of the [angular.io quickstart](https://angular.io/docs/ts/latest/quickstart.html),
-the foundation for most of the documentation samples and potentially a good starting point for your application.
-
-It's been extended with testing support so you can start writing tests immediately.
-
-**This is not the perfect arrangement for your application. It is not designed for production.
-It exists primarily to get you started quickly with learning and prototyping in Angular 2**
-
-We are unlikely to accept suggestions about how to grow this QuickStart into something it is not.
-Please keep that in mind before posting issues and PRs.
+This repository holds the TypeScript example of the [angular.io quickstart](https://angular.io/docs/ts/latest/quickstart.html)
+extended to use LINQ queries inside the components.
 
 ## Prerequisites
 
@@ -19,15 +10,13 @@ Node.js and npm are essential to Angular 2 development.
 <a href="https://docs.npmjs.com/getting-started/installing-node" target="_blank" title="Installing Node.js and updating npm">
 Get it now</a> if it's not already installed on your machine.
  
-**Verify that you are running at least node `v4.x.x` and npm `3.x.x`**
+**Verify that you are running node `v6.x.x` and npm `3.x.x`**
 by running `node -v` and `npm -v` in a terminal/console window.
-Older versions produce errors.
-
-We recommend [nvm](https://github.com/creationix/nvm) for managing multiple versions of node and npm.
+Older versions produce errors. If you need to run it with older version of node substitute LINQ-ES2015 with LINQ-ES5 package.
 
 ## Create a new project based on the QuickStart
 
-Clone this repo into new project folder (e.g., `my-proj`).
+Clone [this](https://github.com/angular/quickstart) repo into new project folder (e.g., `my-proj`).
 ```bash
 git clone  https://github.com/angular/quickstart  my-proj
 cd my-proj
@@ -83,72 +72,54 @@ Shut it down manually with Ctrl-C.
 
 You're ready to write your application.
 
-### npm scripts
+### Add support for the LINQ
 
-We've captured many of the most useful commands in npm scripts defined in the `package.json`:
+First we need to install package with npm manager
+```bash
+npm install linq-es2015 --save
+```
+This command installs the package and adds it to the dependencies list.
 
-* `npm start` - runs the compiler and a server at the same time, both in "watch mode".
-* `npm run tsc` - runs the TypeScript compiler once.
-* `npm run tsc:w` - runs the TypeScript compiler in watch mode; the process keeps running, awaiting changes to TypeScript files and re-compiling when it sees them.
-* `npm run lite` - runs the [lite-server](https://www.npmjs.com/package/lite-server), a light-weight, static file server, written and maintained by
-[John Papa](https://github.com/johnpapa) and
-[Christopher Martin](https://github.com/cgmartin)
-with excellent support for Angular apps that use routing.
-* `npm run typings` - runs the typings tool.
-* `npm run postinstall` - called by *npm* automatically *after* it successfully completes package installation. This script installs the TypeScript definition files this app requires.
-Here are the test related scripts:
-* `npm test` - compiles, runs and watches the karma unit tests
-* `npm run e2e` - run protractor e2e tests, written in JavaScript (*e2e-spec.js)
+Second step is to tell system where to look when asked for the package. Locate ```systemjs.config.js``` file and open in with editor. Add entries to **map** and **packages** sections like so:
+```javascript
+  // map tells the System loader where to look for things
+  var map = {
+    'app':                        'app', // 'dist',
 
-## Testing
+    '@angular':                   'node_modules/@angular',
+    'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+    'linq-es2015':                'node_modules/linq-es2015',
+    'rxjs':                       'node_modules/rxjs'
+  };
 
-The QuickStart documentation doesn't discuss testing.
-This repo adds both karma/jasmine unit test and protractor end-to-end testing support.
+  // packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':                        { main: 'main.js',  defaultExtension: 'js' },
+    'rxjs':                       { defaultExtension: 'js' },
+    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' },
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+  };
+  ```
 
-These tools are configured for specific conventions described below.
+Finally, add import within a component and use LINQ to perform queries:
+```javascript
+import { Component } from '@angular/core';
+import { asEnumerable } from 'linq-es2015';
 
-*It is unwise and rarely possible to run the application, the unit tests, and the e2e tests at the same time.
-We recommend that you shut down one before starting another.*
+@Component({
+    selector: 'my-app',
+    template: '<h1>My First Angular 2 App with LINQ</h1><div>Count - {{Count}}</div>'
+})
+export class AppComponent { 
+    Count: number;
 
-### Unit Tests
-TypeScript unit-tests are usually in the `app` folder. Their filenames must end in `.spec`.
+    constructor(){
+        this.Count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
+			                                                      .Count();        
+    }
+}
+```
 
-Look for the example `app/app.component.spec.ts`.
-Add more `.spec.ts` files as you wish; we configured karma to find them.
+If you want to see all required changes all at once look at [this](https://github.com/ENikS/LINQ/commit/abbf0411665fdfd828748636196bff86b304b7ad) commit.
 
-Run it with `npm test`
-
-That command first compiles the application, then simultaneously re-compiles and runs the karma test-runner.
-Both the compiler and the karma watch for (different) file changes.
-
-Shut it down manually with Ctrl-C.
-
-Test-runner output appears in the terminal window.
-We can update our app and our tests in real-time, keeping a weather eye on the console for broken tests.
-Karma is occasionally confused and it is often necessary to shut down its browser or even shut the command down (Ctrl-C) and
-restart it. No worries; it's pretty quick.
-
-The `HTML-Reporter` is also wired in. That produces a prettier output; look for it in `~_test-output/tests.html`.
-
-### End-to-end (E2E) Tests
-
-E2E tests are in the `e2e` directory, side by side with the `app` folder.
-Their filenames must end in `.e2e-spec.ts`.
-
-Look for the example `e2e/app.e2e-spec.ts`.
-Add more `.e2e-spec.js` files as you wish (although one usually suffices for small projects);
-we configured protractor to find them.
-
-Thereafter, run them with `npm run e2e`.
-
-That command first compiles, then simultaneously starts the Http-Server at `localhost:8080`
-and launches protractor.  
-
-The pass/fail test results appear at the bottom of the terminal window.
-A custom reporter (see `protractor.config.js`) generates a  `./_test-output/protractor-results.txt` file
-which is easier to read; this file is excluded from source control.
-
-Shut it down manually with Ctrl-C.
-
-[travis-badge]: https://travis-ci.org/angular/quickstart.svg?branch=master
-[travis-badge-url]: https://travis-ci.org/angular/quickstart
+For more information about quickstart splease reference the [original source](https://angular.io/docs/ts/latest/quickstart.html).
