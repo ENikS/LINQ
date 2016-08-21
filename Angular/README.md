@@ -49,7 +49,7 @@ Second step is to tell system where to look when asked for the package. Locate `
 
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
-    'linq-es2015':                'node_modules/linq-es2015',
+    'linq-es2015':                'node_modules/linq-es2015', // Added new mapping
     'rxjs':                       'node_modules/rxjs'
   };
 
@@ -57,7 +57,7 @@ Second step is to tell system where to look when asked for the package. Locate `
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' },
+    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' }, // Get it from dist/linq.js
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
   };
   ```
