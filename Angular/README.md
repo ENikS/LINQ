@@ -86,6 +86,6 @@ For more information about quickstart splease reference the [original source](ht
 
 ## Running sample
 
-1. Clone repository to your locak disk
+1. Clone repository to your local disk
 2. Install dependencies by running ```npm install```
 3. Run example by executing command ```npm run start```. ( Note on Windows it has to be Run as Administrator ) 
