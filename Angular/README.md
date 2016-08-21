@@ -14,7 +14,10 @@ Get it now</a> if it's not already installed on your machine.
 by running `node -v` and `npm -v` in a terminal/console window.
 Older versions produce errors. If you need to run it with older version of node substitute LINQ-ES2015 with LINQ-ES5 package.
 
-## Install npm packages
+## Steps to extend original package with LINQ
+
+
+### Install npm packages
 
 > See npm and nvm version notes above
 
@@ -90,3 +93,9 @@ export class AppComponent {
 If you want to see all required changes all at once look at [this](https://github.com/ENikS/LINQ/commit/abbf0411665fdfd828748636196bff86b304b7ad) commit.
 
 For more information about quickstart splease reference the [original source](https://angular.io/docs/ts/latest/quickstart.html).
+
+## Running sample
+
+1. Clone repository to your locak disk
+2. Install dependencies by running ```npm install```
+3. Run example by executin command ```npm run start```. **On Windows it has to be Run as Administrator**
