@@ -27,20 +27,11 @@ Install the npm packages described in the `package.json` and verify that it work
 
 ```bash
 npm install
-npm start
 ```
 
 > If the `typings` folder doesn't show up after `npm install` please install them manually with:
 
 > `npm run typings -- install`
-
-The `npm start` command first compiles the application, 
-then simultaneously re-compiles and runs the `lite-server`.
-Both the compiler and the server watch for file changes.
-
-Shut it down manually with Ctrl-C.
-
-You're ready to write your application.
 
 ### Add support for the LINQ
 
