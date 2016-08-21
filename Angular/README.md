@@ -1,7 +1,7 @@
-# Angular 2 QuickStart Source
+# Angular 2 QuickStart Example
 
 This repository holds the TypeScript example of the [angular.io quickstart](https://angular.io/docs/ts/latest/quickstart.html)
-extended to use LINQ queries inside the components.
+extended to use LINQ queries.
 
 ## Prerequisites
 
