@@ -61,5 +61,7 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 *  [Browser Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
 *  [Node Example](https://tonicdev.com/eniks/using-linq)
 *  [Angular 2 Example](https://github.com/ENikS/LINQ/tree/examples/Angular)
+*  [Node Console Example](https://github.com/ENikS/LINQ/tree/examples/Node)
+*  [TypeScript/JavaScript Web Example](https://github.com/ENikS/LINQ/tree/examples/TypeScript)
 
 
