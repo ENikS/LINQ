@@ -43,5 +43,7 @@ If used directly in JavaScript names follow [camelCase](https://en.wikipedia.org
 *  [Browser Example](https://jsfiddle.net/ENikS/pyvjcfa0/)
 *  [Node Example](https://tonicdev.com/eniks/using-linq)
 *  [Angular 2 Example](https://github.com/ENikS/LINQ/tree/examples/Angular)
+*  [Node Console Example](https://github.com/ENikS/LINQ/tree/examples/Node)
+*  [TypeScript/JavaScript Web Example](https://github.com/ENikS/LINQ/tree/examples/TypeScript)
 
 
