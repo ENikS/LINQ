@@ -61,8 +61,8 @@ In file ```systemjs.config.js``` add following two entries:
 ```javascript
 // map tells the System loader where to look for things
   var map = {
-    '@angular':                   'node_modules/@angular',
-    'linq-es2015':                'node_modules/linq-es2015',
+    '@angular':      'node_modules/@angular',
+    'linq-es2015':   'node_modules/linq-es2015', // map to module
     . . .
   };
 ```
@@ -70,12 +70,12 @@ and
 ```javascript
 // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
-    'app':                        { main: 'main.js',  defaultExtension: 'js' },
-    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' },
+    'app':           { main: 'main.js',  defaultExtension: 'js' },
+    'linq-es2015':   { main: 'dist/linq.js', defaultExtension: 'js' }, // map to browserified module
     . . .
   };
 ```
-Use the package normally:
+On the server package is available as any normal module, on the cliend use it like this:
 ```javascript
 import { Component } from '@angular/core';
 import { asEnumerable } from 'linq-es2015';
