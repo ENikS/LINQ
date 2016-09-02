@@ -27,7 +27,7 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
 
 ### Using in browser
-[Browserified](//browserify.org/) [standalone](//github.com/substack/node-browserify#usage) [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
+[Browserified](//browserify.org/) [standalone](//github.com/substack/node-browserify#usage) [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPMCDN service](//unpkg.com). Both [linq.js](//unpkg.com/linq-es2015/dist/linq.js) and [linq.min.js](//unpkg.com/linq-es2015/dist/linq.min.js) are available. [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
 
 ## Naming Convention
