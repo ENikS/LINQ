@@ -11,7 +11,7 @@ The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/t
 ## Using in Node
 Install module with this command:
 ```
-npm install linq-es2015
+npm install linq-es2015 --save
 ```
 Once installed it could be loaded and used like this:
 ```javascript
@@ -51,6 +51,49 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
                        .Count()
 ```
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
+
+## Using in Angular
+The same package could be used on a server as well as on a client. All you have to do is to install module as usual:
+```
+npm install linq-es2015 --save
+```
+In file ```systemjs.config.js``` add following two entries:
+```javascript
+// map tells the System loader where to look for things
+  var map = {
+    '@angular':                   'node_modules/@angular',
+    'linq-es2015':                'node_modules/linq-es2015',
+    . . .
+  };
+```
+and 
+```javascript
+// packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':                        { main: 'main.js',  defaultExtension: 'js' },
+    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' },
+    . . .
+  };
+```
+Use the package normally:
+```javascript
+import { Component } from '@angular/core';
+import { asEnumerable } from 'linq-es2015';
+
+@Component({
+    selector: 'my-app',
+    template: '<h1>My First Angular 2 App with LINQ</h1><div>Count - {{Count}}</div>'
+})
+export class AppComponent { 
+    Count: number;
+
+    constructor(){
+        this.Count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
+			                                                      .Count();        
+    }
+}
+```
+[[See Example](https://github.com/ENikS/LINQ/tree/examples/Angular)]
 
 ## Documentation
 *  [Library Reference](https://github.com/ENikS/LINQ/wiki)
