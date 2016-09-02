@@ -39,10 +39,10 @@ var iterable = Enumerable.asEnumerable(people)
 
 
 ## Using in browser
-[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ```/dist``` directory and could be accessed through [NPM CDN service](//npmcdn.com). Both [linq.js](//npmcdn.com/linq-es2015/dist/linq.js) and [linq.min.js](//npmcdn.com/linq-es2015/dist/linq.min.js) are available. 
+[Browserified](//browserify.org/) "[standalone](//github.com/substack/node-browserify#usage)" [UMD](//github.com/umdjs/umd) module is located in ```/dist``` directory and could be accessed through [NPM CDN service](//unpkg.com). Both [linq.js](//unpkg.com/linq-es2015/dist/linq.js) and [linq.min.js](//unpkg.com/linq-es2015/dist/linq.min.js) are available. 
 Module is loaded with ```<script>``` element:
 ```javascript
-<script type="text/javascript" src="//npmcdn.com/linq-es2015/dist/linq.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/linq-es2015/dist/linq.min.js"></script>
 ```
 Loading this script creates ```Enumerable``` global variable. You can use it to perform LINQ queries:
 ```javascript
