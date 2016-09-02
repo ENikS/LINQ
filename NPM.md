@@ -26,9 +26,52 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 ```
 For live examples please follow links to ([Node](https://tonicdev.com/eniks/using-linq)) or ([Browser](https://jsfiddle.net/ENikS/pyvjcfa0)).  
 
-### Using in browser
+## Using in browser
 [Browserified](//browserify.org/) [standalone](//github.com/substack/node-browserify#usage) [UMD](//github.com/umdjs/umd) module is located in ./dist directory and could be accessed through [NPM CDN service](//unpkg.com). Both [linq.js](//unpkg.com/linq-es2015/dist/linq.js) and [linq.min.js](//unpkg.com/linq-es2015/dist/linq.min.js) are available. [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
+
+## Using in Angular
+The same package could be used on a server as well as on a client. All you have to do is to install module as usual:
+```
+npm install linq-es2015 --save
+```
+In file ```systemjs.config.js``` add following two entries:
+```javascript
+// map tells the System loader where to look for things
+  var map = {
+    '@angular':      'node_modules/@angular',
+    'linq-es2015':   'node_modules/linq-es2015', // map to module
+    . . .
+  };
+```
+and 
+```javascript
+// packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':           { main: 'main.js',  defaultExtension: 'js' },
+    'linq-es2015':   { main: 'dist/linq.js', defaultExtension: 'js' }, // map to browserified module
+    . . .
+  };
+```
+On the server package is available as any normal module, on the cliend use it like this:
+```javascript
+import { Component } from '@angular/core';
+import { asEnumerable } from 'linq-es2015';
+
+@Component({
+    selector: 'my-app',
+    template: '<h1>My First Angular 2 App with LINQ</h1><div>Count - {{Count}}</div>'
+})
+export class AppComponent { 
+    Count: number;
+
+    constructor(){
+        this.Count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
+			                                                      .Count();        
+    }
+}
+```
+[[See Example](https://github.com/ENikS/LINQ/tree/examples/Angular)]
 
 ## Naming Convention
 When library is used in TypeScript method names follow original C# convention (Name starts with capital letter). It is done for compatibility reasons so that code could be cut/pasted from C# with just minor reformatting.
