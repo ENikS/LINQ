@@ -5,12 +5,7 @@ extended to use LINQ queries.
 
 ## Prerequisites
 
-Node.js and npm are essential to Angular 2 development. 
-    
-<a href="https://docs.npmjs.com/getting-started/installing-node" target="_blank" title="Installing Node.js and updating npm">
-Get it now</a> if it's not already installed on your machine.
- 
-**Verify that you are running node `v6.x.x` and npm `3.x.x`** by running `node -v` and `npm -v` in a terminal/console window. Older versions produce errors. 
+**Verify that you are running node `v6.x.x`** by running `node -v` in a terminal/console window. Older versions produce errors. 
 If you need to run it with older browsers or node substitute [LINQ-ES2015](https://www.npmjs.com/package/linq-es2015) with [LINQ-ES5](https://www.npmjs.com/package/linq-es5) package.
 
 ## Steps to extend original QuickStart project with LINQ
