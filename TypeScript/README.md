@@ -2,6 +2,11 @@
 
 This is an example of how to use ```linq-es2015``` in **TypeScript** project
 
+## Prerequisites
+
+**Verify that you are running node `v6.x.x` and npm `3.x.x`** by running `node -v` and `npm -v` in a terminal/console window. Older versions produce errors. 
+If you need to run it with older node version substitute [LINQ-ES2015](https://www.npmjs.com/package/linq-es2015) with [LINQ-ES5](https://www.npmjs.com/package/linq-es5) package.
+
 ## Building project
 This project could be built and run using Visual Studio or directly in shell:
 
