@@ -140,7 +140,7 @@ export function* SkipWhile<T>(target: Iterable<T>, predicate: (x: T, i: number) 
 export function* TakeWhile<T>(target: Iterable<T>, predicate: (x: T, i: number) => Boolean) {
     let index = 0;
     for (let value of target) {
-        if (!predicate(value, index++)) return;
+        if (!predicate(value, index++)) break;
         yield value;
     }
 }
