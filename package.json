@@ -1,6 +1,6 @@
 {
   "name": "linq-es5",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "Complete implementation of Language-Integrated Query (LINQ) (ECMAScript 5.1 Language Specification)",
   "main": "lib/linq.js",
   "typings": "lib/linq.d.ts",
