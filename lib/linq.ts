@@ -397,13 +397,13 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         let res1: IteratorResult<T>, res2: IteratorResult<T>;
         let it1 = this[Symbol.iterator]();
         let it2 = other[Symbol.iterator]();
-        do {
+        while (true) {
             res1 = it1.next(); res2 = it2.next();
+            if (res1.done && res2.done) return true;
             if ((res1.done != res2.done) || !equal(res1.value, res2.value)) {
                 return false;
             }
-        } while (!(res1.done) && !(res2.done));
-        return true;
+        };
     }
 
 
