@@ -375,11 +375,11 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         var it2 = other[Symbol.iterator]();
         do {
             res1 = it1.next(); res2 = it2.next();
+            if (res1.done && res2.done) return true;
             if ((res1.done != res2.done) || !equal(res1.value, res2.value)) {
                 return false;
             }
-        } while (!(res1.done) && !(res2.done));
-        return true;
+        } while (true);
     }
 
 
