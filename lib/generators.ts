@@ -63,7 +63,7 @@ export function* ChunkBy<T, K, E, V>(target: Iterable<T>,
         box.push(elementSelector(value));                        
     }
 
-    if (key && box) {
+    if (box && 0 < box.length) {
         yield resultSelector(key, box);
     } 
 }

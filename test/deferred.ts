@@ -65,8 +65,8 @@ describe('Deferred Execution -', function () {
 
     it('ChunkBy() - Index', function () {
 
-        let iterable = Linq(phrase).ChunkBy((o, i) => Math.max(3, i), 
-                                             o => o.value);
+        let iterable = Linq(phrase).ChunkBy((o, i) => Math.max(3, i),
+            o => o.value);
         var iterator = iterable[Symbol.iterator]()
         var arr = iterator.next().value as Array<string>;
         assert.equal(arr.length, 4);
@@ -78,6 +78,27 @@ describe('Deferred Execution -', function () {
         assert.equal(arr.length, 1);
         arr = iterator.next().value as Array<string>;
         assert.equal(arr.length, 1);
+        assert.isTrue(iterator.next().done);
+    });
+
+
+    it('ChunkBy() - Zero', function () {
+
+        let iterable = Linq([{ key: 0, value: "0" },
+                             { key: 0, value: "1" },
+                             { key: 0, value: "2" },
+                             { key: 0, value: "3" },
+                             { key: 0, value: "4" },
+                             { key: 0, value: "5" },
+                             { key: 0, value: "6" },
+                             { key: 0, value: "7" },
+                             { key: 0, value: "!" }])
+            .ChunkBy(k => k.key, o => o.value);
+
+        debugger;
+        var iterator = iterable[Symbol.iterator]()
+        var arr = iterator.next().value as Array<string>;
+        assert.equal(arr.length, 9);
         assert.isTrue(iterator.next().done);
     });
 
