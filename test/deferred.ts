@@ -131,7 +131,7 @@ describe('Deferred Execution -', function () {
     });
 
     it('Select() - With index', function () {
-        let array = Linq(jsn).Select((a, b) => b).ToArray();
+        let array = Linq(jsn).Select((a: any, b: any) => b).ToArray();
         assert.equal(array.length, 4);
         assert.equal(0, array[0]);
         assert.equal(1, array[1]);
@@ -211,7 +211,7 @@ describe('Deferred Execution -', function () {
     });
 
     it('Where() - Index', function () {
-        let iterable = Linq(simpleArray).Where((a, i) => i % 2 == 1);
+        let iterable = Linq(simpleArray).Where((a: any, i: any) => i % 2 == 1);
         let iterator = iterable[Symbol.iterator]()
         assert.equal(2, iterator.next().value);
         assert.equal(4, iterator.next().value);
