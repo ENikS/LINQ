@@ -601,61 +601,49 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public OrderBy<K>(keySelect: (x: T) => K = Constant.selfFn, 
-                     equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): 
-        Enumerable<T> {
-        return new OrderedLinq<T>(this, (array: Array<T>) => Generator.Forward(array), 
-                                 (a: T, b: T) => equal(keySelect(a), 
-                                 keySelect(b)));
+    public OrderBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number, generator = Generator.Forward): Enumerable<T> {
+
+        var comparer = equal ? equal : Constant.defCompare;
+        var compare = !keySelect && !equal ? undefined
+                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
+
+        return new OrderedLinq<T>(this, (array: Array<T>) => generator(array), compare);
     }
 
 
-    public OrderByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, 
-                                equal: (a: K, b: K) => number = (a, b) => 
-                                    <any>a - <any>b): 
-           Enumerable<T> {
-        return new OrderedLinq<T>(this, (array: Array<T>) => Generator.Reverse(array), 
-                                  (a: T, b: T) => equal(keySelect(a), 
-                                  keySelect(b)));
+    public OrderByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): Enumerable<T> {
+        return this.OrderBy(keySelect, equal, Generator.Reverse);
     }
 
 
-    public ThenBy<K>(keySelect: (x: T) => K = Constant.selfFn, 
-                     equal: (a: K, b: K) => number = (a, b) => <any>a - <any>b): 
-           Enumerable<T> {
+    public ThenBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number, generator = Generator.Forward): Enumerable<T> {
+        
+        var comparer = equal ? equal : Constant.defCompare;
+        var compare = !keySelect && !equal ? undefined
+                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
+
         if (this instanceof OrderedLinq) {
-            let superEqual = (<OrderedLinq<T>><any>this).equal;
-            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
-                let result: number = superEqual(a, b);
-                return (0 != result) ? result : equal(keySelect(a), 
-                                                      keySelect(b));
+            if (!compare) return this;   
+
+            if (!(<OrderedLinq<T>><any>this).equal) {
+                (<OrderedLinq<T>><any>this).equal = compare;
+            } else {
+                let superEqual = (<OrderedLinq<T>><any>this).equal;
+                (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
+                    let result: number = superEqual(a, b);
+                    return (0 != result) ? result : compare(a, b);
+                }
             }
             return this;
         } else {
             return new OrderedLinq<T>(this,
-                (array: Array<T>) => Generator.Forward(array), (a: T, b: T) => 
-                                             equal(keySelect(a), keySelect(b)));
+                (array: Array<T>) => generator(array), compare);
         }
     }
 
 
-    public ThenByDescending<K>(keySelect: (x: T) => K = Constant.selfFn, 
-                               equal: (a: K, b: K) => number = (a, b) => 
-                                    <any>a - <any>b): 
-           Enumerable<T> {
-        if (this instanceof OrderedLinq) {
-            let superEqual = (<OrderedLinq<T>><any>this).equal;
-            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
-                let result: number = superEqual(a, b);
-                return (0 != result) ? result : equal(keySelect(a), 
-                                                      keySelect(b));
-            }
-            return this;
-        } else {
-            return new OrderedLinq<T>(this,
-                (array: Array<T>) => Generator.Reverse(array), (a: T, b: T) => 
-                                            equal(keySelect(a), keySelect(b)));
-        }
+    public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): Enumerable<T> {
+        return this.ThenBy(keySelect, equal, Generator.Reverse);
     }
 
 
@@ -739,14 +727,18 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 class OrderedLinq<T> extends EnumerableImpl<T> {
 
     constructor(target: Iterable<any> | IEnumerable<any>, 
-                factory: Function, public equal: (a: T, b: T) => number) {
+        factory: Function, public equal: (a: T, b: T) => number) {
         super(target, factory);
     }
 
     public [Symbol.iterator](): Iterator<T> {
         if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
-            this._factoryArg.sort(this.equal);
+            if (this.equal) {
+                this._factoryArg.sort(this.equal);
+            } else {
+                this._factoryArg.sort();
+            }
         }
         return this._factory(this._factoryArg);
     }

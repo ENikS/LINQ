@@ -95,7 +95,6 @@ describe('Deferred Execution -', function () {
                              { key: 0, value: "!" }])
             .ChunkBy(k => k.key, o => o.value);
 
-        debugger;
         var iterator = iterable[Symbol.iterator]()
         var arr = iterator.next().value as Array<string>;
         assert.equal(arr.length, 9);

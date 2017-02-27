@@ -33,6 +33,12 @@ export var defGrouping = (a: any, b: any) => {
     return b;
 };
 
+export var defCompare = (a: any, b: any): number => {
+    return a === b ? 0
+                   : a > b ? 1 
+                           : -1;
+};
+
 
 /** Returns default value for the type */
 export function getDefaultVal(type: any, value: any = undefined): any {
