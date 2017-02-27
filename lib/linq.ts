@@ -504,8 +504,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Concat<T>(second: Iterable<T>): Enumerable<T> {
-        return new EnumerableImpl<T>(undefined, Generator.Concat, [this, second]);
+    public Concat<V>(second: Iterable<V>): Enumerable<T|V> {
+        return new EnumerableImpl<T|V>(undefined, Generator.Concat, [this, second]);
     }
 
 

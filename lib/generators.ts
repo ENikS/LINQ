@@ -248,7 +248,7 @@ export function* SelectMany<T, V, R>(target: Iterable<T>, selector: (x: T, i: nu
 }
 
 
-export function* Concat<T>(target: Iterable<T>, second: Iterable<T>) {
+export function* Concat<T, V>(target: Iterable<T>, second: Iterable<V>) {
     yield* target;
     yield* second;
 }
