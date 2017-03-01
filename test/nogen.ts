@@ -12,14 +12,24 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {jsn, fruits, people, pets} from "./data";
-import {assert} from "chai"; 
+import {jsn, fruits, people, pets, unorderedMix, unorderedStr} from "./data";
+import {assert} from "chai";
 import {asEnumerable, Range} from "../lib/linq";
 
 
 
 describe('Custom Iterator based -', function () {
 
+    var comparator = (a : string, b : string) => {
+        var a1 = a.charCodeAt(3);
+        var b1 = b.charCodeAt(3);
+        var a2 = a.charCodeAt(2);
+        var b2 = b.charCodeAt(2);
+        return a1 > b1 ? 1 
+                        : a1 < b1 ? -1 
+                                    : a2 > b2 ? 1
+                                            : a2 < b2 ? -1 : 0;
+    }
 
 
     it('Reverse()', function () {
@@ -65,157 +75,161 @@ describe('Custom Iterator based -', function () {
 
 
 
-    it('OrderBy()', function () {
-        var iterable = asEnumerable(jsn).SelectMany(a => a.ids).OrderBy();
+    it('OrderBy() - Default', function () {
+        var enumerable = asEnumerable(unorderedMix);
+        var etalon = enumerable.ToArray().sort();
+        var iterable = enumerable.OrderBy();
         var iterator = iterable[Symbol.iterator]()
-        assert.equal(11, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-        var citerable = asEnumerable(jsn).OrderBy(a=> a.name);
+
+        for (let exp of etalon) {
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+    });
+
+    it('OrderBy() - Selector', function () {
+        var citerable = asEnumerable(jsn).OrderBy(a => a.name);
+        var citerator = citerable[Symbol.iterator]()
+        assert.equal("a", citerator.next().value.name);
+        assert.equal("b", citerator.next().value.name);
+        assert.equal("c", citerator.next().value.name);
+        assert.equal("d", citerator.next().value.name);
+        assert.isTrue(citerator.next().done);
+    });
+
+    it('OrderBy() - Comparator', function () {
+        var etalon = asEnumerable(jsn).ToArray().sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0));
+        var iterable = asEnumerable(jsn).OrderBy(a => a.name, (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let exp of etalon) {
+            assert.equal(iterator.next().value, exp);
+        }
+    });
+
+
+
+    it('OrderByDescending() - Default', function () {
+        var enumerable = asEnumerable(unorderedMix);
+        var etalon = enumerable.ToArray().sort();
+        var iterable = enumerable.OrderByDescending();
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+    });
+
+    it('OrderByDescending() - Selector', function () {
+        var citerable = asEnumerable(jsn).OrderByDescending(a => a.name);
         var citerator = citerable[Symbol.iterator]()
         assert.equal("d", citerator.next().value.name);
         assert.equal("c", citerator.next().value.name);
         assert.equal("b", citerator.next().value.name);
         assert.equal("a", citerator.next().value.name);
-        assert.isTrue(iterator.next().done);
-        citerable = asEnumerable(jsn).OrderBy(a=> a.name,
-            (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
-        citerator = citerable[Symbol.iterator]()
-        assert.equal("a", citerator.next().value.name);
-        assert.equal("b", citerator.next().value.name);
-        assert.equal("c", citerator.next().value.name);
-        assert.equal("d", citerator.next().value.name);
-        assert.isTrue(iterator.next().done);
+        assert.isTrue(citerator.next().done);
     });
 
-
-
-    it('OrderByDescending()', function () {
-        var iterable = asEnumerable(jsn)
-            .SelectMany(a => a.ids).OrderByDescending();
+    it('OrderByDescending() - Comparator', function () {
+        var etalon = asEnumerable(jsn).ToArray().sort((a, b) => b.name.charCodeAt(0) - a.name.charCodeAt(0));
+        var iterable = asEnumerable(jsn).OrderByDescending(a => a.name, (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
         var iterator = iterable[Symbol.iterator]()
-        assert.equal(34, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(11, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-        var citerable = asEnumerable(jsn).OrderByDescending(a=> a.name,
-            (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
-        var citerator = citerable[Symbol.iterator]()
-        assert.equal("d", citerator.next().value.name);
-        assert.equal("c", citerator.next().value.name);
-        assert.equal("b", citerator.next().value.name);
-        assert.equal("a", citerator.next().value.name);
-        assert.isTrue(iterator.next().done);
-        citerable = asEnumerable(jsn).OrderByDescending(a=> a.name);
-        citerator = citerable[Symbol.iterator]()
-        assert.equal("a", citerator.next().value.name);
-        assert.equal("b", citerator.next().value.name);
-        assert.equal("c", citerator.next().value.name);
-        assert.equal("d", citerator.next().value.name);
-        assert.isTrue(iterator.next().done);
+
+        for (let exp of etalon) {
+            assert.equal(iterator.next().value, exp);
+        }
     });
 
 
 
 
-    it('ThenBy()', function () {
-        var iterable: any = asEnumerable(fruits)
-                            .OrderBy(fruit=> fruit.length)
-                            .ThenBy(fruit=> fruit.charCodeAt(0))
-                            .ThenBy(fruit=> fruit.charCodeAt(4));
+    it('ThenBy() - Default', function () {
+        var enumerable = asEnumerable(unorderedMix);
+        var iterable = enumerable.OrderBy().ThenBy();
         var iterator = iterable[Symbol.iterator]()
-        assert.equal("appla", iterator.next().value);
-        assert.equal("apple", iterator.next().value);
-        assert.equal("grape", iterator.next().value);
-        assert.equal("mango", iterator.next().value);
-        assert.equal("banana", iterator.next().value);
-        assert.equal("orange", iterator.next().value);
-        assert.equal("blueberry", iterator.next().value);
-        assert.equal("raspberry", iterator.next().value);
-        assert.equal("passionfruit", iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        for (let exp of enumerable.ToArray().sort()) {
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
     });
 
-    it('ThenBy() - No order', function () {
-        var iterable: any = asEnumerable(fruits)
-            .ThenBy(fruit => fruit.charCodeAt(0))
-            .ThenBy(fruit => fruit.charCodeAt(4));
+    it('ThenBy() - Selector', function () {
+        var enumerable = asEnumerable(unorderedStr);
+        var iterable = enumerable.OrderBy(s => s.charCodeAt(3)).ThenBy(s => s.charCodeAt(2));
         var iterator = iterable[Symbol.iterator]()
-        assert.equal("appla", iterator.next().value);
-        assert.equal("apple", iterator.next().value);
-        assert.equal("blueberry", iterator.next().value);
-        assert.equal("banana", iterator.next().value);
-        assert.equal("grape", iterator.next().value);
-        assert.equal("mango", iterator.next().value);
-        assert.equal("orange", iterator.next().value);
-        assert.equal("passionfruit", iterator.next().value);
-        assert.equal("raspberry", iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        for (let exp of enumerable.ToArray().sort(comparator)) {
+            assert.equal(iterator.next().value, exp);
+        }
     });
 
+    it('ThenBy() - Default Function', function () {
+        var enumerable = asEnumerable(unorderedStr);
 
-
-
-    it('ThenByDescending()', function () {
-        var iterable: any = asEnumerable(fruits)
-            .OrderByDescending(fruit => fruit.length)
-            .ThenByDescending(fruit => fruit.charCodeAt(0))
-            .ThenByDescending(fruit => fruit.charCodeAt(4));
+        var iterable = enumerable.OrderBy().ThenBy(s => s, comparator);
         var iterator = iterable[Symbol.iterator]()
-        assert.equal("passionfruit", iterator.next().value);
-        assert.equal("raspberry", iterator.next().value);
-        assert.equal("blueberry", iterator.next().value);
-        assert.equal("orange", iterator.next().value);
-        assert.equal("banana", iterator.next().value);
-        assert.equal("mango", iterator.next().value);
-        assert.equal("grape", iterator.next().value);
-        assert.equal("apple", iterator.next().value);
-        assert.equal("appla", iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        for (let exp of enumerable.ToArray().sort(comparator)) {
+            assert.equal(iterator.next().value, exp);
+        }
     });
 
-    it('ThenByDescending() - No order', function () {
-        var iterable: any = asEnumerable(fruits)
-            .ThenByDescending(fruit => fruit.charCodeAt(0))
-            .ThenByDescending(fruit => fruit.charCodeAt(4));
+
+
+    it('ThenByDescending() - Default', function () {
+        var enumerable = asEnumerable(unorderedMix);
+        var etalon = enumerable.ToArray().sort();
+        var iterable = enumerable.OrderByDescending().ThenByDescending();
         var iterator = iterable[Symbol.iterator]()
-        assert.equal("raspberry", iterator.next().value);
-        assert.equal("passionfruit", iterator.next().value);
-        assert.equal("orange", iterator.next().value);
-        assert.equal("mango", iterator.next().value);
-        assert.equal("grape", iterator.next().value);
-        assert.equal("banana", iterator.next().value);
-        assert.equal("blueberry", iterator.next().value);
-        assert.equal("apple", iterator.next().value);
-        assert.equal("appla", iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
     });
 
+
+    it('ThenByDescending() - Selector', function () {
+        var enumerable = asEnumerable(unorderedStr);
+        var etalon = enumerable.ToArray().sort(comparator);
+        var iterable = enumerable.OrderByDescending(s => s.charCodeAt(3)).ThenByDescending(s => s.charCodeAt(2));
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+    });
+
+    it('ThenByDescending() - Default Function', function () {
+        var enumerable = asEnumerable(unorderedStr);
+        var etalon = enumerable.ToArray().sort(comparator);
+        var iterable = enumerable.OrderByDescending().ThenByDescending(s => s, comparator);
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+    });
 
 
 
     it('Zip()', function () {
-        var numbers = [ 1, 2, 3, 4 ];
-        var words = [ "one", "two", "three" ];
+        var numbers = [1, 2, 3, 4];
+        var words = ["one", "two", "three"];
 
         var numbersAndWords = asEnumerable(numbers).Zip(words, (first, second) => first + " " + second);
         var iterator = numbersAndWords[Symbol.iterator]()

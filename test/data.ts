@@ -87,8 +87,29 @@ export var phrase = [
     { key: "A", value: "really" },
     { key: "B", value: "cool" },
     { key: "B", value: "!" }
-]
+];
 
+export var unorderedMix = [
+    Infinity, -Infinity,
+    NaN,
+    0, -0, 1, -1,
+    {},
+    [3], [4, 5], [6],
+    "1", "-1", "afgh", "axgh",
+    "123",
+    "132",
+    "1234",
+    "1314",
+    NaN,
+    "zjgf"];
 
+export var unorderedStr = [
+    "afgh",
+    "axgh",
+    "1234",
+    "1324",
+    "1234",
+    "1314",
+    "zjgf"];
 
 /** Copyright (c) ENikS.  All rights reserved. */

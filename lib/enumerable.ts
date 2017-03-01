@@ -102,7 +102,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var enumerable = asEnumerable([3, 4, 5, 6, 7]).Concat([1,2,8]);
     */
-    Concat<V>(second: Iterable<T>): Enumerable<V>;
+    Concat<T>(second: Iterable<T>): Enumerable<T>;
 
     /**
     * Determines whether a sequence contains a specified element by using a 

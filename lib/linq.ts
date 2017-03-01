@@ -480,7 +480,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Concat(second: Iterable<T>): Enumerable<T> {
+    public Concat<T>(second: Iterable<T>): Enumerable<T> {
         var aggregate = [this._target, second];
         return new EnumerableImpl<T>(this, () => new Iterator.SelectMany(aggregate[Symbol.iterator](), Constant.selfFn));
     }
@@ -712,7 +712,11 @@ class OrderedLinq<T> extends EnumerableImpl<T> {
     public [Symbol.iterator](): Iterator<T> {
         if ('undefined' === typeof this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
-            this._factoryArg.sort(this.equal);
+            if (this.equal) {
+                this._factoryArg.sort(this.equal);
+            } else {
+                this._factoryArg.sort();
+            }
         }
         return this._factory(this._factoryArg);
     }
