@@ -102,7 +102,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var enumerable = asEnumerable([3, 4, 5, 6, 7]).Concat([1,2,8]);
     */
-    Concat<T>(second: Iterable<T>): Enumerable<T>;
+    Concat<V>(second: Iterable<V>): Enumerable<T|V>;
 
     /**
     * Determines whether a sequence contains a specified element by using a 
@@ -432,9 +432,20 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *     var iterable = asEnumerable(jsn).SelectMany(a => a.ids, b => b);
     */
-    SelectMany<S, V>(selector?: (x: T, index: number) => Iterable<S>, 
-                     result?: (x: T, s: S) => V): Enumerable<V>;
+    SelectMany<S, V>(selector: (x: T, index: number) => Iterable<S>, 
+                     result: (x: T, s: S) => V): Enumerable<V>;
 
+    /**
+    * Projects each element of a sequence to an Iterable<T> and flattens the
+    * resulting sequences into one sequence. The index of each source element
+    * is used in the intermediate projected form of that element. 
+    * @param selector A transform function to apply to each source element; the 
+    * second parameter of the function represents the index of the source element.
+    * @example
+    *     var iterable = asEnumerable(jsn).SelectMany(a => a.ids);
+    */
+    SelectMany<S>(selector?: (x: T, index: number) => Iterable<S>): Enumerable<S>;
+    
     /**
     * Determines whether two sequences are equal by comparing their elements
     * by using a specified IEqualityComparer<T>. 
