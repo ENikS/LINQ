@@ -46,6 +46,10 @@
     <TypeScriptCompile Include="test\deferred.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="test\helpers.ts">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="test\ienumerable.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
