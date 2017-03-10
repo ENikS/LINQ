@@ -1,10 +1,10 @@
 {
   "name": "linq-es2015",
-  "version": "2.4.16",
+  "version": "2.4.17",
   "description": "Complete implementation of Language-Integrated Query (LINQ) (ECMAScript 2015 Language Specification)",
   "main": "lib/linq.js",
   "typings": "lib/linq.d.ts",
-  "tonicExampleFilename": "dist/example.js",
+  "tonicExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/ENikS/LINQ/wiki",
   "author": {
     "name": "Eugene Sadovoi",
