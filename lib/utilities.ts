@@ -56,7 +56,7 @@ export function getDefaultVal(type: any, value: any = undefined): any {
 }
 
 /** Returns a map of element bsed on extracted keys  **/
-export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement?: (x: T) => E): Map<K, Array<E>> {
+export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement: (x: T) => E = selfFn): Map<K, Array<E>> {
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
