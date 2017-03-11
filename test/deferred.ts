@@ -526,7 +526,7 @@ describe('Deferred Execution -', function () {
     });
 
     it('GroupJoin() - Redundant', function () {
-        var iterable = Linq(jsn)
+        var iterable = Linq(un2)
             .GroupJoin(un1,
             e => e.id,
             u => u.id,
@@ -538,12 +538,6 @@ describe('Deferred Execution -', function () {
             });
 
         var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.isTrue(Array.isArray(result.values))
-        assert.equal(result.key, 1);
-        var result = iterator.next().value;
-        assert.isTrue(Array.isArray(result.values))
-        assert.equal(result.key, 2);
         var result = iterator.next().value;
         assert.isTrue(Array.isArray(result.values))
         assert.equal(result.key, 3);
