@@ -12,7 +12,7 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {jsn, fruits, people, pets, simpleArray, mix, phrase} from "./data";
+import {jsn, fruits, people, pets, simpleArray, mix, phrase, unorderedMix} from "./data";
 import {assert} from "chai";
 import {asEnumerable, Range, Repeat} from "../lib/linq";
 
@@ -108,6 +108,27 @@ describe('Reentrancy -', function () {
         assert.equal(iterator.next().value, 'b');
         assert.equal(iterator.next().value, 'a');
         assert.isTrue(iterator.next().done);
+    });
+
+
+    it('ThenBy()', function () {
+        var enumerable = asEnumerable(unorderedMix);
+        var sorted = enumerable.ToArray().sort();
+        var iterable = enumerable.OrderBy().ThenBy();
+        
+        var iterator = iterable[Symbol.iterator]()
+        for (let exp of sorted) {
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+
+        var iterator = iterable[Symbol.iterator]()
+        for (let exp of sorted) {
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
     });
 
 
