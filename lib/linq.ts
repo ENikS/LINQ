@@ -701,7 +701,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
     }
 
     public [Symbol.iterator](): Iterator<T> {
-        if (Constant.CONST_UNDEFINED === typeof this._factoryArg) {
+        if (!this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
             if (this.equal) {
                 this._factoryArg.sort(this.equal);
