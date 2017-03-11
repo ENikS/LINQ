@@ -14,6 +14,7 @@
 
 import { assert } from "chai";
 import * as Helper from "../lib/utilities";
+import { pets } from "./data";
 
 
 describe("Helpers - ", () => {
@@ -38,12 +39,11 @@ describe("Helpers - ", () => {
             { id: undefined, "name": "r" }
         ];
 
-        // assert.throws(function () {
-        //     Helper.getKeyedMap(data, e => e.id );
-        // });
-        // assert.throws(function () {
-        //     Helper.getKeyedMapFast(data, e => e.id );
-        // });
+        var result = Helper.getKeyedMap(pets, e => e.Owner, e => e.Name );
+        assert.equal(result.size, 3);
+
+        var resultFast = Helper.getKeyedMapFast(pets, e => e.Owner );
+        assert.equal(resultFast.size, 3);
     });
 
 });
