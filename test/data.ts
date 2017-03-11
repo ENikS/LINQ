@@ -46,6 +46,8 @@ export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4  ];
 export var oddArray = [ 1, 3, 5, 7, 9, 11, 13, 15 ];
 
 
+var ghost : any = { Name: undefined };
+var nullGhost : any = { Name: null };
 var julious = { Name: "Hedlund, Julious" };
 var magnus = { Name: "Hedlund, Magnus" };
 var terry = { Name: "Adams, Terry" };
@@ -54,9 +56,10 @@ var barley = { Name: "Barley", Age: 8, Owner: terry };
 var boots = { Name: "Boots", Age: 4, Owner: terry };
 var whiskers = { Name: "Whiskers", Age: 1, Owner: charlotte };
 var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
-var stray : any = { Name: "Daisy", Age: 4, Owner: null };
+var stray : any = { Name: "Lost Dog", Age: 4, Owner: null };
+var undef : any = { Name: "Puppy", Age: 4, Owner: undefined };
 
-export var people = [magnus, terry, charlotte];
+export var people = [magnus, terry, nullGhost, charlotte, ghost];
 export var pets   = [barley, stray, boots, whiskers, daisy];
 
 export var mix = [

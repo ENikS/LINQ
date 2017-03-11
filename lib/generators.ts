@@ -214,6 +214,7 @@ export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, 
         let key = oKeySelect(value);
         if (!key) continue;
         let innerSet = map.get(key);
+        if (!innerSet) continue;
         for (let inner of innerSet) {
             yield transform(value, inner);
         }
@@ -226,6 +227,7 @@ export function* GroupJoin<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) =
         let key = oKeySelect(value);
         if (!key) continue;
         let innerSet = map.get(key);
+        if (!innerSet) continue;
         yield transform(value, innerSet);
     }
 }
