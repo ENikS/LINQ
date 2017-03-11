@@ -57,7 +57,7 @@ var boots = { Name: "Boots", Age: 4, Owner: terry };
 var whiskers = { Name: "Whiskers", Age: 1, Owner: charlotte };
 var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
 var stray : any = { Name: "Lost Dog", Age: 4, Owner: null };
-var undef : any = { Name: "Puppy", Age: 4, Owner: undefined };
+var undef : any = { Name: "Puppy", Age: 0, Owner: undefined };
 
 export var people = [magnus, terry, nullGhost, charlotte, ghost];
 export var pets   = [barley, stray, boots, whiskers, daisy];
