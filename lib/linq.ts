@@ -668,8 +668,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Union<K>(second: Iterable<T>, keySelector?: (x: T) => K): 
-        Enumerable<T> {
+    public Union<K>(second: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T> {
         if (keySelector)
             return new EnumerableImpl<T>(undefined, Generator.Union, [this, second, keySelector]);
         return new EnumerableImpl<T>(undefined, Generator.UnionFast, [this, second]);

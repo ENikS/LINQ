@@ -90,10 +90,13 @@ export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): 
     let set = new Set<any>();
     if (keySelector) {
         for (let value of iterable) {
-            set.add(keySelector(value));
+            let key = keySelector(value);
+            if (!key) continue;
+            set.add(key);
         }
     } else {
         for (let value of iterable) {
+            if (!value) continue;
             set.add(value);
         }
     }

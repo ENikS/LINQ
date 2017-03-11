@@ -184,7 +184,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *     asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([2,3,5]);
     *   // Will return 0, 1, 4, 6, 7
     */
-    Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T>;
+    Except<V, K>(other: Iterable<V>, keySelector?: (x: V) => K): Enumerable<T>;
 
     /**
     * Returns the first element in a sequence that satisfies a specified 
