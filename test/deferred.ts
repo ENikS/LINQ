@@ -328,6 +328,7 @@ describe('Deferred Execution -', function () {
         var iterable = Linq(un1).Intersect(un2, o => o.id );
         var iterator = iterable[Symbol.iterator]()
         assert.equal(3, iterator.next().value.id);
+        assert.equal(3, iterator.next().value.id);
         assert.equal(4, iterator.next().value.id);
         assert.isTrue(iterator.next().done);
     });
@@ -437,9 +438,9 @@ describe('Deferred Execution -', function () {
         assert.equal(un1[0], iterator.next().value);
         assert.equal(un1[1], iterator.next().value);
         assert.equal(un1[3], iterator.next().value);
-        assert.equal(un1[4], iterator.next().value);
+        assert.equal(un1[5], iterator.next().value);
         assert.equal(un2[3], iterator.next().value);
-        assert.equal(un2[4], iterator.next().value);
+        assert.equal(un2[5], iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 

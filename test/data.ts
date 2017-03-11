@@ -24,6 +24,7 @@ export var un1 = [
     { id: 2, "name": "w" },
     { id: null, "name": "n" },
     { id: 3, "name": "e" },
+    { id: 3, "name": "e" },
     { id: 4, "name": "r" }
 ];
 
@@ -31,6 +32,7 @@ export var un2 = [
     { id: 3, "name": "a" },
     { id: 4, "name": "s" },
     { id: undefined, "name": "d" },
+    { id: 5, "name": "d" },
     { id: 5, "name": "d" },
     { id: 6, "name": "f" }
 ];
