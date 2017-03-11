@@ -321,11 +321,15 @@ describe('Reentrancy -', function () {
         assert.equal("Hedlund, Magnus - Daisy", iterator.next().value);
         assert.equal("Adams, Terry - Barley", iterator.next().value);
         assert.equal("Adams, Terry - Boots", iterator.next().value);
+        assert.equal("Adams, Terry - Barley", iterator.next().value);
+        assert.equal("Adams, Terry - Boots", iterator.next().value);
         assert.equal("Weiss, Charlotte - Whiskers", iterator.next().value);
         assert.isTrue(iterator.next().done);
 
         iterator = iterable[Symbol.iterator]()
         assert.equal("Hedlund, Magnus - Daisy", iterator.next().value);
+        assert.equal("Adams, Terry - Barley", iterator.next().value);
+        assert.equal("Adams, Terry - Boots", iterator.next().value);
         assert.equal("Adams, Terry - Barley", iterator.next().value);
         assert.equal("Adams, Terry - Boots", iterator.next().value);
         assert.equal("Weiss, Charlotte - Whiskers", iterator.next().value);
@@ -358,6 +362,11 @@ describe('Reentrancy -', function () {
         assert.equal("Barley", result.Pets[0]);
         assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
+        assert.equal("Adams, Terry", result.Owner);
+        assert.equal(2, result.Pets.length);
+        assert.equal("Barley", result.Pets[0]);
+        assert.equal("Boots", result.Pets[1]);
+        result = iterator.next().value;
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
@@ -369,6 +378,11 @@ describe('Reentrancy -', function () {
         assert.equal("Hedlund, Magnus", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Daisy", result.Pets[0]);
+        result = iterator.next().value;
+        assert.equal("Adams, Terry", result.Owner);
+        assert.equal(2, result.Pets.length);
+        assert.equal("Barley", result.Pets[0]);
+        assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
         assert.equal("Adams, Terry", result.Owner);
         assert.equal(2, result.Pets.length);
