@@ -417,7 +417,7 @@ describe('Deferred Execution -', function () {
     // Union
 
     it('Union()', function () {
-        var iterable = Linq([0, 1, 2, 3, 4, 5, 6, 7]).Union([5, 6, 7, 8, 9]);
+        var iterable = Linq([0, 1, 2, 2, 3, 4, 5, 6, 7]).Union([5, 6, 6, 7, 8, 9]);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
