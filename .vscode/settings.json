@@ -1,3 +1,22 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "files.exclude": {
+    "**/*.js": { "when": "$(basename).ts"},
+    "test/*.d.ts": true,
+    "lib/*.d.ts": true,
+    "**/*.map": true,
+    "**/*.njsproj": true,
+    "**/*.git": true,
+    "**/*.svn": true,
+    "**/*.hg": true,
+    "TestResults": true,
+    "obj": true,
+    "Obj": true,
+    "bin": true,
+    "Bin": true,
+    "node_modules": true,
+    "**/*.DS_Store": true
+  }    
 }
+
+
