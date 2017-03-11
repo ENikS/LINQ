@@ -102,6 +102,14 @@ describe('Deferred Execution -', function () {
     });
 
 
+    it('ChunkBy() - Empty', function () {
+
+        let iterable = Linq([]).ChunkBy(e => e);
+        var iterator = iterable[Symbol.iterator]()
+        assert.isTrue(iterator.next().done);
+    });
+
+
     // Concat
 
     it('Concat()', function () {
