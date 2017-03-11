@@ -471,17 +471,18 @@ describe('Deferred Execution -', function () {
 
     it('Join() - Redundant', function () {
         var iterable =
-            Linq(un2).Join(jsn,  e => e.name, u => u.name,
+            Linq(un1).Join(jsn,  e => e.id, u => u.id,
                 (e, u) => {
-                    return e.name + " - " + u.id;
+                    return e.name + " - " + u.name;
                 });
-        var ss = iterable.ToArray();        
         var iterator = iterable[Symbol.iterator]()
-        assert.equal("a - 4", iterator.next().value);
-        assert.equal("d - 1", iterator.next().value);
-        assert.equal("d - 1", iterator.next().value);
-        assert.equal("d - 1", iterator.next().value);
+        assert.equal("q - d", iterator.next().value);
+        assert.equal("w - c", iterator.next().value);
+        assert.equal("e - b", iterator.next().value);
+        assert.equal("e - b", iterator.next().value);
+        assert.equal("r - a", iterator.next().value);
         assert.isTrue(iterator.next().done);
+        
     });
 
 
@@ -521,6 +522,34 @@ describe('Deferred Execution -', function () {
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('GroupJoin() - Redundant', function () {
+        var iterable = Linq(jsn)
+            .GroupJoin(un1,
+            e => e.id,
+            u => u.id,
+            (e, u) => {
+                return {
+                    key: e.id, 
+                    values: u
+                };
+            });
+
+        var iterator = iterable[Symbol.iterator]();
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 1);
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 2);
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 3);
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 4);
         assert.isTrue(iterator.next().done);
     });
 
