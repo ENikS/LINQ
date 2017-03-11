@@ -469,6 +469,22 @@ describe('Deferred Execution -', function () {
     });
 
 
+    it('Join() - Redundant', function () {
+        var iterable =
+            Linq(un2).Join(jsn,  e => e.name, u => u.name,
+                (e, u) => {
+                    return e.name + " - " + u.id;
+                });
+        var ss = iterable.ToArray();        
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal("a - 4", iterator.next().value);
+        assert.equal("d - 1", iterator.next().value);
+        assert.equal("d - 1", iterator.next().value);
+        assert.equal("d - 1", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
+
+
 
     // GroupJoin
 
