@@ -334,7 +334,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *     var e = asEnumerable(jsn).OrderBy(a=> a.name);
     */
     OrderBy<K>(keySelect?: (x: T) => K, 
-               equal?: (a: K, b: K) => number): Enumerable<T>;
+               equal?: (a: K, b: K) => number): OrderedEnumerable<T>;
 
     /** 
     * Sorts the elements of a sequence in descending order by using a specified
@@ -345,35 +345,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *     var e = asEnumerable(jsn).OrderByDescending(a=> a.name);
     */
     OrderByDescending<K>(keySelect?: (x: T) => K, 
-                         equal?: (a: K, b: K) => number): Enumerable<T>;
-
-    /** 
-    * Performs a subsequent ordering of the elements in a sequence in ascending 
-    * order by using a specified comparer. 
-    * @param keySelect A function to extract a key from an element.
-    * @param equal An IComparer<T> to compare keys.
-    * @example
-    *   var iterable: any = asEnumerable(fruits)
-    *                       .OrderBy(fruit=> fruit.length)
-    *                       .ThenBy(fruit=> fruit.charCodeAt(0))
-    *                       .ThenBy(fruit=> fruit.charCodeAt(4));
-    */
-    ThenBy<K>(keySelect?: (x: T) => K, 
-              equal?: (a: K, b: K) => number): Enumerable<T>;
-
-    /** 
-    * Performs a subsequent ordering of the elements in a sequence in descending 
-    * order by using a specified comparer. 
-    * @param keySelect A function to extract a key from an element.
-    * @param equal An IComparer<T> to compare keys.
-    * @example
-    *   var iterable: any = asEnumerable(fruits)
-    *                       .OrderBy(fruit=> fruit.length)
-    *                       .ThenByDescending(fruit=> fruit.charCodeAt(0))
-    *                       .ThenByDescending(fruit=> fruit.charCodeAt(4));
-    */
-    ThenByDescending<K>(keySelect?: (x: T) => K, 
-                        equal?: (a: K, b: K) => number): Enumerable<T>;
+                         equal?: (a: K, b: K) => number): OrderedEnumerable<T>;
 
     /** 
     * Returns count of numbers beginning from start  
@@ -610,6 +582,39 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *                 .Zip(words, (first, second) => first + " " + second);
     */
     Zip<V, Z>(second: Iterable<V>, func: (a: T, b: V) => Z): Enumerable<Z>;
+}
+
+
+export interface OrderedEnumerable<T> extends Enumerable<T>
+{
+    /** 
+    * Performs a subsequent ordering of the elements in a sequence in ascending 
+    * order by using a specified comparer. 
+    * @param keySelect A function to extract a key from an element.
+    * @param equal An IComparer<T> to compare keys.
+    * @example
+    *   var iterable: any = asEnumerable(fruits)
+    *                       .OrderBy(fruit=> fruit.length)
+    *                       .ThenBy(fruit=> fruit.charCodeAt(0))
+    *                       .ThenBy(fruit=> fruit.charCodeAt(4));
+    */
+    ThenBy<K>(keySelect?: (x: T) => K, 
+              equal?: (a: K, b: K) => number): OrderedEnumerable<T>;
+
+    /** 
+    * Performs a subsequent ordering of the elements in a sequence in descending 
+    * order by using a specified comparer. 
+    * @param keySelect A function to extract a key from an element.
+    * @param equal An IComparer<T> to compare keys.
+    * @example
+    *   var iterable: any = asEnumerable(fruits)
+    *                       .OrderBy(fruit=> fruit.length)
+    *                       .ThenByDescending(fruit=> fruit.charCodeAt(0))
+    *                       .ThenByDescending(fruit=> fruit.charCodeAt(4));
+    */
+    ThenByDescending<K>(keySelect?: (x: T) => K, 
+                        equal?: (a: K, b: K) => number): OrderedEnumerable<T>;
+
 }
 
 
