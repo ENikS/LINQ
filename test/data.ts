@@ -54,9 +54,10 @@ var barley = { Name: "Barley", Age: 8, Owner: terry };
 var boots = { Name: "Boots", Age: 4, Owner: terry };
 var whiskers = { Name: "Whiskers", Age: 1, Owner: charlotte };
 var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
+var stray : any = { Name: "Daisy", Age: 4, Owner: null };
 
 export var people = [magnus, terry, charlotte];
-export var pets = [barley, boots, whiskers, daisy];
+export var pets   = [barley, stray, boots, whiskers, daisy];
 
 export var mix = [
             0, 

@@ -530,7 +530,7 @@ describe('Deferred Execution -', function () {
         assert.equal(1, result.length);
         result = iterator.next().value;
         assert.equal(4, result.key);
-        assert.equal(2, result.length);
+        assert.equal(3, result.length);
         result = iterator.next().value;
         assert.equal(1, result.key);
         assert.equal(1, result.length);
@@ -549,7 +549,7 @@ describe('Deferred Execution -', function () {
         assert.equal(1, result.length);
         result = iterator.next().value;
         assert.equal(4, result.key);
-        assert.equal(2, result.length);
+        assert.equal(3, result.length);
         result = iterator.next().value;
         assert.equal(1, result.key);
         assert.equal(1, result.length);

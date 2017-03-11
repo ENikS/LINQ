@@ -60,7 +60,7 @@ export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) 
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (!key) throw CONST_INVALID_KEY;
+        if (!key) continue;
         let group: Array<E> = map.get(key);
         if (!group) {
             group = [];
@@ -75,7 +75,7 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T)
     let map = new Map<K, Array<T>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (!key) throw CONST_INVALID_KEY;
+        if (!key) continue;
         let group: Array<T> = map.get(key);
         if (!group) {
             group = [];
