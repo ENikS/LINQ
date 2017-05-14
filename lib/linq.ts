@@ -696,7 +696,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
         super(target, factory);
 
         (this as any)['thenBy'] = this.ThenBy;
-        (this as any)['thenByDescendi'] = this.ThenByDescending;
+        (this as any)['thenByDescending'] = this.ThenByDescending;
     }
 
     public [Symbol.iterator](): Iterator<T> {
