@@ -82,7 +82,7 @@
     "chai": "^3.5.0",
     "jsmin": "^1.0.1",
     "latest": "^0.2.0",
-    "mocha": "^3.2.0",
+    "mocha": "^3.4.0",
     "typescript": "^2.2.1"
   },
   "scripts": {
