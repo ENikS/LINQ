@@ -95,11 +95,12 @@ export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): 
     var result: any;
     if (keySelector) {
         while (!(result = otherIterator.next()).done) {
-            set.add(keySelector(result.value));
+            var key = keySelector(result.value);
+            if (key) set.add(key);
         }
     } else {
         while (!(result = otherIterator.next()).done) {
-            set.add(result.value);
+            if (result.value) set.add(result.value);
         }
     }
     return set;

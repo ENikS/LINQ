@@ -588,7 +588,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public OrderBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): Enumerable<T> {
+    public OrderBy<K>(keySelect?: (x: T) => K,
+        equal?: (a: K, b: K) => number): OrderedEnumerable<T> {
         var comparer = equal ? equal : Constant.defCompare;
         var compare = !keySelect && !equal ? undefined
                                            : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
@@ -603,57 +604,6 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new OrderedLinq<T>(this,
             (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1), compare);
     }
-
-
-    public ThenBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): Enumerable<T> {
-        var comparer = equal ? equal : Constant.defCompare;
-        var compare = !keySelect && !equal ? undefined
-                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
-        if (this instanceof OrderedLinq) {
-            if (!compare) return this;   
-
-            if (!(<OrderedLinq<T>><any>this).equal) {
-                (<OrderedLinq<T>><any>this).equal = compare;
-            } else {
-                let superEqual = (<OrderedLinq<T>><any>this).equal;
-                (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
-                    let result: number = superEqual(a, b);
-                    return (0 != result) ? result : compare(a, b);
-                }
-            }
-            return this;
-        } else {
-            return new OrderedLinq<T>(this,
-                (array: Array<T>) => new Iterator.ArrayIterator(array, 0, (i: number) => i >= array.length),
-                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
-        }
-    }
-
-
-    public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): Enumerable<T> {
-        var comparer = equal ? equal : Constant.defCompare;
-        var compare = !keySelect && !equal ? undefined
-                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
-        if (this instanceof OrderedLinq) {
-            if (!compare) return this;   
-
-            if (!(<OrderedLinq<T>><any>this).equal) {
-                (<OrderedLinq<T>><any>this).equal = compare;
-            } else {
-                let superEqual = (<OrderedLinq<T>><any>this).equal;
-                (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
-                    let result: number = superEqual(a, b);
-                    return (0 != result) ? result : compare(a, b);
-                }
-            }
-            return this;
-        } else {
-            return new OrderedLinq<T>(this,
-                (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1),
-                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
-        }
-    }
-
 
     public Range(start: number, count: number): Enumerable<number> {
         return new EnumerableImpl<number>(null, () => new Iterator.Generator(start, count, true));
@@ -731,6 +681,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
         (this as any)['thenBy'] = this.ThenBy;
         (this as any)['thenByDescending'] = this.ThenByDescending;
     }
+
     public [Symbol.iterator](): Iterator<T> {
         if (!this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
@@ -744,28 +695,53 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
     }
 
 
-    public ThenBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number, generator = Generator.Forward): OrderedEnumerable<T> {
-        
+    public ThenBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
         var comparer = equal ? equal : Constant.defCompare;
         var compare = !keySelect && !equal ? undefined
-                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
-        if (!compare) return this;   
+            : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
+        if (this instanceof OrderedLinq) {
+            if (!compare) return this;
 
-        if (!(<OrderedLinq<T>><any>this).equal) {
-            (<OrderedLinq<T>><any>this).equal = compare;
-        } else {
-            let superEqual = (<OrderedLinq<T>><any>this).equal;
-            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
-                let result: number = superEqual(a, b);
-                return (0 != result) ? result : compare(a, b);
+            if (!(<OrderedLinq<T>><any>this).equal) {
+                (<OrderedLinq<T>><any>this).equal = compare;
+            } else {
+                let superEqual = (<OrderedLinq<T>><any>this).equal;
+                (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
+                    let result: number = superEqual(a, b);
+                    return (0 != result) ? result : compare(a, b);
+                }
             }
+            return this;
+        } else {
+            return new OrderedLinq<T>(this,
+                (array: Array<T>) => new Iterator.ArrayIterator(array, 0, (i: number) => i >= array.length),
+                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
         }
-        return this;
     }
 
 
     public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
-        return this.ThenBy(keySelect, equal, Generator.Reverse);
+        var comparer = equal ? equal : Constant.defCompare;
+        var compare = !keySelect && !equal ? undefined
+            : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
+        if (this instanceof OrderedLinq) {
+            if (!compare) return this;
+
+            if (!(<OrderedLinq<T>><any>this).equal) {
+                (<OrderedLinq<T>><any>this).equal = compare;
+            } else {
+                let superEqual = (<OrderedLinq<T>><any>this).equal;
+                (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
+                    let result: number = superEqual(a, b);
+                    return (0 != result) ? result : compare(a, b);
+                }
+            }
+            return this;
+        } else {
+            return new OrderedLinq<T>(this,
+                (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1),
+                (a: T, b: T) => equal(keySelect(a), keySelect(b)));
+        }
     }
 
 }
