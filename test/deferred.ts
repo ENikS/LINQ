@@ -437,8 +437,10 @@ describe('Deferred Execution -', function () {
         var iterator = iterable[Symbol.iterator]()
         assert.equal(un1[0], iterator.next().value);
         assert.equal(un1[1], iterator.next().value);
+        assert.equal(un1[2], iterator.next().value);
         assert.equal(un1[3], iterator.next().value);
         assert.equal(un1[5], iterator.next().value);
+        assert.equal(un2[2], iterator.next().value);
         assert.equal(un2[3], iterator.next().value);
         assert.equal(un2[5], iterator.next().value);
         assert.isTrue(iterator.next().done);

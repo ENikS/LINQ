@@ -181,13 +181,13 @@ export function* Union<T, K>(first: Iterable<T>, second: Iterable<T>, keySelecto
     let set = new Set<K>();
     for (let value of first) {
         let key = keySelector(value)
-        if (!key || set.has(key)) continue;
+        if (set.has(key)) continue;
         set.add(key);
         yield value;
     }
     for (let value of second) {
         let key = keySelector(value)
-        if (!key || set.has(key)) continue;
+        if (set.has(key)) continue;
         set.add(key);
         yield value;
     }
