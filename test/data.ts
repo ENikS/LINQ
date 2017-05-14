@@ -22,6 +22,8 @@ export var jsn = [
 export var un1 = [
     { id: 1, "name": "q" },
     { id: 2, "name": "w" },
+    { id: null, "name": "n" },
+    { id: 3, "name": "e" },
     { id: 3, "name": "e" },
     { id: 4, "name": "r" }
 ];
@@ -29,6 +31,8 @@ export var un1 = [
 export var un2 = [
     { id: 3, "name": "a" },
     { id: 4, "name": "s" },
+    { id: undefined, "name": "d" },
+    { id: 5, "name": "d" },
     { id: 5, "name": "d" },
     { id: 6, "name": "f" }
 ];
@@ -42,9 +46,12 @@ export var fruits = [
 ];
 
 export var simpleArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4  ];
 export var oddArray = [ 1, 3, 5, 7, 9, 11, 13, 15 ];
 
 
+var ghost : any = { Name: undefined };
+var nullGhost : any = { Name: null };
 var julious = { Name: "Hedlund, Julious" };
 var magnus = { Name: "Hedlund, Magnus" };
 var terry = { Name: "Adams, Terry" };
@@ -53,9 +60,11 @@ var barley = { Name: "Barley", Age: 8, Owner: terry };
 var boots = { Name: "Boots", Age: 4, Owner: terry };
 var whiskers = { Name: "Whiskers", Age: 1, Owner: charlotte };
 var daisy = { Name: "Daisy", Age: 4, Owner: magnus };
+var stray : any = { Name: "Lost Dog", Age: 4, Owner: null };
+var undef : any = { Name: "Puppy", Age: 0, Owner: undefined };
 
-export var people = [magnus, terry, charlotte];
-export var pets = [barley, boots, whiskers, daisy];
+export var people = [magnus, terry, terry, nullGhost, charlotte, ghost];
+export var pets   = [barley, stray, boots, whiskers, daisy];
 
 export var mix = [
             0, 

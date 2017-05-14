@@ -102,6 +102,14 @@ describe('Deferred Execution -', function () {
     });
 
 
+    it('ChunkBy() - Empty', function () {
+
+        let iterable = Linq([]).ChunkBy(e => e);
+        var iterator = iterable[Symbol.iterator]()
+        assert.isTrue(iterator.next().done);
+    });
+
+
     // Concat
 
     it('Concat()', function () {
@@ -296,10 +304,10 @@ describe('Deferred Execution -', function () {
     });
 
     it('Except() - Key', function () {
-        var iterable = Linq(un1).Except(un2, o => o.id );
+        var iterable = Linq([1, 2]).Except(un2, o => o.id );
         var iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value.id);
-        assert.equal(2, iterator.next().value.id);
+        assert.equal(1, iterator.next().value);
+        assert.equal(2, iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 
@@ -320,24 +328,8 @@ describe('Deferred Execution -', function () {
         var iterable = Linq(un1).Intersect(un2, o => o.id );
         var iterator = iterable[Symbol.iterator]()
         assert.equal(3, iterator.next().value.id);
+        assert.equal(3, iterator.next().value.id);
         assert.equal(4, iterator.next().value.id);
-        assert.isTrue(iterator.next().done);
-    });
-
-
-
-    // Except
-
-    it('Except()', function () {
-        var iterable = Linq(simpleArray).Except([0, 2, 4, 6, 11]);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.equal(5, iterator.next().value);
-        assert.equal(7, iterator.next().value);
-        assert.equal(8, iterator.next().value);
-        assert.equal(9, iterator.next().value);
-        assert.equal(10, iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 
@@ -425,7 +417,7 @@ describe('Deferred Execution -', function () {
     // Union
 
     it('Union()', function () {
-        var iterable = Linq([0, 1, 2, 3, 4, 5, 6, 7]).Union([5, 6, 7, 8, 9]);
+        var iterable = Linq([0, 1, 2, 2, 3, 4, 5, 6, 7]).Union([5, 6, 6, 7, 8, 9]);
         var iterator = iterable[Symbol.iterator]()
         assert.equal(0, iterator.next().value);
         assert.equal(1, iterator.next().value);
@@ -445,10 +437,10 @@ describe('Deferred Execution -', function () {
         var iterator = iterable[Symbol.iterator]()
         assert.equal(un1[0], iterator.next().value);
         assert.equal(un1[1], iterator.next().value);
-        assert.equal(un1[2], iterator.next().value);
         assert.equal(un1[3], iterator.next().value);
-        assert.equal(un2[2], iterator.next().value);
+        assert.equal(un1[5], iterator.next().value);
         assert.equal(un2[3], iterator.next().value);
+        assert.equal(un2[5], iterator.next().value);
         assert.isTrue(iterator.next().done);
     });
 
@@ -465,12 +457,32 @@ describe('Deferred Execution -', function () {
                 (person, pet) => {
                     return person.Name + " - " + pet.Name;
                 });
+
         var iterator = iterable[Symbol.iterator]()
         assert.equal("Hedlund, Magnus - Daisy", iterator.next().value);
         assert.equal("Adams, Terry - Barley", iterator.next().value);
         assert.equal("Adams, Terry - Boots", iterator.next().value);
+        assert.equal("Adams, Terry - Barley", iterator.next().value);
+        assert.equal("Adams, Terry - Boots", iterator.next().value);
         assert.equal("Weiss, Charlotte - Whiskers", iterator.next().value);
         assert.isTrue(iterator.next().done);
+    });
+
+
+    it('Join() - Redundant', function () {
+        var iterable =
+            Linq(un1).Join(jsn,  e => e.id, u => u.id,
+                (e, u) => {
+                    return e.name + " - " + u.name;
+                });
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal("q - d", iterator.next().value);
+        assert.equal("w - c", iterator.next().value);
+        assert.equal("e - b", iterator.next().value);
+        assert.equal("e - b", iterator.next().value);
+        assert.equal("r - a", iterator.next().value);
+        assert.isTrue(iterator.next().done);
+        
     });
 
 
@@ -502,9 +514,36 @@ describe('Deferred Execution -', function () {
         assert.equal("Barley", result.Pets[0]);
         assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
+        assert.equal("Adams, Terry", result.Owner);
+        assert.equal(2, result.Pets.length);
+        assert.equal("Barley", result.Pets[0]);
+        assert.equal("Boots", result.Pets[1]);
+        result = iterator.next().value;
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('GroupJoin() - Redundant', function () {
+        var iterable = Linq(un2)
+            .GroupJoin(un1,
+            e => e.id,
+            u => u.id,
+            (e, u) => {
+                return {
+                    key: e.id, 
+                    values: u
+                };
+            });
+
+        var iterator = iterable[Symbol.iterator]();
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 3);
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.values))
+        assert.equal(result.key, 4);
         assert.isTrue(iterator.next().done);
     });
 
@@ -522,7 +561,7 @@ describe('Deferred Execution -', function () {
         assert.equal(1, result.length);
         result = iterator.next().value;
         assert.equal(4, result.key);
-        assert.equal(2, result.length);
+        assert.equal(3, result.length);
         result = iterator.next().value;
         assert.equal(1, result.key);
         assert.equal(1, result.length);
@@ -541,7 +580,7 @@ describe('Deferred Execution -', function () {
         assert.equal(1, result.length);
         result = iterator.next().value;
         assert.equal(4, result.key);
-        assert.equal(2, result.length);
+        assert.equal(3, result.length);
         result = iterator.next().value;
         assert.equal(1, result.key);
         assert.equal(1, result.length);

@@ -100,6 +100,16 @@ describe('Custom Iterator based -', function () {
 
     it('OrderBy() - Comparator', function () {
         var etalon = asEnumerable(jsn).ToArray().sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0));
+        var iterable = asEnumerable(jsn).OrderBy(undefined, (b : any, c : any) => b.name.charCodeAt(0) - c.name.charCodeAt(0));
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let exp of etalon) {
+            assert.equal(iterator.next().value, exp);
+        }
+    });
+
+    it('OrderBy() - Comparator and Selector', function () {
+        var etalon = asEnumerable(jsn).ToArray().sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0));
         var iterable = asEnumerable(jsn).OrderBy(a => a.name, (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
         var iterator = iterable[Symbol.iterator]()
 
@@ -169,7 +179,18 @@ describe('Custom Iterator based -', function () {
         }
     });
 
-    it('ThenBy() - Default Function', function () {
+    it('ThenBy() - Default Key', function () {
+        var enumerable = asEnumerable(unorderedStr);
+
+        var iterable = enumerable.OrderBy().ThenBy(undefined, comparator);
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let exp of enumerable.ToArray().sort(comparator)) {
+            assert.equal(iterator.next().value, exp);
+        }
+    });
+
+    it('ThenBy() - Function', function () {
         var enumerable = asEnumerable(unorderedStr);
 
         var iterable = enumerable.OrderBy().ThenBy(s => s, comparator);

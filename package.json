@@ -4,7 +4,7 @@
   "description": "Complete implementation of Language-Integrated Query (LINQ) (ECMAScript 5.1 Language Specification)",
   "main": "lib/linq.js",
   "typings": "lib/linq.d.ts",
-  "tonicExampleFilename": "dist/example.js",
+  "tonicExampleFilename": "./dist/example.js",
   "homepage": "https://github.com/ENikS/LINQ/wiki",
   "author": {
     "name": "Eugene Sadovoi",
@@ -76,12 +76,12 @@
     "url": "https://github.com/ENikS/Linq.git"
   },
   "devDependencies": {
-    "browserify": "^14.1.0",
+    "browserify": "^14.3.0",
     "chai": "^3.5.0",
     "jsmin": "^1.0.1",
     "latest": "^0.2.0",
-    "mocha": "^3.2.0",
-    "typescript": "^2.2.1"
+    "mocha": "^3.4.1",
+    "typescript": "^2.3.2"
   },
   "scripts": {
     "build:ts": "tsc",

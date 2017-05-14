@@ -12,7 +12,7 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {simpleArray, oddArray, jsn} from "./data";
+import {simpleArray, randomArray, oddArray, jsn} from "./data";
 import {assert} from "chai";
 import * as Linq from "../lib/linq";
 
@@ -112,11 +112,17 @@ describe('Immediate Execution -', function () {
     // Max
 
     it('Max() - No predicate', function () {
-        assert.equal(10, Linq.From(simpleArray).Max());
+        assert.equal(10, Linq.From(randomArray).Max());
     });
 
     it('Max()', function () {
         assert.equal(4, Linq.From(jsn).Max(o => o.id));
+    });
+
+    it('Max() - Empty', function () {
+        assert.throws(function () {
+            Linq.From([]).Max();
+        });
     });
 
 
@@ -124,11 +130,17 @@ describe('Immediate Execution -', function () {
     // Min
 
     it('Min() - No predicate', function () {
-        assert.equal(1, Linq.From(simpleArray).Min());
+        assert.equal(1, Linq.From(randomArray).Min());
     });
 
     it('Min()', function () {
         assert.equal(1, Linq.From(jsn).Min(o => o.id));
+    });
+
+    it('Min() - Empty', function () {
+        assert.throws(function () {
+            Linq.From([]).Min();
+        });
     });
 
 

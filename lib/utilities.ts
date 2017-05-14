@@ -57,12 +57,12 @@ export function getDefaultVal(type: any, value: any = undefined): any {
 }
 
 /** Returns a map of element bsed on extracted keys  **/
-export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement?: (x: T) => E): Map<K, Array<E>> {
+export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement: (x: T) => E = selfFn): Map<K, Array<E>> {
     let map = new Map<K, Array<E>>();
     var result: any, iterator = iterable[Symbol.iterator]();
     while (!(result = iterator.next()).done) {
         let key = keySelector(result.value);
-        if (!key) throw CONST_INVALID_KEY;
+        if (!key) continue;
         let group: Array<E> = map.get(key);
         if (!group) {
             group = [];
@@ -78,7 +78,7 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T)
     var result: any, iterator = iterable[Symbol.iterator]();
     while (!(result = iterator.next()).done) {
         let key = keySelector(result.value);
-        if (!key) throw CONST_INVALID_KEY;
+        if (!key) continue;
         let group: Array<T> = map.get(key);
         if (!group) {
             group = [];
