@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ENikS/LINQ.svg?branch=master)](https://travis-ci.org/ENikS/LINQ) 
 [![Coverage Status](https://coveralls.io/repos/github/ENikS/LINQ/badge.svg?branch=master)](https://coveralls.io/github/ENikS/LINQ?branch=master)
 [![Dependency Status](https://dependencyci.com/github/ENikS/LINQ/badge)](https://dependencyci.com/github/ENikS/LINQ)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ENikS/LINQ.svg)](https://greenkeeper.io/)
 [![npm version](https://badge.fury.io/js/linq-es2015.svg)](https://badge.fury.io/js/linq-es2015)
 [![Downloads](https://img.shields.io/npm/dm/linq-es2015.svg)](https://www.npmjs.com/package/linq-es2015)
 [![License](https://img.shields.io/badge/license-apache%202.0-60C060.svg)](https://github.com/ENikS/LINQ/blob/master/LICENSE)
@@ -10,7 +11,6 @@ The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/t
 
 ## Using in Node
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ENikS/LINQ.svg)](https://greenkeeper.io/)
 Install module with this command:
 ```
 npm install linq-es2015 --save
