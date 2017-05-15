@@ -1,6 +1,6 @@
 # Angular 2 Example
 
-This repository holds the basic example of the [angular.io quickstart](https://cli.angular.io/) extended to use LINQ queries.
+This repository holds the basic example of the [angular.io quickstart](https://cli.angular.io/) extended to use LINQ queries. You could download/clone this repo and run sample or you could follow these steps to generate new project.
 
 ## Prerequisites
 
