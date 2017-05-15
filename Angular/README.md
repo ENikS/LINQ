@@ -35,7 +35,7 @@ npm install linq-es2015 --save
 ```
 This command installs the package and adds it to the dependencies list.
 
-Second step is to tell system where to look when asked for the package. Locate ```systemjs.config.js``` file and open in with editor. Add entries to **map** and **packages** sections like so:
+Second step is to tell system where to look when asked for the package. Locate ```systemjs.config.js``` file and open it with editor. Add entries to **map** and **packages** sections like so:
 ```javascript
   // map tells the System loader where to look for things
   var map = {
