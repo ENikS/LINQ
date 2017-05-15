@@ -1,86 +1,62 @@
-# Angular 2 QuickStart Example
+# Angular 2 Example
 
-This repository holds the TypeScript example of the [angular.io quickstart](https://angular.io/docs/ts/latest/quickstart.html)
-extended to use LINQ queries.
+This repository holds the basic example of the [angular.io quickstart](https://cli.angular.io/) extended to use LINQ queries.
 
 ## Prerequisites
 
-**Verify that you are running node `v6.x.x`** by running `node -v` in a terminal/console window. Older versions produce errors. 
+**Verify that you are running node `v6.x.x`** or later by running `node -v` in a terminal/console window. Older versions are not compatible with LINQ-ES2015 package and will produce errors. 
 If you need to run it with older browsers or node substitute [LINQ-ES2015](https://www.npmjs.com/package/linq-es2015) with [LINQ-ES5](https://www.npmjs.com/package/linq-es5) package.
 
-## Steps to extend original QuickStart project with LINQ
+## Install latest Angular CLI
 
+This method will work with CLI 1.0.3 or later. For previous versions please see this [link]().
 
-### Install npm packages
-
-> See npm and nvm version notes above
-
-Install the npm packages described in the `package.json` and verify that it works:
-
-**Attention Windows Developers:  You must run all of these commands in administrator mode**.
-
+## Generate new project
 ```bash
-npm install
+ng new PROJECT-NAME
+cd PROJECT-NAME
 ```
-
-> If the `typings` folder doesn't show up after `npm install` please install them manually with:
-
-> `npm run typings -- install`
+Do not execute ```ng serve``` just yet.
 
 ### Add support for the LINQ
 
-First we need to install package with npm manager
+Install package with npm manager
 ```bash
 npm install linq-es2015 --save
 ```
-This command installs the package and adds it to the dependencies list.
+This command installs the package and adds it to the dependencies list. We are ready to do some development!
 
-Second step is to tell system where to look when asked for the package. Locate ```systemjs.config.js``` file and open it with editor. Add entries to **map** and **packages** sections like so:
-```javascript
-  // map tells the System loader where to look for things
-  var map = {
-    'app':                        'app', // 'dist',
+Open app.components.html file and add element to hold calculated value:
+```html
+<h1>
+  {{title}}
+</h1>
+<div>Count - {{count}}</div>
+```
 
-    '@angular':                   'node_modules/@angular',
-    'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
-    'linq-es2015':                'node_modules/linq-es2015', // Added new mapping
-    'rxjs':                       'node_modules/rxjs'
-  };
-
-  // packages tells the System loader how to load when no filename and/or no extension
-  var packages = {
-    'app':                        { main: 'main.js',  defaultExtension: 'js' },
-    'rxjs':                       { defaultExtension: 'js' },
-    'linq-es2015':                { main: 'dist/linq.js', defaultExtension: 'js' }, // Get it from dist/linq.js
-    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
-  };
-  ```
-
-Finally, add import within a component and use LINQ to perform queries:
+In app.component.ts import linq-es2015 and do some calculations:
 ```javascript
 import { Component } from '@angular/core';
 import { asEnumerable } from 'linq-es2015';
 
 @Component({
-    selector: 'my-app',
-    template: '<h1>My First Angular 2 App with LINQ</h1><div>Count - {{Count}}</div>'
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent { 
-    Count: number;
+
+export class AppComponent {
+  title = 'app works!';
+  count: number;
 
     constructor(){
-        this.Count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
-			                                                      .Count();        
+      this.count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
+                                                                .Count();        
     }
 }
+
 ```
-
-If you want to see all required changes all at once look at [this](https://github.com/ENikS/LINQ/commit/abbf0411665fdfd828748636196bff86b304b7ad) commit.
-
-For more information about quickstart splease reference the [original source](https://angular.io/docs/ts/latest/quickstart.html).
 
 ## Running sample
 
-1. Clone repository to your local disk
-2. Install dependencies by running ```npm install```
-3. Run example by executing command ```npm run start```. ( Note on Windows it has to be Run as Administrator ) 
+```ng serve```
