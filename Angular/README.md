@@ -9,7 +9,7 @@ If you need to run it with older browsers or node substitute [LINQ-ES2015](https
 
 ## Install latest Angular CLI
 
-This method will work with CLI 1.0.3 or later. For previous versions please see this [link]().
+This method will work with CLI 1.0.3 or later. For previous versions please see this [link](https://github.com/ENikS/LINQ/tree/06bf29bcb275eb068b9fc213890841b9a8d2f118/Angular).
 
 ## Generate new project
 ```bash
