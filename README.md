@@ -9,6 +9,8 @@ The library is a continuous effort to implement LINQ using latest features of Ty
 The code is backwards compatible with [linq-es5](https://github.com/ENikS/LINQ/tree/linq-es5) and [C#](https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx) implementations.
 
 ## Using in Node
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/ENikS/LINQ.svg)](https://greenkeeper.io/)
 Install module with this command:
 ```
 npm install linq-es2015 --save
