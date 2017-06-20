@@ -54,44 +54,34 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 ```
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
-## Using in Angular
-The same package could be used on a server as well as on a client. All you have to do is to install module as usual:
+## Using in Angular 2
+The same package could be used on a server as well as on the client. You have to install module as usual and you are good to go:
 ```
 npm install linq-es2015 --save
 ```
-In file ```systemjs.config.js``` add following two entries:
+Open ```app.components.html``` file and add element to hold calculated value:
 ```javascript
-// map tells the System loader where to look for things
-  var map = {
-    '@angular':      'node_modules/@angular',
-    'linq-es2015':   'node_modules/linq-es2015', // map to module
-    . . .
-  };
+<h1>{{title}}</h1>
+<div>Count - {{count}}</div>
 ```
-and 
-```javascript
-// packages tells the System loader how to load when no filename and/or no extension
-  var packages = {
-    'app':           { main: 'main.js',  defaultExtension: 'js' },
-    'linq-es2015':   { main: 'dist/linq.js', defaultExtension: 'js' }, // map to browserified module
-    . . .
-  };
-```
-On the server package is available as any normal module, on the cliend use it like this:
+and finally import ```linq-es2015``` in app.component.ts and do some calculations:
 ```javascript
 import { Component } from '@angular/core';
 import { asEnumerable } from 'linq-es2015';
 
 @Component({
-    selector: 'my-app',
-    template: '<h1>My First Angular 2 App with LINQ</h1><div>Count - {{Count}}</div>'
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent { 
-    Count: number;
+
+export class AppComponent {
+  title = 'app works!';
+  count: number;
 
     constructor(){
-        this.Count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
-			                                                      .Count();        
+      this.count = asEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).Where(a => a % 2 == 1)
+                                                                .Count();        
     }
 }
 ```
