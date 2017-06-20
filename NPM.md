@@ -32,7 +32,7 @@ For live examples please follow links to ([Node](https://tonicdev.com/eniks/usin
 
 
 ## Using in Angular
-The same package could be used on a server as well as on the client. The package does not require any kind of special handling and could be used as any other module.
+The same package could be used on a server as well as on the client. The package does not require any kind of special handling and baing used as any other module.
 [[See Example](https://github.com/ENikS/LINQ/tree/examples/Angular)]
 
 ## Naming Convention
