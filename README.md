@@ -55,7 +55,7 @@ var count =  Enumerable.asEnumerable( [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] )
 [[See Example](//jsfiddle.net/ENikS/pyvjcfa0/)]
 
 ## Using in Angular 2
-The same package could be used on a server as well as on the client. You have to install module as usual and you are good to go:
+The same package could be used on a server as well as on the client. You have to install module as usual:
 ```
 npm install linq-es2015 --save
 ```
