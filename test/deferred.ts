@@ -13,7 +13,7 @@
 // under the License.
 
 import {
-    simpleArray, oddArray, jsn, un1, un2, people, pets, mix, phrase
+    simpleArray, oddArray, jsn, un1, un2, people, msdn, pets, mix, phrase
 } from "./data";
 import {assert} from "chai";
 import Linq from "../lib/linq";
@@ -499,11 +499,12 @@ describe('Deferred Execution -', function () {
             (person, petCollection) => {
                 return {
                     Owner: person.Name,
-                    Pets: Linq(petCollection)
-                        .Select(pet => pet.Name)
-                        .ToArray()
+                    Pets: !petCollection ? null 
+                                         : Linq(petCollection).Select(pet => pet.Name)
+                                                              .ToArray()
                 };
             });
+
         var iterator = iterable[Symbol.iterator]();
         var result = iterator.next().value;
         assert.isTrue(Array.isArray(result.Pets))
@@ -521,32 +522,64 @@ describe('Deferred Execution -', function () {
         assert.equal("Barley", result.Pets[0]);
         assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
+        assert.equal(null, result.Owner);
+        assert.equal(null, result.Pets);
+        result = iterator.next().value;
+        assert.equal("Weiss, Charlotte", result.Owner);
+        assert.equal(1, result.Pets.length);
+        assert.equal("Whiskers", result.Pets[0]);
+        result = iterator.next().value;
+        assert.equal(undefined, result.Owner);
+        assert.equal(null, result.Pets);
+        assert.isTrue(iterator.next().done);
+    });
+
+    it('GroupJoin() - MSDN', function () {
+        var iterable = Linq(msdn)
+            .GroupJoin(pets,
+            person => person,
+            pet => pet.Owner,
+            (person, petCollection) => {
+                return {
+                    Owner: person.Name,
+                    Pets: Linq(petCollection).Select(pet => pet.Name)
+                                             .ToArray()
+                };
+            });
+
+        var iterator = iterable[Symbol.iterator]();
+        var result = iterator.next().value;
+        assert.isTrue(Array.isArray(result.Pets))
+        assert.equal("Hedlund, Magnus", result.Owner);
+        assert.equal(1, result.Pets.length);
+        assert.equal("Daisy", result.Pets[0]);
+        result = iterator.next().value;
+        assert.equal("Adams, Terry", result.Owner);
+        assert.equal(2, result.Pets.length);
+        assert.equal("Barley", result.Pets[0]);
+        assert.equal("Boots", result.Pets[1]);
+        result = iterator.next().value;
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
         assert.isTrue(iterator.next().done);
     });
 
-    it('GroupJoin() - Redundant', function () {
-        var iterable = Linq(un2)
-            .GroupJoin(un1,
-            e => e.id,
-            u => u.id,
-            (e, u) => {
-                return {
-                    key: e.id, 
-                    values: u
-                };
-            });
+    it('GroupJoin() - QJesus', function () {
+        const yx = [
+            { id: '1', batchNumber: 'ZKFM1' },
+            { id: '2', batchNumber: 'ZKFM' },
+            { id: '3', batchNumber: 'ZKFM1' }
+        ];
+        const zx = [
+            { id: '1', value: 'zzz' },
+            { id: '2', value: 'xxx' },
+        ];
 
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.isTrue(Array.isArray(result.values))
-        assert.equal(result.key, 3);
-        var result = iterator.next().value;
-        assert.isTrue(Array.isArray(result.values))
-        assert.equal(result.key, 4);
-        assert.isTrue(iterator.next().done);
+        var join = Linq(yx).GroupJoin(zx, a => a.id, b => b.id, (a, temp) => ({ a, temp }))
+                           .ToArray();
+
+        assert.equal(3, join.length);
     });
 
 
