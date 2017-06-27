@@ -64,6 +64,7 @@ var stray : any = { Name: "Lost Dog", Age: 4, Owner: null };
 var undef : any = { Name: "Puppy", Age: 0, Owner: undefined };
 
 export var people = [magnus, terry, terry, nullGhost, charlotte, ghost];
+export var msdn   = [magnus, terry, charlotte];
 export var pets   = [barley, stray, boots, whiskers, daisy];
 
 export var mix = [

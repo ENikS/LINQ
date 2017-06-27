@@ -224,10 +224,11 @@ export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, 
 
 export function* GroupJoin<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, transform: (a: T, b: Iterable<I>) => R, map: Map<K, Array<I>>) {
     for (let value of target) {
+        let innerSet = undefined;
         let key = oKeySelect(value);
-        if (!key) continue;
-        let innerSet = map.get(key);
-        if (!innerSet) continue;
+        if (key){
+            innerSet = map.get(key);
+        }
         yield transform(value, innerSet);
     }
 }

@@ -525,16 +525,13 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T> {
-        return new EnumerableImpl<T>(undefined, Generator.Intersect, [ this, 
-                                           Constant.getKeys(other, keySelector), 
-                                           true, keySelector ]);
+        return new EnumerableImpl<T>(undefined, Generator.Intersect, 
+                                     [ this, Constant.getKeys(other, keySelector), true, keySelector ]);
     }
 
 
-    public GroupBy<K, E, R>(selKey: (x: T) => K,
-                            selElement: (x: T) => E = Constant.selfFn, 
-                            selResult: (a: K, b: Iterable<E>) =>
-                                R = Constant.defGrouping): Enumerable<R> {
+    public GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E = Constant.selfFn, 
+                            selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
         let map: Map<K, Array<E>> = Constant.getKeyedMap(this, selKey, selElement);
         return new EnumerableImpl<R>(undefined, Generator.GroupBy, [map, selResult]);
     }
@@ -544,13 +541,10 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
                               oKeySelect: (a: T) => K, 
                               iKeySelect: (b: I) => K, 
                               resultSelector: (a: T, b: Iterable<I>) => 
-                                               R = Constant.defGrouping): 
-           Enumerable<R> {
-        return new EnumerableImpl<R>(undefined, Generator.GroupJoin, [this, 
-                                        oKeySelect, 
-                                        resultSelector, 
-                                        Constant.getKeyedMapFast(inner, 
-                                                                 iKeySelect)]);
+                                               R = Constant.defGrouping): Enumerable<R> {
+        return new EnumerableImpl<R>(undefined, Generator.GroupJoin, 
+                                     [this, oKeySelect, resultSelector, 
+                                     Constant.getKeyedMapFast(inner, iKeySelect)]);
     }
 
 

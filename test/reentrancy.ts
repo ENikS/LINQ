@@ -12,7 +12,7 @@
 // License for the specific  language  governing  permissions  and  limitations 
 // under the License.
 
-import {jsn, fruits, people, pets, simpleArray, mix, phrase, unorderedMix} from "./data";
+import {jsn, fruits, people, pets, simpleArray, msdn, mix, phrase, unorderedMix} from "./data";
 import {assert} from "chai";
 import {asEnumerable, Range, Repeat} from "../lib/linq";
 
@@ -338,18 +338,18 @@ describe('Reentrancy -', function () {
 
 
     it('GroupJoin()', function () {
-        var iterable = asEnumerable(people)
+        var iterable = asEnumerable(msdn)
             .GroupJoin(pets,
             person => person,
             pet => pet.Owner,
             (person, petCollection) => {
                 return {
                     Owner: person.Name,
-                    Pets: asEnumerable(petCollection)
-                        .Select(pet => pet.Name)
-                        .ToArray()
+                    Pets: asEnumerable(petCollection).Select(pet => pet.Name)
+                                             .ToArray()
                 };
             });
+
         var iterator = iterable[Symbol.iterator]();
         var result = iterator.next().value;
         assert.isTrue(Array.isArray(result.Pets))
@@ -362,27 +362,17 @@ describe('Reentrancy -', function () {
         assert.equal("Barley", result.Pets[0]);
         assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
-        assert.equal("Adams, Terry", result.Owner);
-        assert.equal(2, result.Pets.length);
-        assert.equal("Barley", result.Pets[0]);
-        assert.equal("Boots", result.Pets[1]);
-        result = iterator.next().value;
         assert.equal("Weiss, Charlotte", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Whiskers", result.Pets[0]);
         assert.isTrue(iterator.next().done);
 
-        iterator = iterable[Symbol.iterator]();
-        result = iterator.next().value;
+        var iterator = iterable[Symbol.iterator]();
+        var result = iterator.next().value;
         assert.isTrue(Array.isArray(result.Pets))
         assert.equal("Hedlund, Magnus", result.Owner);
         assert.equal(1, result.Pets.length);
         assert.equal("Daisy", result.Pets[0]);
-        result = iterator.next().value;
-        assert.equal("Adams, Terry", result.Owner);
-        assert.equal(2, result.Pets.length);
-        assert.equal("Barley", result.Pets[0]);
-        assert.equal("Boots", result.Pets[1]);
         result = iterator.next().value;
         assert.equal("Adams, Terry", result.Owner);
         assert.equal(2, result.Pets.length);
