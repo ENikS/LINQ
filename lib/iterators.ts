@@ -420,13 +420,10 @@ export class GroupJoin<T, I, K, R> extends MethodIteratror<T> implements Iterato
     public next(value?: any): IteratorResult<R> {
         var innerSet: Iterable<I>;
         var result: IteratorResult<T>;
-        do {
-            result = this._iterator.next();
-            if (result.done) return this._done;
-            var key = this._method(result.value);
-            innerSet = this._map.get(key);
-        } while ('undefined' === typeof innerSet);
-
+        result = this._iterator.next();
+        if (result.done) return this._done;
+        var key = this._method(result.value);
+        innerSet = this._map.get(key);
         return { value: this._transform(result.value, innerSet), done: false };
     }
 }
