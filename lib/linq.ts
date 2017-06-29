@@ -172,21 +172,21 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     //-------------------------------------------------------------------------
 
 
-    public Aggregate<B>(func: (aggr: T, x: T) => T, 
-                        resultSelector: (aggr: T) => B): B;
-    public Aggregate<A, B>(seed: A, 
-                           func: (aggr: A, x: T) => A = Constant.selfFn, 
-                           resultSelector: (aggr: A) => B = Constant.selfFn): B {
+    public Aggregate<B>(func: (x: T, y: T) => T, resultSelector?: (x: T) => B): B;
+    public Aggregate<A, B>(seed: A, func: (x: A, y: T) => A, resultSelector?: (x: A) => B): B;
+    public Aggregate<A, B>(alpha: (x: T|A, y: T) => T|A, 
+                           beta:  (x: T|A, y?: T) => A | B = Constant.selfFn, 
+                           gamma: (x: A) => B = Constant.selfFn): B {
         let zero: A;
-        let method: (aggr: A, x: T) => A;
-        let selector: (aggr: A) => B;
-        if (Constant.CONST_FUNCTION === typeof seed) {
-            method = seed as any;
-            selector = func as any;
+        let method: (x: A, y: T) => A;
+        let selector: (x: A) => B;
+        if (Constant.CONST_FUNCTION === typeof alpha) {
+            method = <(x: A, y: T) => A>alpha;
+            selector = <(x: A) => B>beta;
         } else {
-            zero = seed;
-            method = func;
-            selector = resultSelector;
+            zero = alpha as any;
+            method = <(x: A, y: T) => A>beta;
+            selector = gamma;
         }
         let result: A = zero;
         for (let value of this) {
@@ -524,7 +524,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Except<K>(other: Iterable<T>, keySelector?: (x: T) => K): Enumerable<T> {
+    public Except<K,V>(other: Iterable<V>, keySelector?: (x: V|T) => K): Enumerable<T> {
         return new EnumerableImpl<T>(undefined, Generator.Intersect, 
                                      [ this, Constant.getKeys(other, keySelector), true, keySelector ]);
     }
@@ -624,8 +624,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Select<V>(transform: (x: T) => V): Enumerable<V>;
-    public Select<V>(transform: (x: T, index: number) => V): Enumerable<V> {
+    public Select<V>(transform: (x: T, index?: number) => V): Enumerable<V> {
         return new EnumerableImpl<V>(undefined, Generator.Select, [this, transform]);
     }
 
@@ -645,8 +644,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public SkipWhile(predicate: (x: T) => boolean): Enumerable<T>;
-    public SkipWhile(predicate: (x: T, i: number) => boolean): Enumerable<T> {
+    public SkipWhile(predicate: (x: T, i?: number) => boolean): Enumerable<T> {
         return new EnumerableImpl<T>(undefined, Generator.SkipWhile, [this, predicate]);
     }
 
@@ -669,8 +667,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Where(predicate: (x: T) => Boolean): Enumerable<T>;
-    public Where(predicate: (x: T, i: number) => Boolean = Constant.trueFn): 
+    public Where(predicate: (x: T, i?: number) => Boolean = Constant.trueFn): 
            Enumerable<T> {
         return new EnumerableImpl<T>(undefined, Generator.Where, [this, predicate]);
     }

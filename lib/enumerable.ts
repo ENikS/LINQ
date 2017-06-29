@@ -184,7 +184,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     *     asEnumerable([0, 1, 2, 3, 4, 5, 6, 7]).Intersect([2,3,5]);
     *   // Will return 0, 1, 4, 6, 7
     */
-    Except<V, K>(other: Iterable<V>, keySelector?: (x: V) => K): Enumerable<T>;
+    Except<V,K>(other: Iterable<V>, keySelector?: (x: T|V) => K): Enumerable<T>;
 
     /**
     * Returns the first element in a sequence that satisfies a specified 
@@ -375,22 +375,13 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     /**	
     * Projects each element of a sequence into a new form by incorporating the 
     * element's index. 
-    * @param transform A transform function to apply to each source element
-    * @example
-        var array = asEnumerable([2, 3, 4, 5, 6, 7]).Select((a, idx) => a * idx);
-    */
-    Select<V>(transform: (x: T) => V): Enumerable<V>;
-
-    /**	
-    * Projects each element of a sequence into a new form by incorporating the 
-    * element's index. 
     * @param transform A transform function to apply to each source element; the 
     * second parameter of the function represents the index of the source element.
     * @example
         var array = asEnumerable([0, 1, 2, 3, 4, 5, 6, 7])
                         .Select((a, idx) => a * idx);
     */
-    Select<V>(transform: (x: T, index: number) => V): Enumerable<V>;
+    Select<V>(transform: (x: T, index?: number) => V): Enumerable<V>;
 
     /**
     * Projects each element of a sequence to an Iterable<T>, flattens the

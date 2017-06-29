@@ -304,10 +304,11 @@ describe('Deferred Execution -', function () {
     });
 
     it('Except() - Key', function () {
-        var iterable = Linq([1, 2]).Except(un2, o => o.id );
+        var iterable = Linq(un1).Except(un2, o => o.id );
         var iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value);
-        assert.equal(2, iterator.next().value);
+        assert.equal(1, iterator.next().value.id);
+        assert.equal(2, iterator.next().value.id);
+        assert.equal(null, iterator.next().value.id);
         assert.isTrue(iterator.next().done);
     });
 
