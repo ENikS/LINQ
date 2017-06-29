@@ -81,7 +81,7 @@
     "jsmin": "^1.0.1",
     "latest": "^0.2.0",
     "mocha": "^3.4.2",
-    "typescript": "^2.3.4"
+    "typescript": "^2.4.1"
   },
   "scripts": {
     "build:ts": "tsc",
