@@ -593,18 +593,13 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public OrderBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number, generator = Generator.Forward): OrderedEnumerable<T> {
-
-        var comparer = equal ? equal : Constant.defCompare;
-        var compare = !keySelect && !equal ? undefined
-                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
-
-        return new OrderedLinq<T>(this, (array: Array<T>) => generator(array), compare);
+    public OrderBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
+        return new OrderedLinq<T, K>(this, (array: Array<T>) => Generator.Forward(array), keySelect, equal);
     }
 
 
     public OrderByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
-        return this.OrderBy(keySelect, equal, Generator.Reverse);
+        return new OrderedLinq<T, K>(this, (array: Array<T>) => Generator.Forward(array), keySelect, equal, Constant.defCompareRev);
     }
 
     public Range(start: number, count: number): Enumerable<number> {
@@ -680,11 +675,24 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 }
 
 
-class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
+class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
+
+    private comparer: (a: any, b: any) => number;
 
     constructor(target: Iterable<any> | IEnumerable<any>, 
-        factory: Function, public equal: (a: T, b: T) => number) {
+                factory: Function,
+                keySelect: (x: T) => K,  
+                equal: (a: K, b: K) => number,
+                defaultEqual?: (a: K, b: K) => number) {
         super(target, factory);
+
+        if (keySelect) {
+            this.comparer = equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
+                                  : defaultEqual ? (a: any, b: any) => defaultEqual(keySelect(a), keySelect(b))
+                                                 : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b));
+        } else {
+            this.comparer = equal ? equal : defaultEqual;
+        }
 
         (this as any)['thenBy'] = this.ThenBy;
         (this as any)['thenByDescending'] = this.ThenByDescending;
@@ -693,8 +701,8 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
     public [Symbol.iterator](): Iterator<T> {
         if (!this._factoryArg) {
             this._factoryArg = (<EnumerableImpl<T>>this._target).ToArray();
-            if (this.equal) {
-                this._factoryArg.sort(this.equal);
+            if (this.comparer) {
+                this._factoryArg.sort(this.comparer);
             } else {
                 this._factoryArg.sort();
             }
@@ -703,28 +711,34 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
     }
 
 
-    public ThenBy<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number, generator = Generator.Forward): OrderedEnumerable<T> {
-        
-        var comparer = equal ? equal : Constant.defCompare;
-        var compare = !keySelect && !equal ? undefined
-                                           : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
-        if (!compare) return this;   
+    public ThenBy<K>(keySelect: (x: T) => K, equal?: (a: K, b: K) => number): OrderedEnumerable<T> {
+        return this.ThenByImpl<K>(keySelect, equal);
+    }
 
-        if (!(<OrderedLinq<T>><any>this).equal) {
-            (<OrderedLinq<T>><any>this).equal = compare;
+    public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number = Constant.defCompareRev): OrderedEnumerable<T> {
+        return this.ThenByImpl<K>(keySelect, equal);
+    }
+
+    private ThenByImpl<K>(keySelect: (x: T) => K, equal?: (a: K, b: K) => number): OrderedEnumerable<T> {
+       
+        if (!keySelect && !equal) return this;   
+
+        var compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
+                                        : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b)) 
+                                : equal;
+        
+        if (!compare) return this;
+
+        if (!this.comparer) {
+            this.comparer = compare;
         } else {
-            let superEqual = (<OrderedLinq<T>><any>this).equal;
-            (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
+            let superEqual = this.comparer;
+            this.comparer = (a: any, b: any) => {
                 let result: number = superEqual(a, b);
                 return (0 != result) ? result : compare(a, b);
             }
         }
         return this;
-    }
-
-
-    public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
-        return this.ThenBy(keySelect, equal, Generator.Reverse);
     }
 }
 
