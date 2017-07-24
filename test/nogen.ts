@@ -20,7 +20,7 @@ import {asEnumerable, Range} from "../lib/linq";
 
 describe('Custom Iterator based -', function () {
 
-    var comparator = (a : string, b : string) => {
+    const comparator = (a : string, b : string) => {
         var a1 = a.charCodeAt(3);
         var b1 = b.charCodeAt(3);
         var a2 = a.charCodeAt(2);
@@ -31,6 +31,12 @@ describe('Custom Iterator based -', function () {
                                             : a2 < b2 ? -1 : 0;
     }
 
+    const test = [
+        { isControlled: true,  no: 'C01',  id: 1 },
+        { isControlled: false, no: 'C01',  id: 3 },
+        { isControlled: true,  no: 'C02',  id: 2 },
+        { isControlled: false, no: 'C02',  id: 4 },
+    ];
 
     it('Reverse()', function () {
         var array = Range(1, 100).ToArray();
@@ -209,12 +215,6 @@ describe('Custom Iterator based -', function () {
     });
 
     it('ThenBy() - QJesus', function () {
-        const test = [
-            { isControlled: true,  no: 'C01',  id: 1 },
-            { isControlled: false, no: 'C01',  id: 3 },
-            { isControlled: true,  no: 'C02',  id: 2 },
-            { isControlled: false, no: 'C02',  id: 4 },
-        ];
 
         var iterable = asEnumerable(test).OrderByDescending(x => x.isControlled)
                                          .ThenBy(x => x.id);
@@ -255,6 +255,20 @@ describe('Custom Iterator based -', function () {
             assert.equal(actual, exp);
         }
     });
+
+    it('ThenByDescending() - QJesus', function () {
+
+        var iterable = asEnumerable(test).OrderBy(x => x.isControlled)
+                                         .ThenByDescending(x => x.id);
+                                         
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(iterator.next().value.id, 4);
+        assert.equal(iterator.next().value.id, 3);
+        assert.equal(iterator.next().value.id, 2);
+        assert.equal(iterator.next().value.id, 1);
+        assert.isTrue(iterator.next().done);
+    });
+
 
 
 
