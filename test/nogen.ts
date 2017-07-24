@@ -217,7 +217,7 @@ describe('Custom Iterator based -', function () {
     it('ThenBy() - QJesus', function () {
 
         var iterable = asEnumerable(test).OrderByDescending(x => x.isControlled)
-                                         .ThenBy(x => x.id);
+                                         .ThenBy(x => x.no);
                                          
         var iterator = iterable[Symbol.iterator]()
         assert.equal(iterator.next().value.id, 1);
@@ -259,7 +259,7 @@ describe('Custom Iterator based -', function () {
     it('ThenByDescending() - QJesus', function () {
 
         var iterable = asEnumerable(test).OrderBy(x => x.isControlled)
-                                         .ThenByDescending(x => x.id);
+                                         .ThenByDescending(x => x.no);
                                          
         var iterator = iterable[Symbol.iterator]()
         assert.equal(iterator.next().value.id, 4);
