@@ -726,9 +726,7 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
         var compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
                                         : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b)) 
                                 : equal;
-        
-        if (!compare) return this;
-
+       
         if (!this.comparer) {
             this.comparer = compare;
         } else {
