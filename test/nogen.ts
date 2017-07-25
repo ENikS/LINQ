@@ -38,6 +38,7 @@ describe('Custom Iterator based -', function () {
         { isControlled: false, no: 'C02',  id: 4 },
     ];
 
+    
     it('Reverse()', function () {
         var array = Range(1, 100).ToArray();
         var iterator = asEnumerable(array).Reverse()[Symbol.iterator]()
@@ -249,7 +250,6 @@ describe('Custom Iterator based -', function () {
     it('ThenByDescending() - Default', function () {
         var enumerable = asEnumerable(unorderedStr);
         var iterable = enumerable.OrderByDescending().ThenByDescending();
-var ss = iterable.ToArray();        
         var iterator = iterable[Symbol.iterator]()
         assert.equal(iterator.next().value, "zjgf");
         assert.equal(iterator.next().value, "axgh");
@@ -288,6 +288,21 @@ var ss = iterable.ToArray();
         assert.isTrue(iterator.next().done);
     });
 
+    it('ThenByDescending() - Function', function () {
+        var enumerable = asEnumerable(unorderedStr);
+        var etalon = enumerable.ToArray().sort(comparator);
+        var iterable = enumerable.OrderBy(s => 0).ThenByDescending(s => s, comparator);
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            assert.equal(actual.charCodeAt(2), exp.charCodeAt(2));
+            assert.equal(actual.charCodeAt(3), exp.charCodeAt(3));
+        }
+    });
+
+    
 
 
 

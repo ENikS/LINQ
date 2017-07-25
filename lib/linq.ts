@@ -733,7 +733,7 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
         if (!keySelect && !equal) return this;   
 
         var compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
-                                        : (a: any, b: any) => Constant.defCompareRev(keySelect(a), keySelect(b)) 
+                                        : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b)) 
                                 : equal;
        
         if (!this.comparer) {
@@ -742,7 +742,7 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
             let superEqual = this.comparer;
             this.comparer = (a: any, b: any) => {
                 let result: number = superEqual(a, b);
-                return (0 != result) ? result : this.reversed ? -compare(a, b) : compare(a, b);
+                return (0 != result) ? result : this.reversed ? compare(a, b) : -compare(a, b);
             }
         }
         return this;
