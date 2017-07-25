@@ -37,10 +37,6 @@ export var defCompare = (a: any, b: any): number => {
     return a == b ? 0 : a > b ? 1 : -1;
 };
 
-export var defCompareRev = (a: any, b: any): number => {
-    return -defCompare(a, b);
-};
-
 
 /** Returns default value for the type */
 export function getDefaultVal(type: any, value: any = undefined): any {
