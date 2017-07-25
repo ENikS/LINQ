@@ -110,6 +110,20 @@ export class Generator<T> extends IteratorBase<T> implements Iterator<T> {
 }
 
 
+export class Repeat<T> extends IteratorBase<T> implements Iterator<T> {
+
+    constructor(private _current: T, private _count: number) {
+        super(null);
+    }
+
+    public next<T>(value?: T): IteratorResult<T> {
+        var result = (0 < this._count) ? { value: this._current, done: 0 >= this._count-- } : this._done;
+        return result;
+    }
+}
+
+
+
 export class DefaultIfEmpty<T> extends IteratorBase<T> {
 
     constructor(sourceIterator: Iterator<T>, private _default: T) {

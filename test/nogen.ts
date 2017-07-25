@@ -160,12 +160,28 @@ describe('Custom Iterator based -', function () {
         assert.isTrue(citerator.next().done);
     });
 
-    it('OrderByDescending() - Comparator', function () {
-        var etalon = asEnumerable(unorderedStr).ToArray().sort((a, b) => b.charCodeAt(0) - a.charCodeAt(0));
-        var iterable = asEnumerable(unorderedStr).OrderByDescending(a => a, (b, c) => c.charCodeAt(0) - b.charCodeAt(0));
+    it('OrderByDescending() - Key', function () {
+        var iterable = asEnumerable(unorderedStr).OrderByDescending(a => a);
         var iterator = iterable[Symbol.iterator]()
-        for (let exp of etalon) {
-            assert.equal(iterator.next().value, exp);
+
+        assert.equal(iterator.next().value, "zjgf");
+        assert.equal(iterator.next().value, "axgh");
+        assert.equal(iterator.next().value, "afgh");
+        assert.equal(iterator.next().value, "1324");
+        assert.equal(iterator.next().value, "1314");
+        assert.equal(iterator.next().value, "1234");
+        assert.equal(iterator.next().value, "1234");
+        assert.isTrue(iterator.next().done);
+    });
+    
+    it('OrderByDescending() - Comparator', function () {
+        var etalon = asEnumerable(unorderedStr).ToArray().sort(comparator);
+        var iterable = asEnumerable(unorderedStr).OrderByDescending(a => a, comparator);
+        var iterator = iterable[Symbol.iterator]()
+        for (let i = etalon.length - 1; i >= 0; i--) {
+            var exp = etalon[i];
+            var actual = iterator.next().value;
+            assert.equal(actual, exp);
         }
     });
 
@@ -187,10 +203,14 @@ describe('Custom Iterator based -', function () {
         var enumerable = asEnumerable(unorderedStr);
         var iterable = enumerable.OrderBy(s => s.charCodeAt(3)).ThenBy(s => s.charCodeAt(2));
         var iterator = iterable[Symbol.iterator]()
-
-        for (let exp of enumerable.ToArray().sort(comparator)) {
-            assert.equal(iterator.next().value, exp);
-        }
+        assert.equal(iterator.next().value, "1314");
+        assert.equal(iterator.next().value, "1324");
+        assert.equal(iterator.next().value, "1234");
+        assert.equal(iterator.next().value, "1234");
+        assert.equal(iterator.next().value, "zjgf");
+        assert.equal(iterator.next().value, "afgh");
+        assert.equal(iterator.next().value, "axgh");
+        assert.isTrue(iterator.next().done);
     });
 
     it('ThenBy() - Default Key', function () {
@@ -218,7 +238,6 @@ describe('Custom Iterator based -', function () {
 
         var iterable = asEnumerable(test).OrderByDescending(x => x.isControlled)
                                          .ThenBy(x => x.no);
-                                         
         var iterator = iterable[Symbol.iterator]()
         assert.equal(iterator.next().value.id, 1);
         assert.equal(iterator.next().value.id, 2);
@@ -260,7 +279,6 @@ describe('Custom Iterator based -', function () {
 
         var iterable = asEnumerable(test).OrderBy(x => x.isControlled)
                                          .ThenByDescending(x => x.no);
-                                         
         var iterator = iterable[Symbol.iterator]()
         assert.equal(iterator.next().value.id, 4);
         assert.equal(iterator.next().value.id, 3);

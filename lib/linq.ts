@@ -166,19 +166,22 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     //  Immediate execution methods                                                                                            
     //-------------------------------------------------------------------------
 
-
-    public Aggregate<A, B>(func: (aggr: T, x: T) => A, resultSelector: (aggr: T) => B): B;
-    public Aggregate<A, B>(seed: A, func: (aggr: A, x: T) => A = Constant.selfFn, resultSelector: (aggr: A) => B = Constant.selfFn): B {
+    public Aggregate<B>(func: (x: T, y: T) => T, resultSelector?: (x: T) => B): B;
+    public Aggregate<A, B>(seed: A, func: (x: A, y: T) => A, resultSelector?: (x: A) => B): B;
+    public Aggregate<A, B>(alpha: (x: T|A, y: T) => T|A, 
+                           beta:  (x: T|A, y?: T) => A | B = Constant.selfFn, 
+                           gamma: (x: A) => B = Constant.selfFn): B {
         let zero: A;
-        let method: (aggr: A, x: T) => A;
-        let selector: (aggr: A) => B;
-        if ("function" === typeof seed) {
-            method = seed as any;
-            selector = func as any;
+        let method: (x: A, y: T) => A;
+        let selector: (x: A) => B;
+        
+        if ("function" === typeof alpha) {
+            method = alpha as any;
+            selector = beta as any;
         } else {
-            zero = seed;
-            method = func;
-            selector = resultSelector;
+            zero = alpha;
+            method = <(x: A, y: T) => A>beta;
+            selector = gamma;
         }
         var result: A = zero;
         var res: any, iterator: Iterator<T> = this[Symbol.iterator]();
@@ -496,8 +499,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.Distinct(this[Symbol.iterator](), keySelector));
     }
 
-    public Except<K>(other: Iterable<T>, kesSelector?: (x: T) => K): Enumerable<T> {
-        return new EnumerableImpl<T>(this, () => new Iterator.Intersect<T, K>(this[Symbol.iterator](), Constant.getKeys(other, kesSelector), true, kesSelector));
+    public Except<K,V>(other: Iterable<V>, keySelector?: (x: V|T) => K): Enumerable<T> {
+        return new EnumerableImpl<T>(this, () => new Iterator.Intersect<T, K>(this[Symbol.iterator](), Constant.getKeys(other, keySelector), true, keySelector));
     }
 
 
@@ -602,7 +605,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         var compare = !keySelect && !equal ? undefined
                                            : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
         return new OrderedLinq<T>(this,
-            (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1), compare);
+            (array: Array<T>) => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1), compare, true);
     }
 
     public Range(start: number, count: number): Enumerable<number> {
@@ -610,8 +613,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
-    public Repeat(element: T, count: number): Enumerable<T> {
-        return new EnumerableImpl<T>(null, () => new Iterator.Generator(element, count));
+    public Repeat<T>(element: T, count: number): Enumerable<T> {
+        return new EnumerableImpl<T>(null, () => new Iterator.Repeat(element, count));
     }
 
 
@@ -620,8 +623,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new EnumerableImpl<T>(null, () => new Iterator.ArrayIterator(array, array.length - 1, (i: number) => 0 > i, -1));
     }
 
-
-    public Select<V>(transform: (x: T, i?: number) => V): Enumerable<V> {
+    public Select<V>(transform: (x: T, index?: number) => V): Enumerable<V> {
         return new EnumerableImpl<V>(this, () => new Iterator.Select(this[Symbol.iterator](), transform));
     }
 
@@ -640,8 +642,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         });
     }
 
-
-    public SkipWhile(predicate: (x: T, i: number) => boolean = (a, n) => false): Enumerable<T> {
+    public SkipWhile(predicate: (x: T, i?: number) => boolean): Enumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.Skip(this[Symbol.iterator](), predicate));
     }
 
@@ -675,7 +676,8 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
 
-    constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, public equal: Function) {
+    constructor(target: Iterable<any> | IEnumerable<any>, factory: Function, 
+                private equal: Function, private reversed: boolean = false) {
         super(target, factory);
 
         (this as any)['thenBy'] = this.ThenBy;
@@ -708,7 +710,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
                 let superEqual = (<OrderedLinq<T>><any>this).equal;
                 (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                     let result: number = superEqual(a, b);
-                    return (0 != result) ? result : compare(a, b);
+                    return (0 != result) ? result : this.reversed ? -compare(a, b) : compare(a, b);
                 }
             }
             return this;
@@ -721,7 +723,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
 
 
     public ThenByDescending<K>(keySelect: (x: T) => K, equal: (a: K, b: K) => number): OrderedEnumerable<T> {
-        var comparer = equal ? equal : Constant.defCompare;
+        var comparer = equal ? equal : Constant.defCompareRev;
         var compare = !keySelect && !equal ? undefined
             : keySelect ? (a: T, b: T) => comparer(keySelect(a), keySelect(b)) : (a: any, b: any) => comparer(a, b);
         if (this instanceof OrderedLinq) {
@@ -733,7 +735,7 @@ class OrderedLinq<T> extends EnumerableImpl<T> implements OrderedEnumerable<T> {
                 let superEqual = (<OrderedLinq<T>><any>this).equal;
                 (<OrderedLinq<T>><any>this).equal = (a: T, b: T) => {
                     let result: number = superEqual(a, b);
-                    return (0 != result) ? result : compare(a, b);
+                    return (0 != result) ? result : this.reversed ? -compare(a, b) : compare(a, b);
                 }
             }
             return this;
