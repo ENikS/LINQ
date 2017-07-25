@@ -718,7 +718,7 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
                                 : equal;
        
         if (!this.comparer) {
-            this.comparer = compare ;
+            this.comparer = compare;
         } else {
             let superEqual = this.comparer;
             this.comparer = (a: any, b: any) => {
@@ -737,7 +737,7 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
                                 : equal;
        
         if (!this.comparer) {
-            this.comparer = compare ;
+            this.comparer = compare;
         } else {
             let superEqual = this.comparer;
             this.comparer = (a: any, b: any) => {
