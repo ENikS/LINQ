@@ -35,9 +35,11 @@ export var defGrouping = (a: any, b: any) => {
 };
 
 export var defCompare = (a: any, b: any): number => {
-    return a === b ? 0
-                   : a > b ? 1 
-                           : -1;
+    return a == b ? 0 : a > b ? 1 : -1;
+};
+
+export var defCompareRev = (a: any, b: any): number => {
+    return -defCompare(a, b);
 };
 
 

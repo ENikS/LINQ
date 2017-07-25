@@ -20,7 +20,7 @@ import {asEnumerable, Range} from "../lib/linq";
 
 describe('Custom Iterator based -', function () {
 
-    var comparator = (a : string, b : string) => {
+    const comparator = (a : string, b : string) => {
         var a1 = a.charCodeAt(3);
         var b1 = b.charCodeAt(3);
         var a2 = a.charCodeAt(2);
@@ -31,6 +31,12 @@ describe('Custom Iterator based -', function () {
                                             : a2 < b2 ? -1 : 0;
     }
 
+    const test = [
+        { isControlled: true,  no: 'C01',  id: 1 },
+        { isControlled: false, no: 'C01',  id: 3 },
+        { isControlled: true,  no: 'C02',  id: 2 },
+        { isControlled: false, no: 'C02',  id: 4 },
+    ];
 
     it('Reverse()', function () {
         var array = Range(1, 100).ToArray();
@@ -76,12 +82,23 @@ describe('Custom Iterator based -', function () {
 
 
     it('OrderBy() - Default', function () {
-        var enumerable = asEnumerable(unorderedMix);
-        var etalon = enumerable.ToArray().sort();
+        var enumerable = asEnumerable(unorderedStr);
         var iterable = enumerable.OrderBy();
         var iterator = iterable[Symbol.iterator]()
 
-        for (let exp of etalon) {
+        for (let exp of enumerable.ToArray().sort()) {
+            var actual = iterator.next().value;
+            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
+            assert.equal(actual, exp);
+        }
+    });
+
+    it('OrderBy() - Default (String)', function () {
+        var enumerable = asEnumerable(unorderedStr);
+        var iterable = enumerable.OrderBy();
+        var iterator = iterable[Symbol.iterator]()
+
+        for (let exp of enumerable.ToArray().sort()) {
             var actual = iterator.next().value;
             if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
             assert.equal(actual, exp);
@@ -89,13 +106,13 @@ describe('Custom Iterator based -', function () {
     });
 
     it('OrderBy() - Selector', function () {
-        var citerable = asEnumerable(jsn).OrderBy(a => a.name);
-        var citerator = citerable[Symbol.iterator]()
-        assert.equal("a", citerator.next().value.name);
-        assert.equal("b", citerator.next().value.name);
-        assert.equal("c", citerator.next().value.name);
-        assert.equal("d", citerator.next().value.name);
-        assert.isTrue(citerator.next().done);
+        var iterable = asEnumerable(jsn).OrderBy(a => a.name);
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal("a", iterator.next().value.name);
+        assert.equal("b", iterator.next().value.name);
+        assert.equal("c", iterator.next().value.name);
+        assert.equal("d", iterator.next().value.name);
+        assert.isTrue(iterator.next().done);
     });
 
     it('OrderBy() - Comparator', function () {
@@ -121,11 +138,10 @@ describe('Custom Iterator based -', function () {
 
 
     it('OrderByDescending() - Default', function () {
-        var enumerable = asEnumerable(unorderedMix);
-        var etalon = enumerable.ToArray().sort();
+        var enumerable = asEnumerable(unorderedStr);
         var iterable = enumerable.OrderByDescending();
+        var etalon = enumerable.ToArray().sort();
         var iterator = iterable[Symbol.iterator]()
-
         for (let i = etalon.length - 1; i >= 0; i--) {
             var exp = etalon[i];
             var actual = iterator.next().value;
@@ -145,10 +161,9 @@ describe('Custom Iterator based -', function () {
     });
 
     it('OrderByDescending() - Comparator', function () {
-        var etalon = asEnumerable(jsn).ToArray().sort((a, b) => b.name.charCodeAt(0) - a.name.charCodeAt(0));
-        var iterable = asEnumerable(jsn).OrderByDescending(a => a.name, (b, c) => b.charCodeAt(0) - c.charCodeAt(0));
+        var etalon = asEnumerable(unorderedStr).ToArray().sort((a, b) => b.charCodeAt(0) - a.charCodeAt(0));
+        var iterable = asEnumerable(unorderedStr).OrderByDescending(a => a, (b, c) => c.charCodeAt(0) - b.charCodeAt(0));
         var iterator = iterable[Symbol.iterator]()
-
         for (let exp of etalon) {
             assert.equal(iterator.next().value, exp);
         }
@@ -158,10 +173,9 @@ describe('Custom Iterator based -', function () {
 
 
     it('ThenBy() - Default', function () {
-        var enumerable = asEnumerable(unorderedMix);
+        var enumerable = asEnumerable(unorderedStr);
         var iterable = enumerable.OrderBy().ThenBy();
         var iterator = iterable[Symbol.iterator]()
-
         for (let exp of enumerable.ToArray().sort()) {
             var actual = iterator.next().value;
             if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
@@ -184,7 +198,6 @@ describe('Custom Iterator based -', function () {
 
         var iterable = enumerable.OrderBy().ThenBy(undefined, comparator);
         var iterator = iterable[Symbol.iterator]()
-
         for (let exp of enumerable.ToArray().sort(comparator)) {
             assert.equal(iterator.next().value, exp);
         }
@@ -201,10 +214,21 @@ describe('Custom Iterator based -', function () {
         }
     });
 
+    it('ThenBy() - QJesus', function () {
 
+        var iterable = asEnumerable(test).OrderByDescending(x => x.isControlled)
+                                         .ThenBy(x => x.no);
+                                         
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(iterator.next().value.id, 1);
+        assert.equal(iterator.next().value.id, 2);
+        assert.equal(iterator.next().value.id, 3);
+        assert.equal(iterator.next().value.id, 4);
+        assert.isTrue(iterator.next().done);
+    });
 
     it('ThenByDescending() - Default', function () {
-        var enumerable = asEnumerable(unorderedMix);
+        var enumerable = asEnumerable(unorderedStr);
         var etalon = enumerable.ToArray().sort();
         var iterable = enumerable.OrderByDescending().ThenByDescending();
         var iterator = iterable[Symbol.iterator]()
@@ -232,19 +256,19 @@ describe('Custom Iterator based -', function () {
         }
     });
 
-    it('ThenByDescending() - Default Function', function () {
-        var enumerable = asEnumerable(unorderedStr);
-        var etalon = enumerable.ToArray().sort(comparator);
-        var iterable = enumerable.OrderByDescending().ThenByDescending(s => s, comparator);
-        var iterator = iterable[Symbol.iterator]()
+    it('ThenByDescending() - QJesus', function () {
 
-        for (let i = etalon.length - 1; i >= 0; i--) {
-            var exp = etalon[i];
-            var actual = iterator.next().value;
-            if (isNaN(<any>exp) && isNaN(<any>actual)) continue;
-            assert.equal(actual, exp);
-        }
+        var iterable = asEnumerable(test).OrderBy(x => x.isControlled)
+                                         .ThenByDescending(x => x.no);
+                                         
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(iterator.next().value.id, 4);
+        assert.equal(iterator.next().value.id, 3);
+        assert.equal(iterator.next().value.id, 2);
+        assert.equal(iterator.next().value.id, 1);
+        assert.isTrue(iterator.next().done);
     });
+
 
 
 

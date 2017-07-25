@@ -77,11 +77,11 @@
   },
   "devDependencies": {
     "browserify": "^14.4.0",
-    "chai": "^4.0.2",
+    "chai": "^4.1.0",
     "jsmin": "^1.0.1",
     "latest": "^0.2.0",
     "mocha": "^3.4.2",
-    "typescript": "^2.4.1"
+    "typescript": "^2.4.2"
   },
   "scripts": {
     "build:ts": "tsc",

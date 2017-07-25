@@ -10,6 +10,7 @@
   },
   "exclude": [
     ".c9",
+    ".vs",
     ".vscode",
     ".git",
     "dist",
