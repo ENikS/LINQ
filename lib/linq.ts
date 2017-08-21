@@ -210,7 +210,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     public Any(predicate?: (x: T) => boolean) {
         let iterator: Iterator<T>;
         // Check if at least one exist
-        if (!predicate && (iterator = this._target[Symbol.iterator]())) {
+        if (!predicate && (iterator = this[Symbol.iterator]())) {
             return !iterator.next().done;
         }
         // Check if any satisfy the criteria

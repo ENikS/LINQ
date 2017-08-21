@@ -469,6 +469,15 @@ describe('Reentrancy -', function () {
         assert.isTrue(iterator.next().done);
     });
     
+
+
+    it('tzachshabtay', function () {
+        var paths = ["1", "aa"]
+
+        assert.doesNotThrow(() => {asEnumerable(paths).Where(p => p === "aa").Any(q => true)});
+        assert.doesNotThrow(() => {asEnumerable(paths).Where(v => v === "aa").Any()});         
+    });
+    
 });
 
 /** Copyright (c) ENikS.  All rights reserved. */
