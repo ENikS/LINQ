@@ -125,6 +125,23 @@ describe('Deferred Execution -', function () {
     });
 
 
+    it('Concat() - QJesus', function () {
+        const xs = [{ x: 'x', b: true }, { x: 'y', b: false }, { x: 'z', b: true }];
+        var iterable = Linq(xs).Where(f => f.b).Concat(Linq(xs).Where(f => !f.b).ToArray());
+        var iterator = iterable[Symbol.iterator]()
+
+        var seq1 = Linq(xs).Where(f => f.b).ToArray();
+        var seq2 = Linq(xs).Where(f => !f.b).ToArray();
+        var conc = Linq(seq1).Concat(seq2).ToArray();
+        
+
+        assert.equal('x', iterator.next().value.x);
+        assert.equal('z', iterator.next().value.x);
+        assert.equal('y', iterator.next().value.x);
+        assert.isTrue(iterator.next().done);
+    });
+
+
 
     // Select
 

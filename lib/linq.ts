@@ -482,7 +482,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Concat<T>(second: Iterable<T>): Enumerable<T> {
-        var aggregate = [this._target, second];
+        var aggregate = [this, second];
         return new EnumerableImpl<T>(this, () => new Iterator.SelectMany(aggregate[Symbol.iterator](), Constant.selfFn));
     }
 
