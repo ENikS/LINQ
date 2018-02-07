@@ -78,7 +78,7 @@
     "url": "https://github.com/ENikS/Linq.git"
   },
   "devDependencies": {
-    "browserify": "^15.0.0",
+    "browserify": "^16.0.0",
     "chai": "^4.1.2",
     "jsmin": "^1.0.1",
     "latest": "^0.2.0",
