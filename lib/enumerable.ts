@@ -215,8 +215,9 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     * @example
     *   var e = asEnumerable(pets).GroupBy(pet => pet.Age, pet => pet)
     */
-    GroupBy<K, E, R>(selKey: (x: T) => K, selElement?: (x: T) => E, 
-                     selResult?: (a: K, b: Iterable<E>) => R): Enumerable<R>;
+    GroupBy<K>(selKey: (x: T) => K): Enumerable<IGrouping<K, T>>;
+    GroupBy<K, E>(selKey: (x: T) => K, selElement: (x: T) => E): Enumerable<IGrouping<K, E>>;
+    GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E, selResult: (a: K, b: Iterable<E>) => R): Enumerable<IGrouping<K, R>>;
 
     /** 
     * Correlates the elements of two sequences based on equality of keys and 
@@ -608,7 +609,9 @@ export interface OrderedEnumerable<T> extends Enumerable<T>
 
 }
 
-
+export interface IGrouping<K, R> extends Enumerable<R> {
+    key: K
+}
 
 //-----------------------------------------------------------------------------
 //  C# compatability interface
