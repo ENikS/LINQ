@@ -231,9 +231,9 @@ browser-resolve@^1.11.0, browser-resolve@^1.7.0:
   dependencies:
     resolve "1.1.7"
 
-browser-stdout@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.0.tgz#f351d32969d32fa5d7a5567154263d928ae3bd1f"
+browser-stdout@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.1.tgz#baa559ee14ced73452229bad7326467c61fabd60"
 
 browserify-aes@^1.0.0, browserify-aes@^1.0.4:
   version "1.1.1"
@@ -287,9 +287,9 @@ browserify-zlib@~0.2.0:
   dependencies:
     pako "~1.0.5"
 
-browserify@^15.0.0:
-  version "15.2.0"
-  resolved "https://registry.yarnpkg.com/browserify/-/browserify-15.2.0.tgz#1e121ba1fa72cf9fd2d8df002f8674b68b45df89"
+browserify@^16.0.0:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/browserify/-/browserify-16.1.1.tgz#7905ec07e0147c4d90f92001944050a6e1c2844e"
   dependencies:
     JSONStream "^1.0.3"
     assert "^1.4.0"
@@ -298,15 +298,15 @@ browserify@^15.0.0:
     browserify-zlib "~0.2.0"
     buffer "^5.0.2"
     cached-path-relative "^1.0.0"
-    concat-stream "~1.5.1"
+    concat-stream "^1.6.0"
     console-browserify "^1.1.0"
     constants-browserify "~1.0.0"
     crypto-browserify "^3.0.0"
     defined "^1.0.0"
     deps-sort "^2.0.0"
-    domain-browser "~1.1.0"
+    domain-browser "^1.2.0"
     duplexer2 "~0.1.2"
-    events "~1.1.0"
+    events "^2.0.0"
     glob "^7.1.0"
     has "^1.0.0"
     htmlescape "^1.1.0"
@@ -315,7 +315,7 @@ browserify@^15.0.0:
     insert-module-globals "^7.0.0"
     labeled-stream-splicer "^2.0.0"
     mkdirp "^0.5.0"
-    module-deps "^5.0.1"
+    module-deps "^6.0.0"
     os-browserify "~0.3.0"
     parents "^1.0.1"
     path-browserify "~0.0.0"
@@ -334,7 +334,7 @@ browserify@^15.0.0:
     syntax-error "^1.1.1"
     through2 "^2.0.0"
     timers-browserify "^1.0.1"
-    tty-browserify "~0.0.0"
+    tty-browserify "0.0.1"
     url "~0.11.0"
     util "~0.10.1"
     vm-browserify "~0.0.1"
@@ -492,6 +492,14 @@ concat-map@0.0.1:
 concat-stream@^1.5.2, concat-stream@~1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.0.tgz#0aac662fd52be78964d5532f694784e70110acf7"
+  dependencies:
+    inherits "^2.0.3"
+    readable-stream "^2.2.2"
+    typedarray "^0.0.6"
+
+concat-stream@^1.6.0:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.1.tgz#261b8f518301f1d834e36342b9fea095d2620a26"
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.2.2"
@@ -664,9 +672,9 @@ dezalgo@^1.0.0, dezalgo@^1.0.1, dezalgo@^1.0.2, dezalgo@~1.0.3:
     asap "^2.0.0"
     wrappy "1"
 
-diff@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-3.3.1.tgz#aa8567a6eed03c531fc89d3f711cd0e5259dec75"
+diff@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -676,9 +684,9 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
-domain-browser@~1.1.0:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
+domain-browser@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
 
 duplexer2@^0.1.2, duplexer2@~0.1.0, duplexer2@~0.1.2:
   version "0.1.4"
@@ -712,9 +720,9 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-events@~1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
+events@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-2.0.0.tgz#cbbb56bf3ab1ac18d71c43bb32c86255062769f2"
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -1311,14 +1319,14 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-4.1.0.tgz#7d86cfbcf35cb829e2754c32e17355ec05338794"
+mocha@^5.0.0:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-5.0.4.tgz#6b7aa328472da1088e69d47e75925fd3a3bb63c6"
   dependencies:
-    browser-stdout "1.3.0"
+    browser-stdout "1.3.1"
     commander "2.11.0"
     debug "3.1.0"
-    diff "3.3.1"
+    diff "3.5.0"
     escape-string-regexp "1.0.5"
     glob "7.1.2"
     growl "1.10.3"
@@ -1326,9 +1334,9 @@ mocha@^4.1.0:
     mkdirp "0.5.1"
     supports-color "4.4.0"
 
-module-deps@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-5.0.1.tgz#3bc47c14b0a6d925aff2ec4a177b456a96ae0396"
+module-deps@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-6.0.0.tgz#4417b49a4f4d7af79b104186e5389ea99b1dc837"
   dependencies:
     JSONStream "^1.0.3"
     browser-resolve "^1.7.0"
@@ -1340,7 +1348,7 @@ module-deps@^5.0.1:
     inherits "^2.0.1"
     parents "^1.0.0"
     readable-stream "^2.0.2"
-    resolve "^1.1.3"
+    resolve "^1.4.0"
     stream-combiner2 "^1.1.1"
     subarg "^1.0.0"
     through2 "^2.0.0"
@@ -1880,7 +1888,7 @@ resolve@1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@^1.1.3, resolve@^1.1.4:
+resolve@^1.1.4, resolve@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
@@ -2139,9 +2147,9 @@ tough-cookie@~2.3.0, tough-cookie@~2.3.3:
   dependencies:
     punycode "^1.4.1"
 
-tty-browserify@~0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
+tty-browserify@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.1.tgz#3f05251ee17904dfd0677546670db9651682b811"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
@@ -2165,9 +2173,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
+typescript@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
 
 uid-number@0.0.6:
   version "0.0.6"
