@@ -16,7 +16,7 @@
 import * as Generator from "./generators";
 import * as Constant from "./utilities";
 import * as Iterator from "./iterators";
-import {Enumerable, OrderedEnumerable, IEnumerable, IEnumerator} from "./enumerable";
+import {Enumerable, OrderedEnumerable, IEnumerable, IEnumerator, IGrouping} from "./enumerable";
 
 
 //-----------------------------------------------------------------------------
@@ -530,10 +530,12 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
     }
 
 
+    public GroupBy<K>(selKey: (x: T) => K): Enumerable<IGrouping<K, T>>;
+    public GroupBy<K, E>(selKey: (x: T) => K, selElement: (x: T) => E): Enumerable<IGrouping<K, E>>;
     public GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E = Constant.selfFn, 
-                            selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
+                            selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<IGrouping<K, R>> {
         let map: Map<K, Array<E>> = Constant.getKeyedMap(this, selKey, selElement);
-        return new EnumerableImpl<R>(undefined, Generator.GroupBy, [map, selResult]);
+        return new EnumerableImpl<R>(undefined, Generator.GroupBy, [map, selResult]) as any;
     }
 
 
