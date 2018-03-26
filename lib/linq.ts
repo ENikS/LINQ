@@ -17,7 +17,7 @@
 import "es6-shim";
 import * as Iterator from "./iterators";
 import * as Constant from "./utilities";
-import {Enumerable, OrderedEnumerable, IEnumerable, IEnumerator} from "./enumerable";
+import {Enumerable, OrderedEnumerable, IEnumerable, IEnumerator, IGrouping} from "./enumerable";
 
 /**
 * Converts any Iterable<T> object into LINQ-able object
@@ -503,9 +503,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         return new EnumerableImpl<T>(this, () => new Iterator.Intersect<T, K>(this[Symbol.iterator](), Constant.getKeys(other, keySelector), true, keySelector));
     }
 
-
-    public GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E = Constant.selfFn,
-        selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<R> {
+    public GroupBy<K>(selKey: (x: T) => K): Enumerable<IGrouping<K, T>>;
+    public GroupBy<K, E>(selKey: (x: T) => K, selElement: (x: T) => E): Enumerable<IGrouping<K, E>>;
+    public GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E = Constant.selfFn, selResult: (a: K, b: Iterable<E>) => R = Constant.defGrouping): Enumerable<IGrouping<K, R>> {
         var result: IteratorResult<T>;
         var iterator: Iterator<T> = this[Symbol.iterator]();
         var _map = new Map<K, Array<E>>();
@@ -521,7 +521,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         var factory = () => new Iterator.GroupBy(_map.keys(), selResult, _map);
         var tst = factory();
 
-        return new EnumerableImpl<R>(this, () => new Iterator.GroupBy(_map.keys(), selResult, _map));
+        return new EnumerableImpl<R>(this, () => new Iterator.GroupBy(_map.keys(), selResult, _map)) as any;
     }
 
 
