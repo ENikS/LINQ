@@ -609,7 +609,7 @@ export interface OrderedEnumerable<T> extends Enumerable<T>
 
 }
 
-export interface IGrouping<K, R> extends Enumerable<R> {
+export interface IGrouping<K, R> extends Array<R> {
     key: K
 }
 
