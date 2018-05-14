@@ -17,7 +17,7 @@ import {
 } from "./data";
 import {assert} from "chai";
 import Linq from "../lib/linq";
-
+import { Enumerable } from "../lib/enumerable";
 
 describe('Deferred Execution -', function () {
 
@@ -606,7 +606,7 @@ describe('Deferred Execution -', function () {
 
 
 
-    it('GroupBy() - Selector', function () {
+    it('GroupBy() - Element selector', function () {
         var iterable: any = Linq(pets).GroupBy(pet => pet.Age,
             pet => pet);
 
@@ -620,6 +620,24 @@ describe('Deferred Execution -', function () {
         result = iterator.next().value;
         assert.equal(1, result.key);
         assert.equal(1, result.length);
+        assert.isTrue(iterator.next().done);
+    });
+
+
+
+    it('GroupBy() - Result selector', function () {
+        var iterable: Enumerable<number> = Linq(pets).GroupBy(
+            pet => pet.Age,
+            pet => pet,
+            (age, group) => age);
+        
+        var iterator = iterable[Symbol.iterator]();
+        var result = iterator.next().value;
+        assert.equal(8, result);
+        result = iterator.next().value;
+        assert.equal(4, result);
+        result = iterator.next().value;
+        assert.equal(1, result);
         assert.isTrue(iterator.next().done);
     });
 

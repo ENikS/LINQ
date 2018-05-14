@@ -217,7 +217,7 @@ export interface Enumerable<T> extends Iterable<T>, IEnumerable<T> {
     */
     GroupBy<K>(selKey: (x: T) => K): Enumerable<IGrouping<K, T>>;
     GroupBy<K, E>(selKey: (x: T) => K, selElement: (x: T) => E): Enumerable<IGrouping<K, E>>;
-    GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E, selResult: (a: K, b: Iterable<E>) => R): Enumerable<IGrouping<K, R>>;
+    GroupBy<K, E, R>(selKey: (x: T) => K, selElement: (x: T) => E, selResult: (a: K, b: Iterable<E>) => R): Enumerable<R>;
 
     /** 
     * Correlates the elements of two sequences based on equality of keys and 
