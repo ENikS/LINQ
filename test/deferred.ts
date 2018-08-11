@@ -677,6 +677,45 @@ describe('Deferred Execution -', function () {
         assert.isTrue(iterator.next().done);
     });
 
+    it('SelectMany() - Selector QJesus', function () {
+
+        const points = [
+            { col: 2, row: 1 }, { col: 4, row: 1 }, { col: 6, row: 1 },
+            { col: 2, row: 3 }, { col: 4, row: 3 }, { col: 6, row: 3 },
+            { col: 2, row: 5 }, { col: 4, row: 5 }, { col: 6, row: 5 },
+            { col: 2, row: 7 }, { col: 4, row: 7 }, { col: 6, row: 7 },
+        ];
+
+        var method = (gp: any, idx: any) => Linq(gp).Select((o: any) => ({
+            col: o.col,
+            row: o.row,
+            idx,
+        }));
+
+        var lines = Linq(points).GroupBy(p => p.row).SelectMany(method).ToArray();
+
+        var iterable =  Linq(points).GroupBy(p => p.row).SelectMany((gp, idx) => Linq(gp).Select(o => ({
+            col: o.col,
+            row: o.row,
+            idx,
+        })));
+
+        var iterator = iterable[Symbol.iterator]()
+        assert.equal(0, iterator.next().value.idx);
+        assert.equal(0, iterator.next().value.idx);
+        assert.equal(0, iterator.next().value.idx);
+        assert.equal(1, iterator.next().value.idx);
+        assert.equal(1, iterator.next().value.idx);
+        assert.equal(1, iterator.next().value.idx);
+        assert.equal(2, iterator.next().value.idx);
+        assert.equal(2, iterator.next().value.idx);
+        assert.equal(2, iterator.next().value.idx);
+        assert.equal(3, iterator.next().value.idx);
+        assert.equal(3, iterator.next().value.idx);
+        assert.equal(3, iterator.next().value.idx);
+        assert.isTrue(iterator.next().done);
+    });
+    
 });
 
 /** Copyright (c) ENikS.  All rights reserved. */

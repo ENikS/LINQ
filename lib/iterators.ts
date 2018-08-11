@@ -331,7 +331,7 @@ export class SelectMany<T, V, Z> extends MethodIteratror<T> implements Iterator<
             if (this._resultState.done) {
                 this._collectionState = this._iterator.next();
                 if (this._collectionState.done) return this._done;
-                this._collection = this._method(this._collectionState.value)[Symbol.iterator]();
+                this._collection = this._method(this._collectionState.value, this._index++)[Symbol.iterator]();
             }
 
             this._resultState = this._collection.next();
