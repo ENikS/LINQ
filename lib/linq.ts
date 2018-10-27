@@ -73,7 +73,10 @@ export {
     getRange as Range,
     getRange as range,
     getRepeat as Repeat,
-    getRepeat as repeat
+    getRepeat as repeat,
+    Enumerable,
+    IEnumerable,
+    IEnumerator
 };
 
 
