@@ -190,7 +190,9 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
         }
         let result: A = zero;
         for (let value of this) {
-            if (!result) result = Constant.getDefaultVal(typeof (value));
+            if ([null, undefined].indexOf(result) > -1 || (isNaN(result) && !result)) 
+                result = Constant.getDefaultVal(typeof (value));
+                
             result = method(result, value);
         }
         return selector(result);
