@@ -37,6 +37,14 @@ describe('Immediate Execution -', function () {
     it('Aggregate() - Default Value [String]', function () {
         assert.equal("123", Linq.From([1, 2, 3]).Aggregate("", (c, n) => c.toString() + n.toString()));
     });
+    
+    it('Aggregate() - Default Value [Number]', function () {
+        assert.equal("123", Linq.From(["1", "2", "3"]).Aggregate("", (c, n) => c.toString() + n.toString()));
+    });
+
+    it('Aggregate() - Default Value [Mix]', function () {
+        assert.equal("123", Linq.From([1, "2", "3"]).Aggregate("", (c, n) => c.toString() + n.toString()));
+    });
 
 
     // All
