@@ -33,6 +33,14 @@ describe('Immediate Execution -', function () {
     it('Aggregate() - Transform', function () {
         assert.equal(1814400, Linq.From(simpleArray).Aggregate(1, (a, b) => a * b, o => o / 2));
     });
+    
+    it('Aggregate() - Default Value [String]', function () {
+        assert.equal("123", Linq.From([1, 2, 3]).Aggregate("", (c, n) => c.toString() + n.toString()));
+    });
+    
+    it('Aggregate() - Default Value [Number]', function () {
+        assert.equal("0123", Linq.From(["1", "2", "3"]).Aggregate(0, (c, n) => c.toString() + n.toString()));
+    });
 
 
 
