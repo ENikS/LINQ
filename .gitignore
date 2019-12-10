@@ -196,6 +196,8 @@ FakesAssemblies/
 *.opt
 *.map
 *.js
+!/dist/linq.js
+!/dist/linq.min.js
 /.vsnodetools.sln
 /lib/test
 /lib/src
