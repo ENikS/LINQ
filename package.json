@@ -81,7 +81,7 @@
     "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "jsmin": "^1.0.1",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.1",
     "typescript": "^3.7.3"
   },
   "scripts": {
