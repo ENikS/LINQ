@@ -133,7 +133,7 @@ describe('Immediate Execution -', function () {
     // Min
 
     it('Min() - No predicate', function () {
-        assert.equal(1, Linq.From(randomArray).Min());
+        assert.equal(Math.min(...randomArray), Linq.From(randomArray).Min());
     });
 
     it('Min()', function () {

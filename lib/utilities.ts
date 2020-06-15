@@ -53,12 +53,11 @@ export function getDefaultVal(type: any, value: any = undefined): any {
     return undefined;
 }
 
-/** Returns a map of element bsed on extracted keys  **/
+/** Returns a map of element based on extracted keys  **/
 export function getKeyedMap<T, K, E>(iterable: Iterable<T>, keySelector: (i: T) => K, selElement: (x: T) => E = selfFn): Map<K, Array<E>> {
     let map = new Map<K, Array<E>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (!key) continue;
         let group: Array<E> = map.get(key);
         if (!group) {
             group = [];
@@ -73,7 +72,6 @@ export function getKeyedMapFast<T, K>(iterable: Iterable<T>, keySelector: (x: T)
     let map = new Map<K, Array<T>>();
     for (let value of iterable) {
         let key = keySelector(value);
-        if (!key) continue;
         let group: Array<T> = map.get(key);
         if (!group) {
             group = [];
@@ -89,12 +87,10 @@ export function getKeys<T, K>(iterable: Iterable<T>, keySelector: (x: T) => K): 
     if (keySelector) {
         for (let value of iterable) {
             let key = keySelector(value);
-            if (!key) continue;
             set.add(key);
         }
     } else {
         for (let value of iterable) {
-            if (!value) continue;
             set.add(value);
         }
     }

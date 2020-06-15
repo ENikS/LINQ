@@ -389,29 +389,22 @@ describe('Reentrancy -', function () {
     it('GroupBy()', function () {
         var iterable: any = asEnumerable(pets).GroupBy(pet => pet.Age);
 
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const expected = new Map<number, number>(pets.map(pet => [pet.Age, pets.filter(p => p.Age === pet.Age).length]));
 
-        iterator = iterable[Symbol.iterator]();
-        result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const actual = [...iterable[Symbol.iterator]()];
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actual.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `Missing expected group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
+
+        // Reentrancy
+        const actualReentrant = [...iterable[Symbol.iterator]()];
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actualReentrant.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `expected reentrant group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected reentrant pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
     });
 
 

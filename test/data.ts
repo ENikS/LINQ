@@ -46,7 +46,7 @@ export var fruits = [
 ];
 
 export var simpleArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
-export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4  ];
+export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4, 0 ];
 export var oddArray = [ 1, 3, 5, 7, 9, 11, 13, 15 ];
 
 
@@ -65,7 +65,7 @@ var undef : any = { Name: "Puppy", Age: 0, Owner: undefined };
 
 export var people = [magnus, terry, terry, nullGhost, charlotte, ghost];
 export var msdn   = [magnus, terry, charlotte];
-export var pets   = [barley, stray, boots, whiskers, daisy];
+export var pets   = [barley, stray, boots, whiskers, daisy, undef];
 
 export var mix = [
             0, 

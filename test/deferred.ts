@@ -208,24 +208,18 @@ describe('Deferred Execution -', function () {
 
     it('Where()', function () {
         let iterable = Linq(simpleArray).Where(a => a % 2 == 1);
-        let iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.equal(5, iterator.next().value);
-        assert.equal(7, iterator.next().value);
-        assert.equal(9, iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        const expected = simpleArray.filter(a => a % 2 == 1);
+        const actual = [...iterable];
+        assert.sameMembers(actual, expected);
     });
 
     it('Where() - Index', function () {
         let iterable = Linq(simpleArray).Where((a: any, i: any) => i % 2 == 1);
-        let iterator = iterable[Symbol.iterator]()
-        assert.equal(2, iterator.next().value);
-        assert.equal(4, iterator.next().value);
-        assert.equal(6, iterator.next().value);
-        assert.equal(8, iterator.next().value);
-        assert.equal(10, iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        const expected = simpleArray.filter((a, i)  => i % 2 == 1);
+        const actual = [...iterable];
+        assert.sameMembers(actual, expected);
     });
 
 
@@ -234,11 +228,10 @@ describe('Deferred Execution -', function () {
 
     it('Skip()', function () {
         let iterable = Linq(simpleArray).Skip(7);
-        let iterator = iterable[Symbol.iterator]()
-        assert.equal(8, iterator.next().value);
-        assert.equal(9, iterator.next().value);
-        assert.equal(10, iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        const expected = simpleArray.slice(7);
+        const actual = [...iterable];
+        assert.sameMembers(actual, expected);
     });
 
     it('SkipWhile()', function () {
@@ -270,20 +263,23 @@ describe('Deferred Execution -', function () {
 
     it('Take()', function () {
         var iterable = Linq(simpleArray).Take(3);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value);
-        assert.equal(2, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        const expected = simpleArray.slice(0, 3);
+        const actual = [...iterable];
+        assert.sameMembers(actual, expected);
     });
 
     it('TakeWhile()', function () {
         var iterable = Linq(simpleArray).TakeWhile(a => a < 4);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(1, iterator.next().value);
-        assert.equal(2, iterator.next().value);
-        assert.equal(3, iterator.next().value);
-        assert.isTrue(iterator.next().done);
+
+        const expected = [];
+        for(const item of simpleArray) {
+            if(item < 4) expected.push(item);
+            else break;
+        }
+
+        const actual = [...iterable];
+        assert.sameMembers(actual, expected);
     });
 
 
@@ -589,19 +585,16 @@ describe('Deferred Execution -', function () {
     // GroupBy
 
     it('GroupBy()', function () {
-        var iterable: any = Linq(pets).GroupBy(pet => pet.Age);
+        const iterable: any = Linq(pets).GroupBy(pet => pet.Age);
 
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const expected = new Map<number, number>(pets.map(pet => [pet.Age, pets.filter(p => p.Age === pet.Age).length]));
+        const actual = [...iterable[Symbol.iterator]()];
+
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actual.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `Missing expected group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
     });
 
 
@@ -610,17 +603,14 @@ describe('Deferred Execution -', function () {
         var iterable: any = Linq(pets).GroupBy(pet => pet.Age,
             pet => pet);
 
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const expected = new Map<number, number>(pets.map(pet => [pet.Age, pets.filter(p => p.Age === pet.Age).length]));
+        const actual = [...iterable[Symbol.iterator]()];
+
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actual.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `Missing expected group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
     });
 
 
@@ -630,15 +620,15 @@ describe('Deferred Execution -', function () {
             pet => pet.Age,
             pet => pet,
             (age, group) => age);
-        
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.equal(8, result);
-        result = iterator.next().value;
-        assert.equal(4, result);
-        result = iterator.next().value;
-        assert.equal(1, result);
-        assert.isTrue(iterator.next().done);
+
+        const expected = new Set<number>(pets.map(pet => pet.Age));
+        const actual = [...iterable];
+
+        assert.equal(actual.length, expected.size, `Expected ${expected.size} groups by pet.Age but got ${actual.length}`);
+        for(const expectedAge of expected) {
+            const actualExists = actual.findIndex(age => age === expectedAge) > -1;
+            assert.isTrue(actualExists, `Missing expected pet.Age ${expectedAge}`);
+        }
     });
 
 
