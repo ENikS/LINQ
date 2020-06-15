@@ -23,31 +23,12 @@ describe('Enumerable - ', function () {
 
         var enumerable = asEnumerable(jsn).SelectMany(a => a.ids);
         var enumerator = enumerable.GetEnumerator();
+        const expected = [].concat(...jsn.map(a => a.ids));
+        for(const exp of expected) {
+            assert.isTrue(enumerator.MoveNext());
+            assert.equal(exp, enumerator.Current);
+        }
 
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(11, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(21, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(31, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(12, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(22, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(32, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(13, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(23, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(33, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(14, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(24, enumerator.Current);
-        assert.isTrue(enumerator.MoveNext());
-        assert.equal(34, enumerator.Current);
         assert.isFalse(enumerator.MoveNext());
     });
 

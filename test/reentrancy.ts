@@ -95,19 +95,13 @@ describe('Reentrancy -', function () {
 
     it('Select()', function () {
         var iterable = asEnumerable(jsn).Select((a) => a.name);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(iterator.next().value, 'd');
-        assert.equal(iterator.next().value, 'c');
-        assert.equal(iterator.next().value, 'b');
-        assert.equal(iterator.next().value, 'a');
-        assert.isTrue(iterator.next().done);
 
-        iterator = iterable[Symbol.iterator]()
-        assert.equal(iterator.next().value, 'd');
-        assert.equal(iterator.next().value, 'c');
-        assert.equal(iterator.next().value, 'b');
-        assert.equal(iterator.next().value, 'a');
-        assert.isTrue(iterator.next().done);
+        const actual = [...iterable];
+        const expected = [].concat(...jsn.map(a => a.name));
+        assert.sameOrderedMembers(actual, expected);
+
+        const actualReentrant = [...iterable];
+        assert.sameOrderedMembers(actualReentrant, expected);
     });
 
 
@@ -409,38 +403,15 @@ describe('Reentrancy -', function () {
 
 
     it('SelectMany()', function () {
-
         var iterable = asEnumerable(jsn).SelectMany(a => a.ids);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(11, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
 
-        iterator = iterable[Symbol.iterator]()
-        assert.equal(11, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-    });
+        const actual = [...iterable];
+        const expected = [].concat(...jsn.map(a => a.ids));
+        assert.sameOrderedMembers(actual, expected);
+
+        const actualReentrant = [...iterable];
+        assert.sameOrderedMembers(actualReentrant, expected);
+     });
 
 
     it('Concat()', function () {
