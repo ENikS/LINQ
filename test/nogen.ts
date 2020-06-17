@@ -107,13 +107,10 @@ describe('Custom Iterator based -', function () {
     });
 
     it('OrderBy() - Selector', function () {
-        var iterable = asEnumerable(jsn).OrderBy(a => a.name);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal("a", iterator.next().value.name);
-        assert.equal("b", iterator.next().value.name);
-        assert.equal("c", iterator.next().value.name);
-        assert.equal("d", iterator.next().value.name);
-        assert.isTrue(iterator.next().done);
+        const iterable = asEnumerable(jsn).OrderBy(a => a.name);
+        const actual = [...iterable];
+        const expected = jsn.sort((a,b) => a.name.localeCompare(b.name));
+        assert.sameOrderedMembers(actual, expected);
     });
 
     it('OrderBy() - Comparator', function () {
@@ -152,13 +149,10 @@ describe('Custom Iterator based -', function () {
     });
 
     it('OrderByDescending() - Selector', function () {
-        var citerable = asEnumerable(jsn).OrderByDescending(a => a.name);
-        var citerator = citerable[Symbol.iterator]()
-        assert.equal("d", citerator.next().value.name);
-        assert.equal("c", citerator.next().value.name);
-        assert.equal("b", citerator.next().value.name);
-        assert.equal("a", citerator.next().value.name);
-        assert.isTrue(citerator.next().done);
+        const iterable = asEnumerable(jsn).OrderByDescending(a => a.name);
+        const actual = [...iterable];
+        const expected = jsn.sort((a,b) => a.name.localeCompare(b.name)).reverse();
+        assert.sameOrderedMembers(actual, expected);
     });
 
     it('OrderByDescending() - Key', function () {

@@ -75,7 +75,8 @@ describe('Immediate Execution -', function () {
     });
 
     it('Average()', function () {
-        assert.equal((1+2+3+4)/4, Linq.From(jsn).Average(o => o.id));
+        const expectedAvg = jsn.reduce((sum, o)=>sum+o.id, 0) / jsn.length;
+        assert.equal(Linq.From(jsn).Average(o => o.id), expectedAvg);
     });
 
 
@@ -133,11 +134,11 @@ describe('Immediate Execution -', function () {
     // Min
 
     it('Min() - No predicate', function () {
-        assert.equal(1, Linq.From(randomArray).Min());
+        assert.equal(Math.min(...randomArray), Linq.From(randomArray).Min());
     });
 
     it('Min()', function () {
-        assert.equal(1, Linq.From(jsn).Min(o => o.id));
+        assert.equal(Math.min(...jsn.map(o => o.id)), Linq.From(jsn).Min(o => o.id));
     });
 
     it('Min() - Empty', function () {

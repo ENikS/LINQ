@@ -50,10 +50,10 @@ describe("Helpers - ", () => {
     it('getKeyedMap', function () {
 
         var result = Helper.getKeyedMap(pets, e => e.Owner, e => e.Name );
-        assert.equal(result.size, 3);
+        assert.equal(result.size, 5);
 
         var resultFast = Helper.getKeyedMapFast(pets, e => e.Owner );
-        assert.equal(resultFast.size, 3);
+        assert.equal(resultFast.size, 5);
     });
 
 });
