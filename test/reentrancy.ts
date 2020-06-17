@@ -95,19 +95,13 @@ describe('Reentrancy -', function () {
 
     it('Select()', function () {
         var iterable = asEnumerable(jsn).Select((a) => a.name);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(iterator.next().value, 'd');
-        assert.equal(iterator.next().value, 'c');
-        assert.equal(iterator.next().value, 'b');
-        assert.equal(iterator.next().value, 'a');
-        assert.isTrue(iterator.next().done);
 
-        iterator = iterable[Symbol.iterator]()
-        assert.equal(iterator.next().value, 'd');
-        assert.equal(iterator.next().value, 'c');
-        assert.equal(iterator.next().value, 'b');
-        assert.equal(iterator.next().value, 'a');
-        assert.isTrue(iterator.next().done);
+        const actual = [...iterable];
+        const expected = [].concat(...jsn.map(a => a.name));
+        assert.sameOrderedMembers(actual, expected);
+
+        const actualReentrant = [...iterable];
+        assert.sameOrderedMembers(actualReentrant, expected);
     });
 
 
@@ -389,65 +383,35 @@ describe('Reentrancy -', function () {
     it('GroupBy()', function () {
         var iterable: any = asEnumerable(pets).GroupBy(pet => pet.Age);
 
-        var iterator = iterable[Symbol.iterator]();
-        var result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const expected = new Map<number, number>(pets.map(pet => [pet.Age, pets.filter(p => p.Age === pet.Age).length]));
 
-        iterator = iterable[Symbol.iterator]();
-        result = iterator.next().value;
-        assert.equal(8, result.key);
-        assert.equal(1, result.length);
-        result = iterator.next().value;
-        assert.equal(4, result.key);
-        assert.equal(3, result.length);
-        result = iterator.next().value;
-        assert.equal(1, result.key);
-        assert.equal(1, result.length);
-        assert.isTrue(iterator.next().done);
+        const actual = [...iterable[Symbol.iterator]()];
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actual.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `Missing expected group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
+
+        // Reentrancy
+        const actualReentrant = [...iterable[Symbol.iterator]()];
+        for(const [expectedAge, expectedLength] of expected) {
+            const actualGroup = actualReentrant.find(group => group.key === expectedAge);
+            assert.isDefined(actualGroup, `expected reentrant group for pet.Age with key ${expectedAge}`);
+            assert.equal(actualGroup.length, expectedLength, `Expected reentrant pet.Age ${expectedAge} with group of ${expectedLength} items but instead got ${actualGroup.length} items`);
+        }
     });
 
 
     it('SelectMany()', function () {
-
         var iterable = asEnumerable(jsn).SelectMany(a => a.ids);
-        var iterator = iterable[Symbol.iterator]()
-        assert.equal(11, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
 
-        iterator = iterable[Symbol.iterator]()
-        assert.equal(11, iterator.next().value);
-        assert.equal(21, iterator.next().value);
-        assert.equal(31, iterator.next().value);
-        assert.equal(12, iterator.next().value);
-        assert.equal(22, iterator.next().value);
-        assert.equal(32, iterator.next().value);
-        assert.equal(13, iterator.next().value);
-        assert.equal(23, iterator.next().value);
-        assert.equal(33, iterator.next().value);
-        assert.equal(14, iterator.next().value);
-        assert.equal(24, iterator.next().value);
-        assert.equal(34, iterator.next().value);
-        assert.isTrue(iterator.next().done);
-    });
+        const actual = [...iterable];
+        const expected = [].concat(...jsn.map(a => a.ids));
+        assert.sameOrderedMembers(actual, expected);
+
+        const actualReentrant = [...iterable];
+        assert.sameOrderedMembers(actualReentrant, expected);
+     });
 
 
     it('Concat()', function () {

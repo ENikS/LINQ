@@ -200,3 +200,4 @@ FakesAssemblies/
 /lib/test
 /lib/src
 *.d.ts
+/package-lock.json

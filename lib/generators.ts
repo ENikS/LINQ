@@ -212,7 +212,7 @@ export function* UnionFast<T>(first: Iterable<T>, second: Iterable<T>) {
 export function* Join<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) => K, transform: (x: T, a: any) => R, map: Map<K, Array<I>>) {
     for (let value of target) {
         let key = oKeySelect(value);
-        if (!key) continue;
+        if (key == null) continue;
         let innerSet = map.get(key);
         if (!innerSet) continue;
         for (let inner of innerSet) {
@@ -226,9 +226,8 @@ export function* GroupJoin<T, K, R, I>(target: Iterable<T>, oKeySelect: (x: T) =
     for (let value of target) {
         let innerSet = undefined;
         let key = oKeySelect(value);
-        if (key){
-            innerSet = map.get(key);
-        }
+        innerSet = map.get(key);
+
         yield transform(value, innerSet);
     }
 }

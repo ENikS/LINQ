@@ -16,13 +16,14 @@ export var jsn = [
     { id: 1, "ids": [11, 21, 31], "name": "d" },
     { id: 2, "ids": [12, 22, 32], "name": "c" },
     { id: 3, "ids": [13, 23, 33], "name": "b" },
-    { id: 4, "ids": [14, 24, 34], "name": "a" }
+    { id: 4, "ids": [14, 24, 34], "name": "a" },
+    { id: 0, "ids": [0, 0, 0], "name": "null" }
 ];
 
 export var un1 = [
     { id: 1, "name": "q" },
     { id: 2, "name": "w" },
-    { id: null, "name": "n" },
+    { id: null, "name": "null" },
     { id: 3, "name": "e" },
     { id: 3, "name": "e" },
     { id: 4, "name": "r" }
@@ -31,7 +32,7 @@ export var un1 = [
 export var un2 = [
     { id: 3, "name": "a" },
     { id: 4, "name": "s" },
-    { id: undefined, "name": "d" },
+    { id: undefined, "name": "undefined" },
     { id: 5, "name": "d" },
     { id: 5, "name": "d" },
     { id: 6, "name": "f" }
@@ -46,7 +47,7 @@ export var fruits = [
 ];
 
 export var simpleArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
-export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4  ];
+export var randomArray = [ 5, 8, 9, 6, 7, 10, 1, 2, 3, 4, 0 ];
 export var oddArray = [ 1, 3, 5, 7, 9, 11, 13, 15 ];
 
 
@@ -65,7 +66,7 @@ var undef : any = { Name: "Puppy", Age: 0, Owner: undefined };
 
 export var people = [magnus, terry, terry, nullGhost, charlotte, ghost];
 export var msdn   = [magnus, terry, charlotte];
-export var pets   = [barley, stray, boots, whiskers, daisy];
+export var pets   = [barley, stray, boots, whiskers, daisy, undef];
 
 export var mix = [
             0, 
