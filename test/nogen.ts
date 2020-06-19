@@ -296,7 +296,73 @@ describe('Custom Iterator based -', function () {
         }
     });
 
-    
+
+
+    it('Ordering chain', function () {
+        function toObjects(items: { a: string[]; b: number[]; c: string[]; d: number[]; }): { a: string; b: number; c: string; d: number }[] {
+            return items.a.map((a, i) => ({a, b: items.b[i], c: items.c[i], d: items.d[i]}));
+        }
+
+        const unorderedItems = toObjects({
+            a: ["C", "C", "C", "C", "C", "C", "C", "C",  "A", "A", "A", "A", "A", "A", "A", "A",  "B", "B", "B", "B", "B", "B", "B", "B" ],
+            b: [ 0,   0 ,  1,   1,   0,   0,   1,   1,    0,   0,   1,   1,   1,   0,   0,   1,    0,   1,   1,   0,   0,   0,   1,   1  ],
+            c: ["A", "B", "A", "B", "A", "B", "A", "B",  "A", "B", "A", "B", "B", "A", "B", "A",  "B", "A", "B", "A", "A", "B", "A", "B" ],
+            d: [ 0,   0 ,  0,   0,   1,   1,   1,   1,    0,   0,   0,   1,   0,   1,   1,   1,    0,   0,   1,   1,   0,   1,   1,   0  ]
+        });
+
+        const expectedByAscDescAscDesc = toObjects({
+            a: ["A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C"],
+            b: [ 1,   1,   1,   1,   0,   0,   0,   0,   1,   1,   1,   1,   0,   0,   0,   0,   1,   1,   1,   1,   0,   0,   0,   0 ],
+            c: ["A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B"],
+            d: [ 1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0 ]
+        });
+        const actualByAscDescAscDesc = asEnumerable(unorderedItems).OrderBy(x => x.a).ThenByDescending(x => x.b).ThenBy(x => x.c).ThenByDescending(x => x.d).ToArray();
+        assert.sameDeepOrderedMembers(actualByAscDescAscDesc, expectedByAscDescAscDesc);
+
+        // Change order of chain
+        const expectedByDescAscDescAsc = toObjects({
+            a: ["C", "C", "C", "C", "C", "C", "C", "C", "B", "B", "B", "B", "B", "B", "B", "B", "A", "A", "A", "A", "A", "A", "A", "A"],
+            b: [ 0,   0,   0,   0,   1,   1,   1,   1,   0,   0,   0,   0,   1,   1,   1,   1,   0,   0,   0,   0,   1,   1,   1,   1 ],
+            c: ["B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A"],
+            d: [ 0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1,   0,   1 ]
+        });
+        const actualByDescAscDescAsc = asEnumerable(unorderedItems).OrderByDescending(x => x.a).ThenBy(x => x.b).ThenByDescending(x => x.c).ThenBy(x => x.d).ToArray();
+        assert.sameDeepOrderedMembers(actualByDescAscDescAsc, expectedByDescAscDescAsc);
+    });
+
+    it('Ordering chain - immutability', function () {
+        const unorderedItems = [
+            {name:"C" , age:30, grade:50},
+            {name:"C" , age:10, grade:0},
+            {name:"C" , age:20, grade:100},
+            {name:"A" , age:30, grade:50},
+            {name:"A" , age:10, grade:0},
+            {name:"A" , age:20, grade:100},
+            {name:"B" , age:30, grade:50},
+            {name:"B" , age:10, grade:0},
+            {name:"B" , age:20, grade:100},
+        ];
+
+        const expectedByNameThenByAge = unorderedItems.slice().sort((a,b)=> a.name.localeCompare(b.name) || (a.age - b.age));
+        const expectedByNameThenByGradeDescending = unorderedItems.slice().sort((a,b)=> a.name.localeCompare(b.name) || (b.grade - a.grade));
+
+
+        const immutableOrderedByName = asEnumerable(unorderedItems).OrderBy(x => x.name);
+        const actualByNameThenByAge = immutableOrderedByName.ThenBy(x => x.age).ToArray();
+        const actualByNameThenByGradeDescending = immutableOrderedByName.ThenByDescending(x => x.grade).ToArray();
+
+        assert.sameDeepOrderedMembers(actualByNameThenByAge, expectedByNameThenByAge);
+        assert.sameDeepOrderedMembers(actualByNameThenByGradeDescending, expectedByNameThenByGradeDescending);
+
+        // Change order of execution
+        const immutableOrderedByName2 = asEnumerable(unorderedItems).OrderBy(x => x.name);
+        const actualByNameThenByGradeDescending2 = immutableOrderedByName2.ThenByDescending(x => x.grade).ToArray();
+        const actualByNameThenByAge2 = immutableOrderedByName2.ThenBy(x => x.age).ToArray();
+
+        assert.sameOrderedMembers(actualByNameThenByGradeDescending2, expectedByNameThenByGradeDescending);
+        assert.sameOrderedMembers(actualByNameThenByAge2, expectedByNameThenByAge);
+    });
+
 
 
 

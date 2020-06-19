@@ -205,7 +205,7 @@ describe('Deferred Execution -', function () {
 
         const expected = simpleArray.filter(a => a % 2 == 1);
         const actual = [...iterable];
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
     it('Where() - Index', function () {
@@ -213,7 +213,7 @@ describe('Deferred Execution -', function () {
 
         const expected = simpleArray.filter((a, i)  => i % 2 == 1);
         const actual = [...iterable];
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
 
@@ -225,7 +225,7 @@ describe('Deferred Execution -', function () {
 
         const expected = simpleArray.slice(7);
         const actual = [...iterable];
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
     it('SkipWhile()', function () {
@@ -260,7 +260,7 @@ describe('Deferred Execution -', function () {
 
         const expected = simpleArray.slice(0, 3);
         const actual = [...iterable];
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
     it('TakeWhile()', function () {
@@ -273,7 +273,7 @@ describe('Deferred Execution -', function () {
         }
 
         const actual = [...iterable];
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
 
@@ -478,9 +478,10 @@ describe('Deferred Execution -', function () {
         
     });
 
-    it('Join() - null key', function () {
+    it('Join() - ignore null key', function () {
         const nullPerson: { Name: string; } = null;
-        const expectedPeople = people.concat(nullPerson);
+        const expectedPeople = people.slice();
+        expectedPeople.push(nullPerson);
 
         const actual = Linq(expectedPeople).Join(
             pets,
@@ -492,7 +493,7 @@ describe('Deferred Execution -', function () {
             .filter(person => person != null)
             .map(person => pets.filter(pet => pet.Owner === person).map(pet => person.Name + " - " + pet.Name)));
 
-        assert.sameMembers(actual, expected);
+        assert.sameOrderedMembers(actual, expected);
     });
 
 
