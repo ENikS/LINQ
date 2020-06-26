@@ -713,43 +713,32 @@ class OrderedLinq<T, K> extends EnumerableImpl<T> implements OrderedEnumerable<T
         return this._factory(this._factoryArg);
     }
 
-
     public ThenBy<K>(keySelect: (x: T) => K, equal?: (a: K, b: K) => number): OrderedEnumerable<T> {
-        if (!keySelect && !equal) return this;   
+        if (!keySelect && !equal) return this;
 
-        var compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
-                                        : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b)) 
-                                : equal;
-       
-        if (!this.comparer) {
-            this.comparer = compare;
-        } else {
-            let superEqual = this.comparer;
-            this.comparer = (a: any, b: any) => {
-                let result: number = superEqual(a, b);
-                return (0 != result) ? result : this.reversed ? -compare(a, b) : compare(a, b);
-            }
-        }
-        return this;
+        const compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b))
+                                          : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b))
+                                  : equal;
+
+        const superEqual = this.comparer;
+        const comparer = (!superEqual) ? compare
+                                       : (a: any, b: any) => superEqual(a, b) || (this.reversed ? -compare(a, b) : compare(a, b));
+
+        return new OrderedLinq<T, K>(this._target, this._factory, undefined, comparer, this.reversed);
     }
 
     public ThenByDescending<K>(keySelect: (x: T) => K, equal?: (a: K, b: K) => number): OrderedEnumerable<T> {
-        if (!keySelect && !equal) return this;   
+        if (!keySelect && !equal) return this;
 
-        var compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b)) 
-                                        : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b)) 
-                                : equal;
-       
-        if (!this.comparer) {
-            this.comparer = compare;
-        } else {
-            let superEqual = this.comparer;
-            this.comparer = (a: any, b: any) => {
-                let result: number = superEqual(a, b);
-                return (0 != result) ? result : this.reversed ? compare(a, b) : -compare(a, b);
-            }
-        }
-        return this;
+        const compare = keySelect ? equal ? (a: any, b: any) => equal(keySelect(a), keySelect(b))
+                                          : (a: any, b: any) => Constant.defCompare(keySelect(a), keySelect(b))
+                                  : equal;
+
+        const superEqual = this.comparer;
+        const comparer = (!superEqual) ? compare
+                                       : (a: any, b: any) => superEqual(a, b) || (this.reversed ? compare(a, b) : -compare(a, b));
+
+        return new OrderedLinq<T, K>(this._target, this._factory, undefined, comparer, this.reversed);
     }
 }
 
