@@ -459,7 +459,22 @@ describe('Deferred Execution -', function () {
         assert.isTrue(iterator.next().done);
     });
 
-
+    it('Union() with Join()', function() {
+        var as = [{ a: 1, b: 1 }];
+        var bs = [{ b: 1, c: 1 }];
+        var bs2 = [{ b: 2, c: 2 }];
+        var iterable = Linq(as)
+          .Join(
+            bs,
+            (a) => a.b,
+            (b) => b.b,
+            (_, b) => b
+          ).Union(bs2);
+        var iterator = iterable[Symbol.iterator]();
+        assert.equal(bs[0], iterator.next().value);
+        assert.equal(bs2[0], iterator.next().value);
+        assert.isTrue(iterator.next().done);
+    });
 
 
     // Join
