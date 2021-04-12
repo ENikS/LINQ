@@ -658,7 +658,7 @@ class EnumerableImpl<T> implements Enumerable<T>, Iterable<T>, IEnumerable<T> {
 
 
     public Union<K>(second: Iterable<T>, keySelector: (x: T) => K = Constant.selfFn): Enumerable<T> {
-        var aggregate = [this._target, second];
+        var aggregate = [this, second];
         return new EnumerableImpl<T>(this, () => new Iterator.Union<T,K>((aggregate as any)[Symbol.iterator](), keySelector));
     }
 
